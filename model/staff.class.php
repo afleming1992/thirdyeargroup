@@ -58,7 +58,7 @@ class Staff
 	 */
 	public function checkPassword()
 	{
-		$result =$this->db->query();
+		$result =$this->db->query("SELECT * FROM staff WHERE username='".$this->username."' AND password='".$this->password."'");
 		if ($result!=false)
 		{
 			while($data = $result->fetch())

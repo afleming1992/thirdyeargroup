@@ -25,6 +25,5 @@ catch (Exception $e)
 	echo "Connection error".$e->getMessage();
 }
 
-
 require_once 'controller/controller.php';
 ?>
