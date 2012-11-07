@@ -1,41 +1,41 @@
 $(document).ready(function() 
 {
 	// Datepicker
-        $( "#startDate" ).datepicker({
+        $( ".from" ).datepicker({
             defaultDate: "+1w",
             changeMonth: true,
             numberOfMonths: 3,
             dateFormat: "yy-mm-dd",
             onClose: function( selectedDate ) {
-                $( "#endDate" ).datepicker( "option", "minDate", selectedDate );
+                $( ".to" ).datepicker( "option", "minDate", selectedDate );
             }
         });
-        $( "#endDate" ).datepicker({
+        $( ".to" ).datepicker({
             defaultDate: "+1w",
             changeMonth: true,
             numberOfMonths: 3,
             dateFormat: "yy-mm-dd",
             onClose: function( selectedDate ) {
-                $( "#startDate" ).datepicker( "option", "maxDate", selectedDate );
+                $( ".from" ).datepicker( "option", "maxDate", selectedDate );
             }
         });
-
-        $( "#registrationStartDate" ).datepicker({
+        
+        $( ".fromChange" ).datepicker({
             defaultDate: "+1w",
             changeMonth: true,
             numberOfMonths: 3,
             dateFormat: "yy-mm-dd",
             onClose: function( selectedDate ) {
-                $( "#registrationEndDate" ).datepicker( "option", "minDate", selectedDate );
+                $( ".toChange" ).datepicker( "option", "minDate", selectedDate );
             }
         });
-        $( "#registrationEndDate" ).datepicker({
+        $( ".toChange" ).datepicker({
             defaultDate: "+1w",
             changeMonth: true,
             numberOfMonths: 3,
             dateFormat: "yy-mm-dd",
             onClose: function( selectedDate ) {
-                $( "#registrationStartDate" ).datepicker( "option", "maxDate", selectedDate );
+                $( ".fromChange" ).datepicker( "option", "maxDate", selectedDate );
             }
         });
         
@@ -55,7 +55,9 @@ $(document).ready(function()
         		    registrationEndDate: $('#registrationEndDate').val() 
         		  }, 
         		  success: function(data, textStatus, jqXHR) {
-        			 $('#tournamentList').html(data);
+        			  $("#addTournament").dialog( "close" );
+        			  $("#addTournament :input").val("");
+        			  $('#tournamentList').html(data);
         		  },
         		  error: function(jqXHR, textStatus, errorThrown) {
         			  alert("Error during form validation, try later !");
@@ -63,5 +65,78 @@ $(document).ready(function()
         		});
         	});
         
+        $("#changeTournamentValidation").click(function() 
+        	{
+        		jQuery.ajax({
+        		  type: 'GET',
+        		  url: 'ajax/changeTournament.php',
+        		  data: {
+        		    name: $('#tournamentNameChange').val(),
+        		    startDate: $('#startDateChange').val(),
+        		    endDate: $('#endDateChange').val(),
+        		    registrationStartDate: $('#registrationStartDateChange').val(),
+        		    registrationEndDate: $('#registrationEndDateChange').val(),
+        		    id: $('#changeTournamentValidation').attr('tournamentID')
+        		  }, 
+        		  success: function(data, textStatus, jqXHR) {
+        			  $("#changeTournament").dialog( "close" );
+        			  $("#changeTournament :input").val("");
+        			  $('#tournamentList').html(data);
+        		  },
+        		  error: function(jqXHR, textStatus, errorThrown) {
+        			  alert("Error during form validation, try later !");
+        		  }
+        		});
+        	});
+        
+        $(".btn-danger").live("click", function()
+            	{
+			        jQuery.ajax({
+			  		  type: 'GET',
+			  		  url: 'ajax/deleteTournament.php',
+			  		  data: {
+			  		    id: $(this).attr('id'),
+			  		  }, 
+			  		  success: function(data, textStatus, jqXHR) {
+			  			 $('#tournamentList').html(data);
+			  		  },
+			  		  error: function(jqXHR, textStatus, errorThrown) {
+			  			  alert("Error during form validation, try later !");
+			  		  }
+			        });
+            	});
+        
+        $(".btn-warning").live("click", function()
+            	{
+        			//alert('test '+$(this).parent().parent().children('.startDate').attr('startDate'));
+        			$('#changeTournament #tournamentNameChange').val($(this).parent().parent().children('.name').text());
+        			$('#changeTournament #startDateChange').val($(this).parent().parent().children('.startDate').attr('startDate'));
+        			$('#changeTournament #endDateChange').val($(this).parent().parent().children('.endDate').attr('endDate'));
+        			$('#changeTournament #registrationStartDateChange').val($(this).parent().parent().children('.registrationStart').attr('registrationStart'));
+        			$('#changeTournament #registrationEndDateChange').val($(this).parent().parent().children('.registrationEnd').attr('registrationEnd'));
+        			$('#changeTournament #changeTournamentValidation').attr('tournamentID',$(this).attr('id'));
+        			$( "#changeTournament" ).dialog( "open" );
+            	});
+        
+        
+        // Form in modal dialog window
+        
+        $( "#addTournament").dialog({
+            autoOpen: false,
+            height: 300,
+            width: 350,
+            modal: true,
+        });
+        
+        $( "#buttonAddTournament" ).click(function() {
+            $( "#addTournament" ).dialog( "open" );
+        });
+        
+        $( "#changeTournament").dialog({
+            autoOpen: false,
+            height: 300,
+            width: 350,
+            modal: true,
+        });
         
 });

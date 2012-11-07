@@ -20,6 +20,66 @@ class Tournament
 		$this->setName($name);
 	}
 	
+	public function getDateSQLFormat($date)
+	{
+		$SQLformatDate;
+		$year;
+		$month;
+		$day;
+		$d = explode(" ", $date);
+		
+		$year = $d[2];
+		switch ($d[1]) 
+		{
+			case 'January':
+				$month = "01";
+			break;
+			case 'February':
+				$month = "02";
+			break;
+			case 'March':
+				$month = "03";
+			break;
+			case 'April':
+				$month = "04";
+			break;
+			case 'May':
+				$month = "05";
+			break;
+			case 'June':
+				$month = "06";
+			break;
+			case 'July':
+				$month = "07";
+			break;
+			case 'August':
+				$month = "08";
+			break;
+			case 'September':
+				$month = "09";
+			break;
+			case 'October':
+				$month = "10";
+			break;
+			case 'November':
+				$month = "11";
+			break;
+			case 'December':
+				$month = "12";
+			break;
+			
+		}
+		
+		if(substr($d[0], 0, -2)<10)
+		{
+			$day = "0"+substr($d[0], 0, -2);
+		}
+		else
+			$day = substr($d[0], 0, -2);
+		
+		return "$year-$month-$day";
+		
+	}
 	
 	
 	/*-------- GETTERS & SETTERS --------*/

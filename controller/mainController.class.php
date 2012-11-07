@@ -12,6 +12,11 @@ class MainController
 	 * @var PDO
 	 */
 	private $db;
+	
+	/**
+	 * Use to keep all tournament
+	 *  @var Array: contains object Tournament
+	 */
 	private $tournament = array();
 	
 	
@@ -20,6 +25,9 @@ class MainController
 		$this->setDb($db);
 	}
 	
+	/**
+	 * Load view for home page
+	 */
 	public function loadHomePage()
 	{
 		require_once 'view/header.php';
@@ -28,6 +36,11 @@ class MainController
 		require_once 'view/footer.php';
 	}
 	
+	/**
+	 * load view for staff if username/password ar correct or load home page with error message if username/password are wrong
+	 * @param String $username
+	 * @param String $password
+	 */
 	public function login($username, $password)
 	{
 		$staff = new Staff($username, sha1($password), $this->db);
@@ -43,9 +56,10 @@ class MainController
 			require_once 'view/header.php';
 			require_once 'view/loginFalse.php.php';
 			require_once 'view/home.php';
-			require_once 'view/footer.php';			
+			require_once 'view/footer.php';		
 		}
 	}
+	
 	
 	public function loadPage($pageName) 
 	{
@@ -54,6 +68,9 @@ class MainController
 		require_once 'view/footer.php';
 	}
 	
+	/**
+	 * search in the database all tournament and put in an array
+	 */
 	public function getAllTournament()
 	{
 		$result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,

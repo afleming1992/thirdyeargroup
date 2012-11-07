@@ -1,39 +1,35 @@
 <?php
 
-if(isset($_GET['name']) && isset($_GET['startDate']) && isset($_GET['endDate']) && isset($_GET['registrationStartDate']) && isset($_GET['registrationEndDate']))
+if(isset($_GET['id']))
 {
 	include_once '../config/config.php';
 	include_once '../controller/mainController.class.php';
 	include_once '../model/tournament.class.php';
-	try 
+	try
 	{
 		$db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
-		$name = htmlspecialchars($_GET['name']);
-		$start = htmlspecialchars($_GET['startDate']);
-		$end = htmlspecialchars($_GET['endDate']);
-		$regStart = htmlspecialchars($_GET['registrationStartDate']);
-		$regEnd = htmlspecialchars($_GET['registrationEndDate']);
-		$db->exec("INSERT INTO tournament(name,startDate,endDate,registrationOpen,registrationClose) VALUES('$name','$start','$end','$regStart','$regEnd')");
-		
+		$id = htmlspecialchars($_GET['id']);
+		$db->exec("DELETE FROM tournament WHERE tournamentID=$id");
+	
 		$app = new MainController($db);
 		$app->getAllTournament();
-		
+	
 		?>
-		<fieldset>
-		<legend>All Tournament</legend>
-		<table>
-	  		<tr>
-		       <th>Name</th>
-		       <th>Start Date</th>
-		       <th>End Date</th>
-		       <th>Registration Open</th>
-		       <th>Registration Close</th>
-		       <th>Change</th>
-			   <th>Delete</th>
-	  		 </tr>	
-	  		<?php 
-	  			$allTournament = $app->getTournament();
-				for($i=0;$i<sizeof($allTournament);$i++)
+			<fieldset>
+			<legend>All Tournament</legend>
+			<table>
+		  		<tr>
+			       <th>Name</th>
+			       <th>Start Date</th>
+			       <th>End Date</th>
+			       <th>Registration Open</th>
+			       <th>Registration Close</th>
+			       <th>Change</th>
+			       <th>Delete</th>
+		  		 </tr>	
+		  		<?php 
+		  			$allTournament = $app->getTournament();
+					for($i=0;$i<sizeof($allTournament);$i++)
 		  			{
 		  				echo "<tr index='test'>";
 		  				echo "<td class='name'>".$allTournament[$i]->getName()."</td>";
@@ -45,18 +41,20 @@ if(isset($_GET['name']) && isset($_GET['startDate']) && isset($_GET['endDate']) 
 		  				echo "<td><button id='".$allTournament[$i]->getTournamentID()."' class='btn btn-danger btn-mini'><i class='icon-white icon-remove-sign'</i></button></td>";		  				
 		  				echo "</tr>";
 		  			}
-	  		?>
-		</table>	
-	</fieldset>
-		
-		<?php 
-	} 
-	catch (Exception $e) 
-	{
-		echo "Connection error".$e->getMessage();
-	}
-	
+		  		?>
+			</table>
+			<?php 
+				if(sizeof($allTournament)==0)
+					echo "There is no tournament."
+			?>	
+		</fieldset>
+			
+			<?php 
+		} 
+		catch (Exception $e) 
+		{
+			echo "Connection error".$e->getMessage();
+		}
 }
-
 
 ?>

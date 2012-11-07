@@ -21,5 +21,7 @@ else if(isset($_GET['page']))
 else
 	$app->loadHomePage();
 
+$db = null;
+
 
 ?>

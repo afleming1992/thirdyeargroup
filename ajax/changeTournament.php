@@ -1,6 +1,6 @@
 <?php
 
-if(isset($_GET['name']) && isset($_GET['startDate']) && isset($_GET['endDate']) && isset($_GET['registrationStartDate']) && isset($_GET['registrationEndDate']))
+if(isset($_GET['name']) && isset($_GET['startDate']) && isset($_GET['endDate']) && isset($_GET['registrationStartDate']) && isset($_GET['registrationEndDate']) && isset($_GET['id']))
 {
 	include_once '../config/config.php';
 	include_once '../controller/mainController.class.php';
@@ -13,7 +13,8 @@ if(isset($_GET['name']) && isset($_GET['startDate']) && isset($_GET['endDate']) 
 		$end = htmlspecialchars($_GET['endDate']);
 		$regStart = htmlspecialchars($_GET['registrationStartDate']);
 		$regEnd = htmlspecialchars($_GET['registrationEndDate']);
-		$db->exec("INSERT INTO tournament(name,startDate,endDate,registrationOpen,registrationClose) VALUES('$name','$start','$end','$regStart','$regEnd')");
+		$id = htmlspecialchars($_GET['id']);
+		$db->exec("UPDATE tournament SET name = '$name' ,startDate = '$start',endDate = '$end',registrationOpen ='$regStart',registrationClose ='$regEnd' WHERE tournamentID = $id");
 		
 		$app = new MainController($db);
 		$app->getAllTournament();
