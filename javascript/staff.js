@@ -55,7 +55,7 @@ $(document).ready(function()
         		    registrationEndDate: $('#registrationEndDate').val() 
         		  }, 
         		  success: function(data, textStatus, jqXHR) {
-        			  $("#addTournament").dialog( "close" );
+        			  $('#addTournament').modal('hide');
         			  $("#addTournament :input").val("");
         			  $('#tournamentList').html(data);
         		  },
@@ -79,7 +79,7 @@ $(document).ready(function()
         		    id: $('#changeTournamentValidation').attr('tournamentID')
         		  }, 
         		  success: function(data, textStatus, jqXHR) {
-        			  $("#changeTournament").dialog( "close" );
+        			  $("#changeTournament").modal('hide');
         			  $("#changeTournament :input").val("");
         			  $('#tournamentList').html(data);
         		  },
@@ -115,28 +115,6 @@ $(document).ready(function()
         			$('#changeTournament #registrationStartDateChange').val($(this).parent().parent().children('.registrationStart').attr('registrationStart'));
         			$('#changeTournament #registrationEndDateChange').val($(this).parent().parent().children('.registrationEnd').attr('registrationEnd'));
         			$('#changeTournament #changeTournamentValidation').attr('tournamentID',$(this).attr('id'));
-        			$( "#changeTournament" ).dialog( "open" );
             	});
-        
-        
-        // Form in modal dialog window
-        
-        $( "#addTournament").dialog({
-            autoOpen: false,
-            height: 300,
-            width: 350,
-            modal: true,
-        });
-        
-        $( "#buttonAddTournament" ).click(function() {
-            $( "#addTournament" ).dialog( "open" );
-        });
-        
-        $( "#changeTournament").dialog({
-            autoOpen: false,
-            height: 300,
-            width: 350,
-            modal: true,
-        });
         
 });
