@@ -72,6 +72,22 @@ class Staff
 			return false;
 	}
 	
+	public function getStaffInfo()
+	{
+		$result =$this->db->query("SELECT * FROM staff WHERE username='".$this->username."'");
+		if ($result!=false)
+		{
+			while($data = $result->fetch())
+			{
+				$this->setName($data['name']);
+				$this->setManager($data['manager']);
+			}
+			return true;
+		}
+		else
+			return false;
+	}
+	
 	
 	/*-------- GETTERS & SETTERS --------*/
 	

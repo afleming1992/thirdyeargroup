@@ -1,6 +1,6 @@
 <?php
 
-echo "Hello ".$staff->getName();
+//echo "Hello ".$staff->getName();
 
 if ($staff->getManager()== 1)
 {
@@ -10,7 +10,7 @@ if ($staff->getManager()== 1)
 	<div id="tournamentList">
 		<fieldset>
 		<legend>All Tournament</legend>
-			<table>
+			<table  class='table table-hover table-bordered'>
 		  		<tr>
 			       <th>Name</th>
 			       <th>Start Date</th>
@@ -38,7 +38,7 @@ if ($staff->getManager()== 1)
 			</table>
 			<?php 
 				if(sizeof($allTournament)==0)
-					echo "There is no tournament."
+					echo "There are no tournament."
 			?>	
 		</fieldset>
 	</div>

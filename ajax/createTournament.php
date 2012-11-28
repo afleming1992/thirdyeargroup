@@ -21,7 +21,7 @@ if(isset($_GET['name']) && isset($_GET['startDate']) && isset($_GET['endDate']) 
 		?>
 		<fieldset>
 		<legend>All Tournament</legend>
-		<table>
+		<table class='table table-hover table-bordered'>
 	  		<tr>
 		       <th>Name</th>
 		       <th>Start Date</th>

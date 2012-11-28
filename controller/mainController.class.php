@@ -31,6 +31,8 @@ class MainController
 	public function loadHomePage()
 	{
 		require_once 'view/header.php';
+		require_once 'view/banner.php';
+		require_once 'view/navbar.php';
 		require_once 'view/login.php';
 		require_once 'view/home.php';
 		require_once 'view/footer.php';
@@ -47,13 +49,20 @@ class MainController
 		
 		if($staff->checkPassword())
 		{
+			$_SESSION['login'] = true;
+			$_SESSION['username'] = $username;		
 			require_once 'view/header.php';
+			require_once 'view/banner.php';			
+			require_once 'view/navbar.php';
+			require_once 'view/menu-staff.php';
 			require_once 'view/homeStaff.php';
-			require_once 'view/footer.php';			
+			require_once 'view/footer.php';					
 		}
 		else
 		{
 			require_once 'view/header.php';
+			require_once 'view/banner.php';
+			require_once 'view/navbar.php';
 			require_once 'view/loginFalse.php.php';
 			require_once 'view/home.php';
 			require_once 'view/footer.php';		
@@ -63,7 +72,16 @@ class MainController
 	
 	public function loadPage($pageName) 
 	{
+		if($pageName=='homeStaff')
+		{
+			$staff = new Staff($_SESSION['username'], null, $this->db);
+			$staff->getStaffInfo();
+			$this->getAllTournament();
+		}
 		require_once 'view/header.php';
+		require_once 'view/banner.php';		
+		require_once 'view/login.php';
+		require_once 'view/navbar.php';
 		require_once 'view/'.$pageName.'.php';
 		require_once 'view/footer.php';
 	}
