@@ -1,0 +1,11 @@
+RewriteEngine on
+
+# Load pages
+RewriteRule ^wattball\.html$ /Project/index.php?page=wattBall [L]
+RewriteRule ^about-us\.html$ /Project/index.php?page=aboutUs [L]
+RewriteRule ^men-hurdles\.html$ /Project/index.php?page=menHurdles [L]
+RewriteRule ^female-hurdles\.html$ /Project/index.php?page=femaleHurdles [L]
+RewriteRule ^staff\.html$ /Project/index.php?page=homeStaff [L]
+
+# Sign out
+RewriteRule ^signout\.html$ /Project/index.php?signout=1 [L]
