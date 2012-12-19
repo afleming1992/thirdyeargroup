@@ -1,8 +1,5 @@
 <?php
-
-
-
-
+	
 ?>
 <h3>Register for Wattball Tournament</h3>
 <form class="form-horizontal" method='post' name='wattball_registration'>
