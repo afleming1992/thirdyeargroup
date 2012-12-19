@@ -1,10 +1,37 @@
-<?php
-	
-?>
 <h3>Register for Wattball Tournament</h3>
+<?php
+	include 'config/config.php';
+	$db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
+	$result = $db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
+	$numberOfRows = $result->fetchColumn();
+	if($numberOfRows < 1)
+	{
+		print("<span class='label label-important'>There are no Tournament to Register to at the present time. Please try again later</span><br /><br />");
+	}
+	else
+	{
+?>
 <form class="form-horizontal" method='post' name='wattball_registration'>
 	<div class="control-group">
 	  <fieldset>
+		<legend>Tournament Selection</legend>
+		<label class='control-label'>Choose which Tournament to Register to:-</label>
+		<div class="controls">
+			<select name="tournamentId">
+				<?php
+					$result = $db->query("SELECT `tournamentID`, `name`, `startDate`, `endDate` FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
+					if($result != false)
+					{
+						while($data = $result->fetch())
+						{
+							print("<option value='".$data['tournamentID']."'>".$data['name']." - FROM ".$data['startDate']." TO ".$data['endDate']."</option>");
+						}
+					}
+				?>
+			</select>
+		</div>
+	  </fieldset>
+	  </fieldset>
 		<legend>Basic Details</legend>
 		<label class='control-label'>Team Name</label>
 		<div class="controls">
@@ -43,3 +70,6 @@
 	<button type="submit" class="btn btn-success"><i class="icon-white icon-ok"></i> Submit Registration</button>
 	</div>
 </form>
+<?php
+	}
+?>
