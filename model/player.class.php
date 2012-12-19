@@ -16,8 +16,47 @@
 		
 		/** -- METHODS -- **/
 		
+		public function addPlayerInfo()
+		{
+			$result = $this->db->query("INSERT INTO wattball_players VALUES ('0','".$this->teamID."','".$this->playerName."'");
+			if($result != false)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
 		
+		public function getPlayerInfo()
+		{
+			$result=$this->db->query("SELECT * FROM wattball_players WHERE playerID='".$this->playerID."'");
+			if ($result!=false)
+			{
+				while($data = $result->fetch())
+				{
+					$this->setTeamID($data['teamID']);
+					$this->setPlayerName($data['playerName']);
+				}
+				return true;
+			}
+			else
+				return false;
+		}
 		
+		public function updatePlayerInfo()
+		{
+			$result = $this->db->query("UPDATE wattball_players SET teamID = '".$this->teamID."', playerName = '".$this->playerName."' WHERE playerID = '".$this->playerID."'");
+			if($result != false)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}	
 		/** --- GETTERS AND SETTERS --- **/
 		
 		public function getPlayerID()
