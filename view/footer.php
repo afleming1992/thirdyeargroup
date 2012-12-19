@@ -1,3 +1,4 @@
+</div>
 </body>
 <div id='footer' class="row-fluid">
 	<div class='span12'>

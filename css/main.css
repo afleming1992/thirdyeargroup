@@ -1,0 +1,8 @@
+.wrapper
+{
+	padding:5px;
+	background-color:#FFEBBA;
+	border:1px #FFC900 solid;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+}
