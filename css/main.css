@@ -11,3 +11,17 @@ table
 {
 	background-color:#FFFFFF;
 }
+
+.accordion
+{
+	background-color:#FFFFFF;
+}
+
+.contentbox
+{
+	background-color:#FFFFFF;
+	border:1px #E5E5E5 solid;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	padding:10px;
+}

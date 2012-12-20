@@ -5,7 +5,18 @@
 		<div class="alert alert-success" style='text-align:center'>
 		  <b>You are now signed out!</b>
 		</div>
-		<?php
+		<?
+	}
+	
+	if(isset($_SESSION['login-popup']) && $_SESSION['login-popup'] == true)
+	{
+		?>
+		<div class="alert alert-success" style='text-align:center'>
+		  <b>Welcome back <?php echo $_SESSION['username'] ?>!</b> You are now signed in.
+		</div>
+		<?
+		
+		$_SESSION['login-popup'] = false;
 	}
 ?>
 <div id='banner' class='page-header'>

@@ -51,6 +51,7 @@ class MainController
 		{
 			$_SESSION['login'] = true;
 			$_SESSION['username'] = $username;		
+			$_SESSION['login-popup'] = true;
 			require_once 'view/header.php';
 			require_once 'view/banner.php';			
 			require_once 'view/navbar.php';

@@ -4,3 +4,11 @@ $(document).ready(function(){
 		$(this).addClass("active");
 	});
 });
+
+$('.carousel').carousel({
+  interval: 2000
+})
+$('.carousel').carousel('cycle')
+
+
+
