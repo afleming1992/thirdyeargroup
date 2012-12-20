@@ -25,3 +25,10 @@ table
 	border-radius: 15px;
 	padding:10px;
 }
+
+.home-info
+{
+	margin-left:-5px;
+	margin-top:5px;
+	margin-bottom:5px;
+}

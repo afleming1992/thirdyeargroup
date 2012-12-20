@@ -20,12 +20,11 @@
 				  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
 				</div>
 			</div>
-			
-			<div class='span8'>
-			
-			</div>
-		
 		</div>
-
+	</div>
+	<div class='row-fluid'>
+		<div class='contentbox home-info span12'>
+				<h1>Testing</h1>
+		</div>
 	</div>
 </div>
