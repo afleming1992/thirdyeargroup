@@ -1,5 +1,5 @@
 <div id='banner' class='page-header'>
-	<h1>Riccarton Sport Centre</h1>	
+	<h1><img src='images/banner.png' /></h1>	
 </div>
 <body class="container">
 	<div class="wrapper">
