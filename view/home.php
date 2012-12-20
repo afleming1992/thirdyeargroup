@@ -2,6 +2,13 @@
 	<div class="span12">
 		<div id='latestResult' class='span4 contentbox'>
 			<h4>Latest results</h4>
+				<a href='#'>
+					<div class="alert alert-info">
+						<div style='font-weight:bold;text-align:center;text-decoration:underline'>Wattball</div>
+						<div style='font-weight:bold;text-align:center;'>Team A vs Team B</div>
+						<p style='text-align:center'>1 - 0</p>
+					</div>
+				</a>
 		</div>
 		
 		<div id='content' class='span8'>

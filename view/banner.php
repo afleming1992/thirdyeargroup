@@ -3,6 +3,7 @@
 	{
 		?>
 		<div class="alert alert-success" style='text-align:center'>
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
 		  <b>You are now signed out!</b>
 		</div>
 		<?
@@ -12,6 +13,7 @@
 	{
 		?>
 		<div class="alert alert-success" style='text-align:center'>
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
 		  <b>Welcome back <?php echo $_SESSION['username'] ?>!</b> You are now signed in.
 		</div>
 		<?
