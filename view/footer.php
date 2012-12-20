@@ -10,7 +10,7 @@
 			if(isset($_SESSION['login']) && $_SESSION['login'] == true)
 			{
 			?> 
-			<a href='signout.html'>Sign out</a>
+			<a href='index.php?signout=1'>Sign out</a>
 			<?php 
 			}
 			else
