@@ -1,5 +1,8 @@
 <div class='row-fluid'>
 	<div class='span12 contentbox'>
+	<div id='result-success' style='visibility:hidden'>
+		
+	</div>
 	<h3>Register for Wattball Tournament</h3>
 		<?php
 			include 'config/config.php';

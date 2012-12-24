@@ -7,6 +7,7 @@
         <li> <a href="index.php?page=wattBall">WattBall</a> </li>
         <li> <a href="index.php?page=menHurdles">Men's Hurdles</a> </li>
         <li> <a href="index.php?page=femaleHurdles">Female's Hurdles</a> </li>
+        <li> <a href='index.php?page=tickets'>Tickets for Tournament</a></a></li>
         <?php 
         if(isset($_SESSION['login']) && $_SESSION['login'] == true)
         	echo "<li> <a href='index.php?page=homeStaff'>Staff</a> </li>";
