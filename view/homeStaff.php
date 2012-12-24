@@ -1,5 +1,11 @@
+<div class='row-fluid'>
+	<div class='span3 contentbox'>
 <?php
-
+require_once 'view/menu-staff.php';
+?>
+	</div>
+		<div class='span9 contentbox'>
+<?php
 //echo "Hello ".$staff->getName();
 
 if ($staff->getManager()== 1)
@@ -73,7 +79,9 @@ if ($staff->getManager()== 1)
 	</div>
 	
 	<button type="button" data-toggle="modal" class="btn btn-primary btn-medium" data-target="#addTournament"><i class="icon-plus-sign icon-white"></i> Add tournament</button>
-	
+		</div>
+	</div>
+</div>
 	
 	
 	<!-- Div change tournament  -->
