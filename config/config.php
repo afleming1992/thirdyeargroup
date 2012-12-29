@@ -4,7 +4,7 @@
  *  DATABASE CONFIGURATION
  */
 $server = "localhost";
-$database = "project";
+$database = "thirdyeargroup";
 $password = "";
 $user = "root";
 

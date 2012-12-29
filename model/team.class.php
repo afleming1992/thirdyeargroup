@@ -10,13 +10,12 @@ class Team
 		private $nwaNumber;
 		private $email;
 		private $db;
-		private $players[20];
-
 
 	/*--- Constructor ---*/
 	public function __construct($db)
 	{
 		$this->setDb($db);
+		$this->players = array();
 	}
 
 	/*--- Method Calls ---*/
@@ -25,20 +24,20 @@ class Team
 	
 	public function addTeamInfo()
 	{
-		$result = $this->db->query("INSERT INTO wattball_team VALUES ('0','".$this->tournamentID."','".$this->teamName."','".$this->contactName."','".$this->contactNumber."','".$this->nwaNumber."','".$this->email."'");
+		$result = $this->db->exec("INSERT INTO wattball_team VALUES ('0','$this->tournamentID','$this->teamName','$this->contactName','$this->contactNumber','$this->nwaNumber','$this->email')");
 		if($result != false)
 		{
 			return true;
 		}
 		else
 		{
-			return false;
+			return $result;
 		}
 	}
 	// Update Team
 	public function updateTeamInfo()
 	{
-		$result = $this->db->query("UPDATE wattball_team SET teamID='".$this->teamID."', tournamentID = '".$this->tournamentID."', contactName = '".$this->contactName"', contactNumber = '".$this->contactNumber."', NWANumber = '".$this->nwaNumber."', email = '".$this->email."' WHERE teamID = '"$this->teamID"'");
+		$result = $this->db->query("UPDATE wattball_team SET tournamentID = '".$this->tournamentID."', contactName = '".$this->contactName."', contactNumber = '".$this->contactNumber."', NWANumber = '".$this->nwaNumber."', email = '".$this->email."' WHERE teamID = '".$this->teamID."'");
 		if($result != false)
 		{
 			return true;
@@ -117,7 +116,7 @@ class Team
 			return $this->contactNumber;
 	}
 
-	public function setContactName($contactNumber)
+	public function setContactNumber($contactNumber)
 	{
 		$this->contactNumber = $contactNumber;
 	}
@@ -151,17 +150,6 @@ class Team
 	{
 			$this->db = $db;
 	}
-	
-	public getPlayer($index)
-	{
-		return $players[$index];
-	}
-	
-	public setPlayer($player,$index)
-	{
-		$players[$index] = $player;
-	}
-
 }
 	
 ?>

@@ -18,7 +18,7 @@
 		
 		public function addPlayerInfo()
 		{
-			$result = $this->db->query("INSERT INTO wattball_players VALUES ('0','".$this->teamID."','".$this->playerName."'");
+			$result = $this->db->query("INSERT INTO wattball_players VALUES ('0','".$this->teamID."','".$this->playerName."')");
 			if($result != false)
 			{
 				return true;
@@ -88,4 +88,10 @@
 		{
 			$this->playerName = $playerName;
 		}
+		
+		public function setDb($db)
+		{
+			$this->db = $db;
+		}
 			
+}
