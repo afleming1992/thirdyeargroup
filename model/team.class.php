@@ -10,6 +10,7 @@ class Team
 		private $nwaNumber;
 		private $email;
 		private $db;
+		private $players[20];
 
 
 	/*--- Constructor ---*/
@@ -149,6 +150,16 @@ class Team
 	public function setDb($db)
 	{
 			$this->db = $db;
+	}
+	
+	public getPlayer($index)
+	{
+		return $players[$index];
+	}
+	
+	public setPlayer($player,$index)
+	{
+		$players[$index] = $player;
 	}
 
 }
