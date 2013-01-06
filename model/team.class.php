@@ -24,7 +24,7 @@ class Team
 	
 	public function addTeamInfo()
 	{
-		$result = $this->db->exec("INSERT INTO wattball_team VALUES ('0','$this->tournamentID','$this->teamName','$this->contactName','$this->contactNumber','$this->nwaNumber','$this->email')");
+		$result = $this->db->query("INSERT INTO wattball_team VALUES ('0','$this->tournamentID','$this->teamName','$this->contactName','$this->contactNumber','$this->nwaNumber','$this->email')");
 		if($result != false)
 		{
 			return true;
