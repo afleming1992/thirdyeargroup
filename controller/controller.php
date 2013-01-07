@@ -1,21 +1,11 @@
 <?php
 
-require_once 'mainController.class.php';
-include '../config/config.php';
+require_once 'controller/mainController.class.php';
 
 /**
  * Represent the application
  * @var MainController
  */
- 
-try
-{
-	$db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
-}
-catch (Exception $e)
-{
-	echo "Connection error".$e->getMessage();
-}
 $app = new MainController($db);
 
 

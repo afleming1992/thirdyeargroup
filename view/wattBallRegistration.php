@@ -26,19 +26,7 @@
 	<div id='form'>
 		<script src="javascript/wattballRegistration.js"> </script> 
 		<h3>Register for Wattball Tournament</h3>
-			<?php
-				include 'config/config.php';
-				$db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
-				$result = $db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
-				$numberOfRows = $result->fetchColumn();
-				if($numberOfRows < 1)
-				{
-					print("<span class='label label-important'>There are no Tournament to Register to at the present time. Please try again later</span><br /><br />");
-				}
-				else
-				{
-			?>
-			<form class="form-horizontal" method='post' name='wattball_registration' action='controller/controller.php'>
+			<form class="form-horizontal" method='post' name='wattball_registration' action='index.php'>
 				<div class="control-group">
 				  <fieldset>
 					<legend>Tournament Selection</legend>
@@ -46,13 +34,13 @@
 					<div class="controls">
 						<select name="tournamentId" id='tournamentId'>
 							<?php
-								$result = $db->query("SELECT `tournamentID`, `name`, `startDate`, `endDate` FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
-								if($result != false)
+								
+								if(isset($tournament))
 								{
-									while($data = $result->fetch())
-									{
-										print("<option value='".$data['tournamentID']."'>".$data['name']." - FROM ".$data['startDate']." TO ".$data['endDate']."</option>");
-									}
+									for($i = 0;$i<count($tournament);$i++)
+                                                                        {
+                                                                           echo "<option value='".$tournament[$i]['tournamentID']."'>".$tournament[$i]['name']." - FROM ".$tournament[$i]['startDate']." TO ".$tournament[$i]['endDate']."</option>"; 
+                                                                        }
 								}
 							?>
 						</select>
@@ -171,8 +159,7 @@
 				<button type="submit" class="btn btn-success"><i class="icon-white icon-ok"></i> Submit Registration</button>
 				</div>
 			</form>
-			<?php
-				}
+			<?php			
 			}
 			?>
 		</div>

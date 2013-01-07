@@ -2,7 +2,7 @@
 
 /**
  * Use to load view
- * @author Yohann \ Andrew
+ * @author Yohann
  *
  */
 class MainController
@@ -78,6 +78,39 @@ class MainController
 			$staff->getStaffInfo();
 			$this->getAllTournament();
 		}
+                else if($pageName == 'wattBallRegistration') //before load this page: check if there are tournament
+                {
+                    $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
+                    $numberOfRows = $result->fetchColumn();
+                    if($numberOfRows < 1) //No tournament: Load a page said there are no tournament
+                    {
+                        require_once 'view/header.php';
+                        require_once 'view/banner.php';		
+                        require_once 'view/login.php';
+                        require_once 'view/navbar.php';
+                        require_once 'view/wattBallRegistration_noTournament.php';
+                        require_once 'view/footer.php';
+                        die();
+                    }
+                    else // tournament: Load the information about the tournament
+                    {
+                        $result = $this->db->query("SELECT `tournamentID`, `name`, `startDate`, `endDate` FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
+                        if($result != false)
+                        {
+                            $tournament = array();
+                            $i = 0;
+                            while($data = $result->fetch())
+                            {
+                                $tournament[$i]['tournamentID'] = $data['tournamentID'];
+                                $tournament[$i]['name'] = $data['name'];
+                                $tournament[$i]['startDate'] = $data['startDate'];
+                                $tournament[$i]['endDate'] = $data['endDate'];
+                                $i++;                                   
+                            }
+                        }
+                        
+                    }
+                }
 		require_once 'view/header.php';
 		require_once 'view/banner.php';		
 		require_once 'view/login.php';
@@ -100,8 +133,8 @@ class MainController
 			$i++;
 		}
 	}
-	
-	/**
+        
+        /**
 	 * Method below processes the Wattball Team Registration
 	 */
 	
@@ -111,7 +144,7 @@ class MainController
 		//This checks that the NWA Number is the correct Length
 		if(strlen($nwaNumber) > 7 || strlen($nwaNumber) < 7)
 		{
-			$_SESSION['nwaLengthError'] = 1;
+			$_SESSION['('] = 1;
 		}
 		
 		//Checks the Contact Number is 11 in Length
@@ -159,15 +192,8 @@ class MainController
 		
 		if(!isset($_SESSION['error']))
 		{
-			include '../config/config.php';
-			include_once '../model/team.class.php';
-			include_once '../model/player.class.php';
-			
-			$db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
-			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		
-			
-			$team = new Team($db);
+	
+			$team = new Team($this->db);
 			$team->setTournamentID($tournamentId);
 			$team->setTeamName($teamName);
 			$team->setNwaNumber($nwaNumber);
@@ -178,7 +204,7 @@ class MainController
 			$result = $team->addTeamInfo();
 			
 			try{
-				$query_result = $db->query("SELECT teamID FROM wattball_team WHERE teamName = '".$team->getTeamName()."' AND tournamentID = '".$team->getTournamentId()."' ORDER BY teamID DESC");
+				$query_result = $this->db->query("SELECT teamID FROM wattball_team WHERE teamName = '".$team->getTeamName()."' AND tournamentID = '".$team->getTournamentId()."' ORDER BY teamID DESC");
 			}
 			catch(PDOException $ex)
 			{
@@ -197,7 +223,7 @@ class MainController
 				trim($players[$i]);
 				if($players[$i] != "")
 				{
-					$player = new Player($db);
+					$player = new Player($this->db);
 					$player->setPlayerName($players[$i]);
 					$player->setTeamID($team->getTeamID());
 					$result = $player->addPlayerInfo();
@@ -207,6 +233,7 @@ class MainController
 		}
 		
 	}
+	
 	
 	
 	
