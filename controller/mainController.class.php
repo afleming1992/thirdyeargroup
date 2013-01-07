@@ -2,7 +2,7 @@
 
 /**
  * Use to load view
- * @author Yohann
+ * @author Yohann \ Andrew
  *
  */
 class MainController
@@ -101,6 +101,112 @@ class MainController
 		}
 	}
 	
+	/**
+	 * Method below processes the Wattball Team Registration
+	 */
+	
+	public function processWattballRegistration($tournamentId,$teamName,$contactName,$contactNumber,$nwaNumber,$email,$players)
+	{
+		
+		//This checks that the NWA Number is the correct Length
+		if(strlen($nwaNumber) > 7 || strlen($nwaNumber) < 7)
+		{
+			$_SESSION['nwaLengthError'] = 1;
+		}
+		
+		//Checks the Contact Number is 11 in Length
+		if(strlen($contactNumber) != 11)
+		{
+			$_SESSION['contactNumberError'] = 1;
+		}
+		
+		//This Checks that the first six digits are Numerical and the last is a Letter
+		if(isset($_SESSION['nwaLengthError']))
+		{
+			//Checks if the first 6 digits are numeric
+			for($i = 0;$i < 6;$i++)
+			{
+				$thispart = substr($nwaNumber,$i,1);
+				$test = is_numeric($thispart);
+				if($test != 1)
+				{
+					$_SESSION['nwaValidationError'] = 1;
+				}
+			}
+			//Checks the last is a letter
+				$letter = substr($nwaNumber,6,1);
+				if (!(preg_match("/^[a-zA-Z]$/", $letter))) 
+				{
+					$_SESSION['nwaValidationError'] = 1;
+				}
+			
+		}
+		
+		
+		//Divide our Players Outpuit
+		$players = explode("\n", $players);
+		$number = count($players);
+		//If there is not enough players in a team, we give a validation error.
+		if($number < 11)
+		{
+			$_SESSION['NotEnoughPlayers'] = 1;
+		}
+		
+		if(isset($_SESSION['nwaLengthError']) || isset($_SESSION['nwaValidationError']) || isset($_SESSION['NotEnoughPlayers']) || isset($_SESSION['contactNumberError']))
+		{
+			$_SESSION['error'] = 1;
+		}
+		
+		if(!isset($_SESSION['error']))
+		{
+			include '../config/config.php';
+			include_once '../model/team.class.php';
+			include_once '../model/player.class.php';
+			
+			$db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
+			$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		
+			
+			$team = new Team($db);
+			$team->setTournamentID($tournamentId);
+			$team->setTeamName($teamName);
+			$team->setNwaNumber($nwaNumber);
+			$team->setContactName($contactName);
+			$team->setContactNumber($contactNumber);
+			$team->setEmail($email);
+			
+			$result = $team->addTeamInfo();
+			
+			try{
+				$query_result = $db->query("SELECT teamID FROM wattball_team WHERE teamName = '".$team->getTeamName()."' AND tournamentID = '".$team->getTournamentId()."' ORDER BY teamID DESC");
+			}
+			catch(PDOException $ex)
+			{
+				print("<b>An Database Error has occured. Please inform an Adminstrator immediately and try again later</b>");
+			}
+			
+			$data = $query_result->fetch(PDO::FETCH_ASSOC);
+			
+			$teamID = $data['teamID'];
+			
+			$team->setTeamID($teamID);
+			
+			//Player Input
+			for($i = 0;$i < $number;$i++)
+			{
+				trim($players[$i]);
+				if($players[$i] != "")
+				{
+					$player = new Player($db);
+					$player->setPlayerName($players[$i]);
+					$player->setTeamID($team->getTeamID());
+					$result = $player->addPlayerInfo();
+				}
+			}
+			$_SESSION['completed'] = 1;
+		}
+		
+	}
 	
 	
 	
