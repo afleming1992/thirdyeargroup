@@ -17,7 +17,7 @@ if(isset($_POST['submitButtonLogin']))
 else if(isset($_POST['tournamentId']) && isset($_POST['teamName']) && isset($_POST['nwaNumber']) && isset($_POST['contactName']) && isset($_POST['contactNumber']) && isset($_POST['email']) && isset($_POST['players']))
 {
 	//Process WattballRegistration
-	$app->processWattballRegistration($_POST['tournamentId'],$_POST['teamName'],$_POST['contactName'],$_POST['contactNumber'],$_POST['nwaNumber'],$_POST['email'],$_POST['players']);
+	$app->processWattballRegistration(htmlspecialchars($_POST['tournamentId']),htmlspecialchars($_POST['teamName']),htmlspecialchars($_POST['contactName']),htmlspecialchars($_POST['contactNumber']),htmlspecialchars($_POST['nwaNumber']),htmlspecialchars($_POST['email']),$_POST['players']);
 	$app->loadPage('wattBallRegistration');
 	unset($_SESSION['completed']);
 	unset($_SESSION['nwaValidationError']);

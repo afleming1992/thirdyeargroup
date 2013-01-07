@@ -227,6 +227,7 @@ class MainController
 					$player->setPlayerName($players[$i]);
 					$player->setTeamID($team->getTeamID());
 					$result = $player->addPlayerInfo();
+					
 				}
 			}
 			$_SESSION['completed'] = 1;
