@@ -85,23 +85,30 @@ if ($staff->getManager()== 1)
    			 <h3 id="myModalLabel">Add a tournament</h3>
  		</div>
  		<div class="modal-body">
+                    <div id="addTournamentName">
 			<label for="tournamentName">Tournament Name: </label>
-			<input type="text" name="tournamentName" id="tournamentName"></br>
-			
+			<input type="text" name="tournamentName" id="tournamentName"></br><span id="help-inline-tournamentName" class="help-inline"></span></br>
+                    </div>
+                    <div id="addTournamentStartDate">
 			<label for="startDate">Start Date: </label>
-			<input type="text" id="startDate" class='from' name="startDate">
+			<input type="text" id="startDate" class='from' name="startDate"></br><span id="help-inline-startDate" class="help-inline"></span>
+                    </div> 
+                    <div id="addTournamentEndDate">
 			<label for="endDate">End Date: </label>
-			<input type="text" id="endDate" class='to' name="endDate"></br>
-			
+			<input type="text" id="endDate" class='to' name="endDate"></br><span id="help-inline-endDate" class="help-inline"></span></br>
+                    </div>
+                    <div id="addTournamentregistrationStartDate">
 			<label for="registrationStartDate">Registration Start Date: </label>
-			<input type="text" id="registrationStartDate" class='from' name="registrationStartDate">
-			<label for="registrationEndDate">Registration End Date: </label>
-			<input type="text" id="registrationEndDate" class='to' name="registrationEndDate"></br>
-			
+			<input type="text" id="registrationStartDate" class='from' name="registrationStartDate"></br><span id="help-inline-registrationStartDate" class="help-inline"></span>
+                    </div>
+                    <div id="addTournamentregistrationEndDate">
+                        <label for="registrationEndDate">Registration End Date: </label>
+			<input type="text" id="registrationEndDate" class='to' name="registrationEndDate"></br><span id="help-inline-registrationEndDate" class="help-inline"></span></br>
+                    </div>
 		</div>
 		 <div class="modal-footer">
 		    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-		    <button type='button' value='submit' aria-hidden="true" id='createTournamentValidation' class="btn btn-primary btn-medium"><i class="icon-white icon-ok-sign"></i> Save</button>
+		    <button type='button' value='submit' aria-hidden="true" id='createTournamentValidation' class="btn btn-primary btn"><i class="icon-white icon-ok-sign"></i> Save</button>
   		</div>
 	</div>
 	

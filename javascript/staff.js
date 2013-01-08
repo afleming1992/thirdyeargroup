@@ -39,12 +39,47 @@ $(document).ready(function()
             }
         });
         
-        
+      // Form control
+        var validForm = false;
+        var validName = false;
+        var validStartDate = false;
+        var validEndDate = false;
+        var validRegistrationStart = false;
+        var validRegistrationEnd = false;
+        function formControl()
+        {
+            var Name = $('#tournamentName').val();
+            var StartDate = $('#startDate').val();
+            var EndDate = $('#endDate').val();
+            var RegistrationStart = $('#registrationStartDate').val();
+            var RegistrationEnd = $('#registrationEndDate').val();
+            
+            if(Name != "")
+                validName = true;
+            if(StartDate != "")
+                validStartDate=true;
+            if(EndDate != "")
+                validEndDate=true;
+            if(RegistrationStart != "")
+                validRegistrationStart=true;
+            if(RegistrationEnd != "")
+                validRegistrationEnd=true;
+            
+            if(validName == true && validStartDate==true && validEndDate==true && validRegistrationStart==true && validRegistrationEnd==true)
+            {
+                validForm = true;
+            }
+                
+        }
+      
       // form validation with ajax
         
         $("#createTournamentValidation").click(function() 
         	{
-        		jQuery.ajax({
+                    formControl();
+                    if(validForm == true)
+                    {
+                        jQuery.ajax({
         		  type: 'GET',
         		  url: 'ajax/createTournament.php',
         		  data: {
@@ -63,6 +98,37 @@ $(document).ready(function()
         			  alert("Error during form validation, try later !");
         		  }
         		});
+                    }
+                    else
+                    {
+                        if(validName == false)
+                        {
+                            $('#addTournamentName').addClass('control-group error');
+                            $('#help-inline-tournamentName').html('<p>You must give a name to the tournament !');
+                        }
+                        if(validStartDate == false)
+                        {
+                            $('#addTournamentStartDate').addClass('control-group error');
+                            $('#help-inline-startDate').html('<p>You must give a start date to the tournament (YYYY-MM-DD) !');
+                        }
+                        if(validEndDate == false)
+                        {
+                            $('#addTournamentEndDate').addClass('control-group error');
+                            $('#help-inline-endDate').html('<p>You must give an end date to the tournament (YYYY-MM-DD) !');
+                        }
+                        if(validRegistrationStart == false)
+                        {
+                            $('#addTournamentregistrationStartDate').addClass('control-group error');
+                            $('#help-inline-registrationStartDate').html('<p>You must give a registration start date date to the tournament (YYYY-MM-DD) !');
+                        }
+                        if(validRegistrationEnd == false)
+                        {
+                            $('#addTournamentregistrationEndDate').addClass('control-group error');
+                            $('#help-inline-registrationEndDate').html('<p>You must give a registration end date date to the tournament (YYYY-MM-DD) !');
+                        }
+                            
+                    }
+        		
         	});
         
         $("#changeTournamentValidation").click(function() 
@@ -89,13 +155,13 @@ $(document).ready(function()
         		});
         	});
         
-        $(".btn-danger").live("click", function()
+        $(".btn-danger").on("click", function()
             	{
 			        jQuery.ajax({
 			  		  type: 'GET',
 			  		  url: 'ajax/deleteTournament.php',
 			  		  data: {
-			  		    id: $(this).attr('id'),
+			  		    id: $(this).attr('id')
 			  		  }, 
 			  		  success: function(data, textStatus, jqXHR) {
 			  			 $('#tournamentList').html(data);
@@ -106,7 +172,7 @@ $(document).ready(function()
 			        });
             	});
         
-        $(".btn-warning").live("click", function()
+        $(".btn-warning").on("click", function()
             	{
         			//alert('test '+$(this).parent().parent().children('.startDate').attr('startDate'));
         			$('#changeTournament #tournamentNameChange').val($(this).parent().parent().children('.name').text());
@@ -116,5 +182,18 @@ $(document).ready(function()
         			$('#changeTournament #registrationEndDateChange').val($(this).parent().parent().children('.registrationEnd').attr('registrationEnd'));
         			$('#changeTournament #changeTournamentValidation').attr('tournamentID',$(this).attr('id'));
             	});
+                
+       $('#addTournament').on('hidden', function () {
+            $('#addTournamentName').removeClass('control-group error');
+            $('#help-inline-tournamentName').html('');
+            $('#addTournamentStartDate').removeClass('control-group error');
+            $('#help-inline-startDate').html('');
+            $('#addTournamentEndDate').removeClass('control-group error');
+            $('#help-inline-endDate').html('');
+            $('#addTournamentregistrationStartDate').removeClass('control-group error');
+            $('#help-inline-registrationStartDate').html('');
+            $('#addTournamentregistrationEndDate').removeClass('control-group error');
+            $('#help-inline-registrationEndDate').html('');
+       });
         
 });
