@@ -78,39 +78,39 @@ class MainController
 			$staff->getStaffInfo();
 			$this->getAllTournament();
 		}
-                else if($pageName == 'wattBallRegistration') //before load this page: check if there are tournament
+        else if($pageName == 'wattBallRegistration') //before load this page: check if there are tournament
+        {
+           $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
+           $numberOfRows = $result->fetchColumn();
+           if($numberOfRows < 1) //No tournament: Load a page said there are no tournament
+           {
+                require_once 'view/header.php';
+                require_once 'view/banner.php';		
+                require_once 'view/login.php';
+                require_once 'view/navbar.php';
+                require_once 'view/wattBallRegistration_noTournament.php';
+                require_once 'view/footer.php';
+                die();
+            }
+            else // tournament: Load the information about the tournament
+            {
+                $result = $this->db->query("SELECT `tournamentID`, `name`, `startDate`, `endDate` FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
+                if($result != false)
                 {
-                    $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
-                    $numberOfRows = $result->fetchColumn();
-                    if($numberOfRows < 1) //No tournament: Load a page said there are no tournament
-                    {
-                        require_once 'view/header.php';
-                        require_once 'view/banner.php';		
-                        require_once 'view/login.php';
-                        require_once 'view/navbar.php';
-                        require_once 'view/wattBallRegistration_noTournament.php';
-                        require_once 'view/footer.php';
-                        die();
-                    }
-                    else // tournament: Load the information about the tournament
-                    {
-                        $result = $this->db->query("SELECT `tournamentID`, `name`, `startDate`, `endDate` FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
-                        if($result != false)
-                        {
-                            $tournament = array();
-                            $i = 0;
-                            while($data = $result->fetch())
-                            {
-                                $tournament[$i]['tournamentID'] = $data['tournamentID'];
-                                $tournament[$i]['name'] = $data['name'];
-                                $tournament[$i]['startDate'] = $data['startDate'];
-                                $tournament[$i]['endDate'] = $data['endDate'];
-                                $i++;                                   
-                            }
-                        }
-                        
+                   $tournament = array();
+                   $i = 0;
+                   while($data = $result->fetch())
+                   {
+                       $tournament[$i]['tournamentID'] = $data['tournamentID'];
+                       $tournament[$i]['name'] = $data['name'];
+                       $tournament[$i]['startDate'] = $data['startDate'];
+                       $tournament[$i]['endDate'] = $data['endDate'];
+                       $i++;                                   
                     }
                 }
+                        
+             }
+         }
 		require_once 'view/header.php';
 		require_once 'view/banner.php';		
 		require_once 'view/login.php';
