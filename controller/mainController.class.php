@@ -18,7 +18,7 @@ class MainController
 	 *  @var Array: contains object Tournament
 	 */
 	private $tournament = array();
-	
+	private $umpire = array();
 	
 	public function __construct($db)
 	{
@@ -72,11 +72,18 @@ class MainController
 	
 	public function loadPage($pageName) 
 	{
-		if($pageName=='homeStaff')
+		if($pageName=='homeStaff' || $pageName=='umpireManagement' || $pageName=='tournamentManager')
 		{
 			$staff = new Staff($_SESSION['username'], null, $this->db);
 			$staff->getStaffInfo();
-			$this->getAllTournament();
+			if($pageName=='umpireManagement')
+            {
+				$this->getAllUmpires();
+			}
+			else if($pageName=='tournamentManager')
+			{
+				$this->getAllTournament();
+			}
 		}
         else if($pageName == 'wattBallRegistration') //before load this page: check if there are tournament
         {
@@ -107,10 +114,13 @@ class MainController
                        $tournament[$i]['endDate'] = $data['endDate'];
                        $i++;                                   
                     }
-                }
-                        
-             }
+         		}
+			}
          }
+
+                
+                
+
 		require_once 'view/header.php';
 		require_once 'view/banner.php';		
 		require_once 'view/login.php';
@@ -131,6 +141,21 @@ class MainController
 		{
 			$this->tournament[$i] = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose']);
 			$i++;
+		}
+	}
+	
+	/**
+	 * search in the database all umpires and put in an array
+	 */
+	public function getAllUmpires()
+	{
+		$result = $this->db->query("SELECT `umpireID`, `umpireName`, `umpireEmail`, `monMorning`,monAfternoon,tuesMorning,tuesAfternoon,wedMorning,wedAfternoon,thursMorning,thursAfternoon,friMorning,friAfternoon,satMorning,satAfternoon,sunMorning,sunAfternoon FROM umpire");
+		$i = 0;
+		while($data = $result->fetch())
+		{
+			$this->umpire[$i] = new Umpire($data['umpireID'],$data['umpireName'],$data['umpireEmail'],$data['monMorning'],$data['monAfternoon'],$data['tuesMorning'],$data['tuesAfternoon'],$data['wedMorning'],$data['wedAfternoon'],
+			$data['thursMorning'],$data['thursAfternoon'],$data['friMorning'],$data['friAfternoon'],$data['satMorning'],$data['satAfternoon'],$data['sunMorning'],$data['sunAfternoon']);
+			$i++;                                 
 		}
 	}
         
@@ -261,6 +286,16 @@ class MainController
 	public function setTournament($tournament)
 	{
 	    $this->tournament = $tournament;
+	}
+	
+	public function getUmpire()
+	{
+	    return $this->umpire;
+	}
+
+	public function setUmpire($umpire)
+	{
+	    $this->umpire = $umpire;
 	}
 }
 
