@@ -3,9 +3,8 @@
 
 class Umpire
 {
-	private $umpireID,$umpireName,$umpireEmail,$monMorning,$monAfternoon,$tuesMorning,$tuesAfternoon,$wedMorning,
-	$wedAfternoon,$thursMorning,$thursAfternoon,$friMorning,$friAfternoon,$satMorning,$satAfternoon,$sunMorning,$sunAfternoon;
-	
+	private $umpireID,$umpireName,$umpireEmail,$monMorning,$monAfternoon,$tueMorning,$tueAfternoon,$wedMorning,
+	$wedAfternoon,$thuMorning,$thuAfternoon,$friMorning,$friAfternoon,$satMorning,$satAfternoon,$sunMorning,$sunAfternoon;
 	
 	public function __construct($umpireID,$umpireName,$umpireEmail,$s0,$s1,$s2,$s3,$s4,$s5,$s6,$s7,$s8,$s9,$s10,$s11,$s12,$s13)
 	{
@@ -26,6 +25,21 @@ class Umpire
 		$this->setSatAfternoon($s11);
 		$this->setSunMorning($s12);
 		$this->setSunAfternoon($s13);
+	}
+	
+	public function is_available($dayOfTheWeek, $morningOrAfternoon) 
+	{
+		$day = strtolower(mb_substr($dayOfTheWeek, 0, 3));
+		$morningOrAfternoon = ucfirst(strtolower($morningOrAfternoon));
+		$dayPeriod = $day . $morningOrAfternoon;
+		if($this->$dayPeriod == 1)
+		{
+			return true;
+		}
+		else 
+		{
+			return false;
+		}
 	}
 	
 	/*-------- GETTERS & SETTERS --------*/
@@ -66,11 +80,11 @@ class Umpire
 	public function getMonAfternoon(){return $this->monAfternoon;}
 	public function setMonAfternoon($monAfternoon){$this->monAfternoon = $monAfternoon;}
 	
-	public function getTuesMorning(){return $this->tuesMorning;}
-	public function setTuesMorning($tuesMorning){$this->tuesMorning = $tuesMorning;}
+	public function getTuesMorning(){return $this->tueMorning;}
+	public function setTuesMorning($tuesMorning){$this->tueMorning = $tuesMorning;}
 	
-	public function getTuesAfternoon(){return $this->tuesAfternoon;}
-	public function setTuesAfternoon($tuesAfternoon){$this->tuesAfternoon = $tuesAfternoon;}
+	public function getTuesAfternoon(){return $this->tueAfternoon;}
+	public function setTuesAfternoon($tuesAfternoon){$this->tueAfternoon = $tuesAfternoon;}
 	
 	public function getWedMorning(){return $this->wedMorning;}
 	public function setWedMorning($wedMorning){$this->wedMorning = $wedMorning;}
@@ -78,8 +92,8 @@ class Umpire
 	public function getWedAfternoon(){return $this->wedAfternoon;}
 	public function setWedAfternoon($wedAfternoon){$this->wedAfternoon = $wedAfternoon;}
 	
-	public function getThursMorning(){return $this->thursMorning;}
-	public function setThursMorning($thursMorning){$this->thursMorning = $thursMorning;}
+	public function getThursMorning(){return $this->thuMorning;}
+	public function setThursMorning($thursMorning){$this->thuMorning = $thursMorning;}
 	
 	public function getThursAfternoon(){return $this->thursAfternoon;}
 	public function setThursAfternoon($thursAfternoon){$this->thursAfternoon = $thursAfternoon;}
