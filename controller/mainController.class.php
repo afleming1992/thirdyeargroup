@@ -158,6 +158,28 @@ class MainController
 			$i++;                                 
 		}
 	}
+	
+	public function findClosestTournament()
+	{
+		//* Check if there is a current tournament
+		$result = $this->db->query("SELECT tournamentID FROM tournament WHERE startDate < CURDATE() AND  endDate > CURDATE() ORDER BY startDate DESC";
+		if($data = $result->fetch())
+		{
+			return $data['tournamentID'];
+		}
+		else
+		{
+			$result = $this->db->query("SELECT tournamentID FROM tournament WHERE CURDATE() < starDate ORDER BY startDate DESC";
+			if($data = $result->fetch())
+			{
+				return $data['tournamentID'];
+			}
+			else
+			{
+				return -1;
+			}
+		}
+	}
         
         /**
 	 * Method below processes the Wattball Team Registration
