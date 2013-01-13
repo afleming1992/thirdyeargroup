@@ -11,7 +11,7 @@
 			<p>Initiate Hurdles Scheduling</p>
 			<p>Edit WattBall Schedule</p>
 			<p>Edit Hurdle Schedule</p>
-			<p>Umpire Management</p>
+			<p><a href='index.php?page=umpireManagement'>Umpire Management</a></p>
 			<p>Update Performance Time</p>
 		  </div>
 		</div>
@@ -57,7 +57,7 @@
 		</div>
 		<div id="collapseFour" class="accordion-body collapse">
 		  <div class="accordion-inner">
-				<p>Tournament Manager</p>
+				<p><a href='?page=tournamentManager'>Tournament Manager</a></p>
 				<p>Staff Manager</p>
 		  </div>
 		</div>

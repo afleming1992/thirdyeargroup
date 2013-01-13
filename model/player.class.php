@@ -11,14 +11,14 @@
 		
 		public function __construct($db)
 		{
-			$this->setDb($db);
+			$this->db = $db;
 		}
 		
 		/** -- METHODS -- **/
 		
 		public function addPlayerInfo()
 		{
-			$result = $this->db->query("INSERT INTO wattball_players VALUES ('0','".$this->teamID."','".$this->playerName."')");
+			$result = $this->db->exec("INSERT INTO wattball_players (teamID,playerName) VALUES ('".$this->teamID."','".$this->playerName."')");
 			if($result != false)
 			{
 				return true;
@@ -88,10 +88,5 @@
 		{
 			$this->playerName = $playerName;
 		}
-		
-		public function setDb($db)
-		{
-			$this->db = $db;
-		}
-			
-}
+        }			
+?>

@@ -32,9 +32,16 @@ require_once 'view/menu-staff.php';
 ?>
 	</div>
 		<div class='span9 contentbox'>
-			<div class='hero-unit'>
-				<h1>Welcome!</h1>
-				<p>Please select the function you wish to access by using the panel on the right</p>
-			</div>
+<?php
+//echo "Hello ".$staff->getName();
+
+if ($staff->getManager()== 1)
+{
+?>
+	
+<?php 
+}
+
+?>
 		</div>
 	</div>
