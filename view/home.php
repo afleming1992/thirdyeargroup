@@ -1,3 +1,4 @@
+<script type='text/javascript' src='javascript/home.js' ></script>
 <div id='home' class='row-fluid'>
 	<div class="span12">
 		<div id='latestResult' class='span4 contentbox'>

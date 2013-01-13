@@ -3,12 +3,8 @@ $(document).ready(function(){
 		$('li').removeClass("active");
 		$(this).addClass("active");
 	});
+	$('.carousel').carousel();
 });
-
-$('.carousel').carousel({
-  interval: 2000
-})
-$('.carousel').carousel('cycle')
 
 
 
