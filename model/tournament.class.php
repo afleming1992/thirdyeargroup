@@ -14,7 +14,7 @@ class Tournament
 
 
 
-        public function __construct($tournamentID,$name,$startDate,$endDate,$registerOpen,$registerClose,$type,$scheduled,$db)
+        public function __construct($tournamentID,$name,$startDate,$endDate,$registerOpen,$registerClose,$type,$db)
 	{
 		$this->setTournamentID($tournamentID);
 		$this->setStartDate($startDate);
@@ -23,7 +23,6 @@ class Tournament
 		$this->setRegisterClose($registerClose);
 		$this->setName($name);
                 $this->setType($type);
-                $this->setScheduled($scheduled);
                 $this->db = $db;
 	}
         

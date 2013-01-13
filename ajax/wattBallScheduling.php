@@ -18,7 +18,7 @@ if(isset($_GET['id']))
                               FROM tournament
                               WHERE tournamentID = $id");
         $data = $resultTournament->fetch();
-        $tournament = new Tournament($id, $data['name'], $data['startDate'], $data['endDate'], $data['registrationOpen'], $data['registrationClose'], null, null, $db);
+        $tournament = new Tournament($id, $data['name'], $data['startDate'], $data['endDate'], $data['registrationOpen'], $data['registrationClose'], null, $db);
         $teams = $tournament->getTeams();
         
         // Get all the information about umpire
@@ -116,7 +116,7 @@ if(isset($_GET['id']))
         }
         while ($nb < $numberOfMathes);
         
-        var_dump($matches);
+        echo "All the matches are scheduled !";
         
     } 
     catch (Exception $exc) 

@@ -126,8 +126,7 @@ class MainController
             {
                 $this->getWattBallTournament();
                 $allTournament = $this->tournament;
-                $numberOfTeam = $allTournament[0]->getNumberOfTeam();
-                $numberOfUmpire = $allTournament[0]->getNumberOfUmpire(); 
+                
                 if(count($allTournament) == 0)
                 {
                     $this->addBasicView();
@@ -135,7 +134,9 @@ class MainController
                     require_once 'adminView/noTournament.php';
                     $this->addFooterFile();
                     die();
-                }                
+                } 
+                $numberOfTeam = $allTournament[0]->getNumberOfTeam();
+                $numberOfUmpire = $allTournament[0]->getNumberOfUmpire(); 
             }            
             
             $this->addBasicView();
@@ -200,11 +201,11 @@ class MainController
 	public function getAllTournament()
 	{
 		$result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
-				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose, type, scheduled FROM tournament");
+				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose, type FROM tournament");
 		$i = 0;
 		while($data = $result->fetch())
 		{
-			$this->tournament[$i] = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose'], $data['type'], $data['scheduled'], $this->db);
+			$this->tournament[$i] = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose'], $data['type'], $this->db);
 			$i++;
 		}
 	}
@@ -215,11 +216,11 @@ class MainController
 	public function getWattBallTournament()
 	{
 		$result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
-				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose, type, scheduled FROM tournament WHERE type = 'WattBall'");
+				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose, type FROM tournament WHERE type = 'WattBall'");
 		$i = 0;
 		while($data = $result->fetch())
 		{
-			$this->tournament[$i] = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose'], $data['type'], $data['scheduled'], $this->db);
+			$this->tournament[$i] = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose'], $data['type'], $this->db);
 			$i++;
 		}
 	}
