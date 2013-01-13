@@ -26,6 +26,20 @@ Class Match
         
     }
     
+    public  function saveMatch($tournamentID)
+    {
+       
+       if($this->hour == "morning")
+           $time = "10am";
+       else if($this->hour == "afternoon")
+           $time = "2pm";
+       $query = "INSERT INTO wattBall_matches(tournamentID,matchDate,matchTime,pitch,team1,team2,umpire) VALUES($tournamentID,'".$this->date."',$time,'".$this->pitch."',
+                ".$this->team1->getTeamId().",".$this->team2->getTeamId().",".$this->umpire->getID().")";
+       echo $query."</br>";
+       $this->db->exec("INSERT INTO wattBall_matches(tournamentID,matchDate,matchTime,pitch,team1,team2,umpire) VALUES($tournamentID,'".$this->date."','$time',".$this->pitch.",
+                ".$this->team1->getTeamId().",".$this->team2->getTeamId().",".$this->umpire->getID().")");
+    }
+    
     public function setId($id)
     {
         $this->id = $id;

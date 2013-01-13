@@ -116,6 +116,9 @@ if(isset($_GET['id']))
         }
         while ($nb < $numberOfMathes);
         
+        for($i = 0;$i<count($matches);$i++)
+            $matches[$i]->saveMatch ($id);
+        
         echo "All the matches are scheduled !";
         
     } 
