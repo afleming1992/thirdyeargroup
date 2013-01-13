@@ -1,0 +1,1 @@
+ALTER table tournament add type varchar(100);

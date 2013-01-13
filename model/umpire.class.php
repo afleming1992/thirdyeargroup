@@ -6,6 +6,7 @@ class Umpire
 	private $umpireID,$umpireName,$umpireEmail,$monMorning,$monAfternoon,$tueMorning,$tueAfternoon,$wedMorning,
 	$wedAfternoon,$thuMorning,$thuAfternoon,$friMorning,$friAfternoon,$satMorning,$satAfternoon,$sunMorning,$sunAfternoon;
 	
+	
 	public function __construct($umpireID,$umpireName,$umpireEmail,$s0,$s1,$s2,$s3,$s4,$s5,$s6,$s7,$s8,$s9,$s10,$s11,$s12,$s13)
 	{
 		$this->setID($umpireID);
@@ -26,8 +27,8 @@ class Umpire
 		$this->setSunMorning($s12);
 		$this->setSunAfternoon($s13);
 	}
-	
-	public function is_available($dayOfTheWeek, $morningOrAfternoon) 
+        
+        public function is_available($dayOfTheWeek, $morningOrAfternoon) 
 	{
 		$day = strtolower(mb_substr($dayOfTheWeek, 0, 3));
 		$morningOrAfternoon = ucfirst(strtolower($morningOrAfternoon));
@@ -95,8 +96,8 @@ class Umpire
 	public function getThursMorning(){return $this->thuMorning;}
 	public function setThursMorning($thursMorning){$this->thuMorning = $thursMorning;}
 	
-	public function getThursAfternoon(){return $this->thursAfternoon;}
-	public function setThursAfternoon($thursAfternoon){$this->thursAfternoon = $thursAfternoon;}
+	public function getThursAfternoon(){return $this->thuAfternoon;}
+	public function setThursAfternoon($thursAfternoon){$this->thuAfternoon = $thursAfternoon;}
 	
 	public function getFriMorning(){return $this->friMorning;}
 	public function setFriMorning($friMorning){$this->friMorning = $friMorning;}

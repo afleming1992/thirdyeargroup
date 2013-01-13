@@ -85,9 +85,10 @@ $(document).ready(function()
         		  data: {
         		    name: $('#tournamentName').val(),
         		    startDate: $('#startDate').val(),
-        		    endDate: $('#endDate').val(),
+        		    endDate: $('#endDate').val(),                           
         		    registrationStartDate: $('#registrationStartDate').val(),
-        		    registrationEndDate: $('#registrationEndDate').val() 
+        		    registrationEndDate: $('#registrationEndDate').val(),
+                            type: $('#tournamentType option:selected').text()
         		  }, 
         		  success: function(data, textStatus, jqXHR) {
         			  $('#addTournament').modal('hide');
@@ -155,7 +156,7 @@ $(document).ready(function()
         		});
         	});
         
-        $(".btn-danger").on("click", function()
+        $("#tournamentList").on( 'click',".btn-danger", function()
             	{
 			        jQuery.ajax({
 			  		  type: 'GET',
@@ -172,7 +173,7 @@ $(document).ready(function()
 			        });
             	});
         
-        $(".btn-warning").on("click", function()
+        $("#tournamentList").on("click",".btn-warning", function()
             	{
         			//alert('test '+$(this).parent().parent().children('.startDate').attr('startDate'));
         			$('#changeTournament #tournamentNameChange').val($(this).parent().parent().children('.name').text());
@@ -195,5 +196,40 @@ $(document).ready(function()
             $('#addTournamentregistrationEndDate').removeClass('control-group error');
             $('#help-inline-registrationEndDate').html('');
        });
+       
+       $("#startScheduling").click(function() 
+        {
+            jQuery.ajax({
+        		  type: 'GET',
+        		  url: 'ajax/wattBallScheduling.php',
+        		  data: {        		    
+        		    id: $('#selectTournament option:selected').val()
+        		  }, 
+        		  success: function(data, textStatus, jqXHR) {
+        			  $('#resultScheduling').html(data);
+        		  },
+        		  error: function(jqXHR, textStatus, errorThrown) {
+        			  alert("Error during form validation, try later !");
+        		  }
+        		});
+
+        });
         
-});
+        $("#selectTournament").change(function ()
+        {
+            jQuery.ajax({
+        		  type: 'GET',
+        		  url: 'ajax/wattBallScheduling.php',
+        		  data: {        		    
+        		    tournament: $('#selectTournament option:selected').val()
+        		  }, 
+        		  success: function(data, textStatus, jqXHR) {
+        			  $('#schedulingInfo').html(data);
+        		  },
+        		  error: function(jqXHR, textStatus, errorThrown) {
+        			  alert("Error during form validation, try later !");
+        		  }
+        		});
+        });
+        
+})

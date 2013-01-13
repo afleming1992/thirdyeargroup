@@ -30,12 +30,10 @@ class MainController
 	 */
 	public function loadHomePage()
 	{
-		require_once 'view/header.php';
-		require_once 'view/banner.php';
-		require_once 'view/navbar.php';
+		$this->addBasicView();
 		require_once 'view/login.php';
 		require_once 'view/home.php';
-		require_once 'view/footer.php';
+		$this->addFooterFile();
 	}
 	
 	/**
@@ -52,79 +50,146 @@ class MainController
 			$_SESSION['login'] = true;
 			$_SESSION['username'] = $username;		
 			$_SESSION['login-popup'] = true;
-			require_once 'view/header.php';
-			require_once 'view/banner.php';			
-			require_once 'view/navbar.php';
-			require_once 'view/homeStaff.php';
-			require_once 'view/footer.php';					
+                        $this->getAllTournament();
+                        $allTournament = $this->tournament;
+			$this->addBasicView();
+                        require_once 'adminView/menu.php';
+			require_once 'adminView/home.php';
+			$this->addFooterFile();					
 		}
 		else
 		{
-			require_once 'view/header.php';
-			require_once 'view/banner.php';
-			require_once 'view/navbar.php';
+			$this->addBasicView();
 			require_once 'view/loginFalse.php.php';
 			require_once 'view/home.php';
-			require_once 'view/footer.php';		
+			$this->addFooterFile();		
 		}
 	}
+        
+        /**
+         * Add all the necessary views files
+         */
+        public function addBasicView()
+        {
+            require_once 'view/header.php';
+            require_once 'view/banner.php';
+            require_once 'view/navBar.php';
+        }
+        
+        public function addFooterFile()
+        {
+            require_once 'view/footer.php';
+        }
+
+
+        /**
+         * Load a page if someone try to access to an admin page without sign in
+         */
+        public function addLogin()
+        {
+            $this->addBasicView();
+            require_once 'view/login.php';
+            require_once 'view/accessToAdminPagesError.php';
+            $this->addFooterFile();
+        }
+        
+        /**
+         * Load an admin page
+         * @param String $pageName
+         */
+        public function loadAdminPage($pageName)
+        {
+            //Test login
+            if(!isset($_SESSION['login']))
+            {
+                addLogin();
+                die();
+            }
+            else if(isset($_SESSION['login']) && $_SESSION['login']==FALSE)
+            {
+                addLogin();
+                die();
+            }
+            
+            
+            $staff = new Staff($_SESSION['username'], null, $this->db);
+            $staff->getStaffInfo();
+            
+            if($pageName=='umpireManagement')
+                $this->getAllUmpires();
+            else if($pageName=='tournamentManagement')
+            {
+                $this->getAllTournament();
+                $allTournament = $this->tournament;
+            }
+            else if($pageName == 'wattBallScheduling')
+            {
+                $this->getWattBallTournament();
+                $allTournament = $this->tournament;
+                $numberOfTeam = $allTournament[0]->getNumberOfTeam();
+                $numberOfUmpire = $allTournament[0]->getNumberOfUmpire(); 
+                if(count($allTournament) == 0)
+                {
+                    $this->addBasicView();
+                    require_once 'adminView/menu.php';
+                    require_once 'adminView/noTournament.php';
+                    $this->addFooterFile();
+                    die();
+                }                
+            }            
+            
+            $this->addBasicView();
+            require_once 'adminView/menu.php';
+            require_once 'adminView/'.$pageName.'.php';
+            $this->addFooterFile();
+            
+        }
 	
-	
+	/**
+         * Load a page
+         * @param String $pageName
+         */
 	public function loadPage($pageName) 
 	{
-		if($pageName=='homeStaff' || $pageName=='umpireManagement' || $pageName=='tournamentManager')
+		if($pageName=='homeStaff')
 		{
 			$staff = new Staff($_SESSION['username'], null, $this->db);
 			$staff->getStaffInfo();
-			if($pageName=='umpireManagement')
-            {
-				$this->getAllUmpires();
-			}
-			else if($pageName=='tournamentManager')
-			{
-				$this->getAllTournament();
-			}
+			$this->getAllTournament();
 		}
-        else if($pageName == 'wattBallRegistration') //before load this page: check if there are tournament
-        {
-           $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
-           $numberOfRows = $result->fetchColumn();
-           if($numberOfRows < 1) //No tournament: Load a page said there are no tournament
-           {
-                require_once 'view/header.php';
-                require_once 'view/banner.php';		
-                require_once 'view/login.php';
-                require_once 'view/navbar.php';
-                require_once 'view/wattBallRegistration_noTournament.php';
-                require_once 'view/footer.php';
-                die();
-            }
-            else // tournament: Load the information about the tournament
-            {
-                $result = $this->db->query("SELECT `tournamentID`, `name`, `startDate`, `endDate` FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
-                if($result != false)
+                else if($pageName == 'wattBallRegistration') //before load this page: check if there are tournament
                 {
-                   $tournament = array();
-                   $i = 0;
-                   while($data = $result->fetch())
-                   {
-                       $tournament[$i]['tournamentID'] = $data['tournamentID'];
-                       $tournament[$i]['name'] = $data['name'];
-                       $tournament[$i]['startDate'] = $data['startDate'];
-                       $tournament[$i]['endDate'] = $data['endDate'];
-                       $i++;                                   
+                    $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
+                    $numberOfRows = $result->fetchColumn();
+                    if($numberOfRows < 1) //No tournament: Load a page said there are no tournament
+                    {
+                        $this->addBasicView();		
+                        require_once 'view/login.php';
+                        require_once 'view/wattBallRegistration_noTournament.php';
+                        require_once 'view/footer.php';
+                        die();
                     }
-         		}
-			}
-         }
-
-                
-                
-
-		require_once 'view/header.php';
-		require_once 'view/banner.php';		
+                    else // tournament: Load the information about the tournament
+                    {
+                        $result = $this->db->query("SELECT `tournamentID`, `name`, `startDate`, `endDate` FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
+                        if($result != false)
+                        {
+                            $tournament = array();
+                            $i = 0;
+                            while($data = $result->fetch())
+                            {
+                                $tournament[$i]['tournamentID'] = $data['tournamentID'];
+                                $tournament[$i]['name'] = $data['name'];
+                                $tournament[$i]['startDate'] = $data['startDate'];
+                                $tournament[$i]['endDate'] = $data['endDate'];
+                                $i++;                                   
+                            }
+                        }
+                        
+                    }
+                }
+		$this->addBasicView();		
 		require_once 'view/login.php';
-		require_once 'view/navbar.php';
 		require_once 'view/'.$pageName.'.php';
 		require_once 'view/footer.php';
 	}
@@ -135,11 +200,26 @@ class MainController
 	public function getAllTournament()
 	{
 		$result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
-				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose FROM tournament");
+				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose, type, scheduled FROM tournament");
 		$i = 0;
 		while($data = $result->fetch())
 		{
-			$this->tournament[$i] = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose']);
+			$this->tournament[$i] = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose'], $data['type'], $data['scheduled'], $this->db);
+			$i++;
+		}
+	}
+        
+        /**
+	 * search in the database all tournament and put in an array
+	 */
+	public function getWattBallTournament()
+	{
+		$result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
+				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose, type, scheduled FROM tournament WHERE type = 'WattBall'");
+		$i = 0;
+		while($data = $result->fetch())
+		{
+			$this->tournament[$i] = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose'], $data['type'], $data['scheduled'], $this->db);
 			$i++;
 		}
 	}
@@ -158,18 +238,18 @@ class MainController
 			$i++;                                 
 		}
 	}
-	
-	public function findClosestTournament()
+        
+        public function findClosestTournament()
 	{
 		//* Check if there is a current tournament
-		$result = $this->db->query("SELECT tournamentID FROM tournament WHERE startDate < CURDATE() AND  endDate > CURDATE() ORDER BY startDate DESC";
+		$result = $this->db->query("SELECT tournamentID FROM tournament WHERE startDate < CURDATE() AND  endDate > CURDATE() ORDER BY startDate DESC");
 		if($data = $result->fetch())
 		{
 			return $data['tournamentID'];
 		}
 		else
 		{
-			$result = $this->db->query("SELECT tournamentID FROM tournament WHERE CURDATE() < starDate ORDER BY startDate DESC";
+			$result = $this->db->query("SELECT tournamentID FROM tournament WHERE CURDATE() < starDate ORDER BY startDate DESC");
 			if($data = $result->fetch())
 			{
 				return $data['tournamentID'];
@@ -240,7 +320,7 @@ class MainController
 		if(!isset($_SESSION['error']))
 		{
 	
-			$team = new Team($this->db);
+			$team = new Team($this->db, null);
 			$team->setTournamentID($tournamentId);
 			$team->setTeamName($teamName);
 			$team->setNwaNumber($nwaNumber);
@@ -286,6 +366,17 @@ class MainController
 	
 	
 	/*-------- GETTERS & SETTERS --------*/
+        
+        public function getUmpire()
+	{
+	    return $this->umpire;
+	}
+
+	public function setUmpire($umpire)
+	{
+	    $this->umpire = $umpire;
+	}
+
 	
 	public function getDb()
 	{
@@ -308,16 +399,6 @@ class MainController
 	public function setTournament($tournament)
 	{
 	    $this->tournament = $tournament;
-	}
-	
-	public function getUmpire()
-	{
-	    return $this->umpire;
-	}
-
-	public function setUmpire($umpire)
-	{
-	    $this->umpire = $umpire;
 	}
 }
 

@@ -11,7 +11,6 @@ $app = new MainController($db);
 
 if(isset($_POST['submitButtonLogin']))
 {
-	$app->getAllTournament();
 	$app->login(htmlspecialchars($_POST['username']), htmlspecialchars($_POST['password']));
 }
 else if(isset($_POST['tournamentId']) && isset($_POST['teamName']) && isset($_POST['nwaNumber']) && isset($_POST['contactName']) && isset($_POST['contactNumber']) && isset($_POST['email']) && isset($_POST['players']))
@@ -24,6 +23,10 @@ else if(isset($_POST['tournamentId']) && isset($_POST['teamName']) && isset($_PO
 	unset($_SESSION['nwaLengthError']);
 	unset($_SESSION['contactNumberError']);
 	unset($_SESSION['NotEnoughPlayers']);
+}
+else if(isset ($_GET['adminPage']))
+{
+    $app->loadAdminPage(htmlspecialchars($_GET['adminPage']));
 }
 else if(isset($_GET['page']))
 {

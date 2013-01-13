@@ -10,7 +10,7 @@
         <li> <a href='index.php?page=tickets'>Tickets for Tournament</a></li>
         <?php 
         if(isset($_SESSION['login']) && $_SESSION['login'] == true)
-        	echo "<li> <a href='index.php?page=homeStaff'>Staff</a> </li>";
+        	echo "<li> <a href='index.php?adminPage=home'>Staff</a> </li>";
         ?>
       </ul>
     </div>

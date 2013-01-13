@@ -12,9 +12,10 @@ class Team
 		private $db;
 
 	/*--- Constructor ---*/
-	public function __construct($db)
+	public function __construct($db, $teamID)
 	{
 		$this->setDb($db);
+                $this->setTeamID($teamID);
 		$this->players = array();
 	}
 
@@ -51,7 +52,8 @@ class Team
 	// Get Team Details
 	public function getTeamInfo()
 	{
-		$result =$this->db->query("SELECT * FROM wattball_team SET teamName='".$this->teamName."'");
+		//$result =$this->db->query("SELECT * FROM wattball_team SET teamName='".$this->teamName."'"); OLD VERSION
+                $result =$this->db->query("SELECT * FROM wattball_team WHERE teamID = ".$this->teamID);
 		if ($result!=false)
 		{
 			while($data = $result->fetch())
