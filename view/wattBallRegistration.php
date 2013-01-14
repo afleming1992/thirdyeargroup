@@ -1,4 +1,5 @@
-	<div class='span9 contentbox'>
+<div class='row-fluid'>
+	<div class='span12 contentbox'>
 <?php
 	if(isset($_SESSION['completed']))
 	{

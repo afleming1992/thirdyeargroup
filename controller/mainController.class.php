@@ -151,8 +151,14 @@ class MainController
          * @param String $pageName
          */
 	public function loadPage($pageName) 
-	{ 
-		if($pageName == 'wattBallRegistration') //before load this page: check if there are tournament
+	{
+		if($pageName=='homeStaff')
+		{
+			$staff = new Staff($_SESSION['username'], null, $this->db);
+			$staff->getStaffInfo();
+			$this->getAllTournament();
+		}
+                else if($pageName == 'wattBallRegistration') //before load this page: check if there are tournament
                 {
                     $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
                     $numberOfRows = $result->fetchColumn();
@@ -160,9 +166,8 @@ class MainController
                     {
                         $this->addBasicView();		
                         require_once 'view/login.php';
-                        require_once 'view/wattBallNav.php';
                         require_once 'view/wattBallRegistration_noTournament.php';
-                        $this->addFooterFile();
+                        require_once 'view/footer.php';
                         die();
                     }
                     else // tournament: Load the information about the tournament
@@ -181,53 +186,13 @@ class MainController
                                 $i++;                                   
                             }
                         }
-                        $this->addBasicView();
-                        require_once 'view/wattBallNav.php';
-                        require_once 'view/'.$pageName.'.php';
-                        require_once 'view/login.php';
-                        $this->addFooterFile();
-                        die();
                         
                     }
                 }
-                else if($pageName == "wattBall" || $pageName == "wattBallScheduling")
-                {
-                    if($pageName == "wattBallScheduling");
-                    {
-                        $this->getWattBallTournament();
-                        $allTournament = $this->tournament;
-                        if(count($allTournament) == 0)
-                        {
-                            $this->addBasicView();
-                            require_once 'view/wattBallNav.php';
-                            require_once 'view/wattBallRegistration_noTournament.php';
-                            $this->addFooterFile();
-                            die();
-                        }
-                        $matches = $allTournament[0]->getAllMatches();
-                        $teams1 = array();
-                        $teams2 = array();
-                        $i = 0;
-                        foreach ($matches as $m) 
-                        {
-                           $teams1[$i] = $m->getTeam1Info();
-                           $teams2[$i] = $m->getTeam2Info();
-                           $i++;
-                        }
-                    }
-                    $this->addBasicView();
-                    require_once 'view/wattBallNav.php';
-                    require_once 'view/'.$pageName.'.php';
-                    require_once 'view/login.php';
-                    $this->addFooterFile();
-                    die();
-                }
-               
-              
-		$this->addBasicView();
+		$this->addBasicView();		
+		require_once 'view/login.php';
 		require_once 'view/'.$pageName.'.php';
-                require_once 'view/login.php';
-		$this->addFooterFile();
+		require_once 'view/footer.php';
 	}
 	
 	/**

@@ -141,7 +141,7 @@ else if(isset ($_GET['tournament']))
                               FROM tournament
                               WHERE tournamentID = $id");
         $data = $result->fetch();
-        $tournament = new Tournament($id, $data['name'], $data['startDate'], $data['endDate'], $data['registrationOpen'], $data['registrationClose'], null, $db);
+        $tournament = new Tournament($id, $data['name'], $data['startDate'], $data['endDate'], $data['registrationOpen'], $data['registrationClose'], null, null, $db);
         
         $numberOfTeam = $tournament->getNumberOfTeam();
         $numberOfUmpire = $tournament->getNumberOfUmpire();
@@ -154,40 +154,7 @@ else if(isset ($_GET['tournament']))
         echo $exc->getTraceAsString();
     }
 }
-else if(isset ($_GET['schedule']))
-{
-    include_once '../config/config.php';
-    include_once '../model/tournament.class.php';
-    include_once '../model/match.class.php';
-    include_once '../model/team.class.php';
-    $id = htmlspecialchars($_GET['schedule']);
-    try
-    {
-       $db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
-       $result = $db->query("SELECT name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
-				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose 
-                              FROM tournament
-                              WHERE tournamentID = $id");
-        $data = $result->fetch();
-        $tournament = new Tournament($id, $data['name'], $data['startDate'], $data['endDate'], $data['registrationOpen'], $data['registrationClose'], null, $db);
-        $matches = $tournament->getAllMatches();
-        $teams1 = array();
-        $teams2 = array();
-        $i = 0;
-        foreach ($matches as $m) 
-        {
-           $teams1[$i] = $m->getTeam1Info();
-           $teams2[$i] = $m->getTeam2Info();
-           $i++;
-        }
-        include_once '../include/schedule.php';
-       
-    }
-    catch (Exception $exc)
-    {
-        echo $exc->getTraceAsString();
-    }
-}
+
 
 
 
