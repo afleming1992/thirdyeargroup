@@ -1,7 +1,7 @@
-<div class='row-fluid'>
-	<div class='span12 contentbox'>
-		<?php 
-			include 'view/wattBallNav.php';
-		?>
-	</div>
+<div class='span9 contentbox'>
+        <?php 
+
+
+        ?>
+</div>
 </div>
