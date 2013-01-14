@@ -33,11 +33,27 @@ Class Match
            $time = "10am";
        else if($this->hour == "afternoon")
            $time = "2pm";
-       $query = "INSERT INTO wattBall_matches(tournamentID,matchDate,matchTime,pitch,team1,team2,umpire) VALUES($tournamentID,'".$this->date."',$time,'".$this->pitch."',
-                ".$this->team1->getTeamId().",".$this->team2->getTeamId().",".$this->umpire->getID().")";
-       echo $query."</br>";
+       
        $this->db->exec("INSERT INTO wattBall_matches(tournamentID,matchDate,matchTime,pitch,team1,team2,umpire) VALUES($tournamentID,'".$this->date."','$time',".$this->pitch.",
                 ".$this->team1->getTeamId().",".$this->team2->getTeamId().",".$this->umpire->getID().")");
+    }
+    
+    public function getTeam1Info()
+    {        
+        $result = $this->db->query("SELECT * FROM wattBall_team WHERE teamID = ".$this->team1);
+        $data = $result->fetch();
+        $team1 = new Team($this->db, $data['teamID']);
+        $team1->getTeamInfo();
+        return $team1;
+    }
+    
+    public function getTeam2Info()
+    {        
+        $result = $this->db->query("SELECT * FROM wattBall_team WHERE teamID = ".$this->team2);
+        $data = $result->fetch();
+        $team2 = new Team($this->db, $data['teamID']);
+        $team2->getTeamInfo();
+        return $team2;
     }
     
     public function setId($id)
