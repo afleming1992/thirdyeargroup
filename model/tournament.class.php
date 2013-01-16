@@ -66,15 +66,15 @@ class Tournament
             $matches = array();
             $i = 0;
             $result = $this->db->query("SELECT matchID,DATE_FORMAT(matchDate,'%D %M %Y') as matchDate, matchTime,pitch,team1,team2,umpire
-                                        FROM wattBall_matches 
-                                        WHERE tournamentID = ".$this->tournamentID);
-            while ($data = $result->fetch())
-            {
-                $matches[$i] = new Match($data['matchID'], $data['team1'], $data['team2'], $data['matchDate'], $data['matchTime'], $data['pitch'], $data['umpire'], $this->db);
-                $i++;
-            }
-            return $matches;
-        }
+                                        FROM wattball_matches 
+                                        WHERE tournamentID = ".$this->tournamentID);   
+			while ($data = $result->fetch())
+			{
+				$matches[$i] = new Match($data['matchID'], $data['team1'], $data['team2'], $data['matchDate'], $data['matchTime'], $data['pitch'], $data['umpire'], $this->db);
+				$i++;
+			}
+			return $matches;
+		}
 	
 	public function getDateSQLFormat($date)
 	{

@@ -4,7 +4,7 @@ if(isset($_GET['name']) && isset($_GET['startDate']) && isset($_GET['endDate']) 
 {
 	include_once '../config/config.php';
 	include_once '../controller/mainController.class.php';
-	include_once '../model/tournament.class.php';
+	include_once '../model/Tournament.class.php';
 	try 
 	{
 		$db = new PDO("mysql:host=$server;dbname=$database",$user,$password);

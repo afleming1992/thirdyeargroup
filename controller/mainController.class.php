@@ -73,7 +73,7 @@ class MainController
         {
             require_once 'view/header.php';
             require_once 'view/banner.php';
-            require_once 'view/navBar.php';
+            require_once 'view/navbar.php';
         }
         
         public function addFooterFile()

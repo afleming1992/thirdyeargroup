@@ -3,10 +3,10 @@
 if(isset($_GET['id']))
 {
     include_once '../config/config.php';
-    include_once '../model/tournament.class.php';
-    include_once '../model/team.class.php';
-    include_once '../model/match.class.php';
-    include_once '../model/umpire.class.php';
+    include_once '../model/Tournament.class.php';
+    include_once '../model/Team.class.php';
+    include_once '../model/Match.class.php';
+    include_once '../model/Umpire.class.php';
     $id = htmlspecialchars($_GET['id']);
     try 
     {
