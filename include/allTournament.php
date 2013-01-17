@@ -3,7 +3,6 @@
         <table  class='table table-hover table-bordered'>
                 <tr>
                <th>Name</th>
-               <th>Type</th>
                <th>Start Date</th>
                <th>End Date</th>
                <th>Registration Open</th>
@@ -16,7 +15,6 @@
                     {
                             echo "<tr index='test'>";
                             echo "<td class='name'>".$allTournament[$i]->getName()."</td>";
-                            echo "<td class='type'>".$allTournament[$i]->getType()."</td>";
                             echo "<td class='startDate' startDate='".$allTournament[$i]->getDateSQLFormat($allTournament[$i]->getStartDate())."'>".$allTournament[$i]->getStartDate()."</td>";
                             echo "<td class='endDate' endDate='".$allTournament[$i]->getDateSQLFormat($allTournament[$i]->getEndDate())."'>".$allTournament[$i]->getEndDate()."</td>";
                             echo "<td class='registrationStart' registrationStart='".$allTournament[$i]->getDateSQLFormat($allTournament[$i]->getRegisterOpen())."'>".$allTournament[$i]->getRegisterOpen()."</td>";

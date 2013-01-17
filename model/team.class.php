@@ -70,6 +70,24 @@ class Team
 		else
 			return false;
 	}
+        
+        public function getPlayersInfo()
+        {
+            $players = array();
+            $i = 0;
+            $result =$this->db->query("SELECT * FROM wattball_players WHERE teamID = ".$this->teamID);
+            
+            while($data = $result->fetch())
+            {
+                $players[$i] = new Player($this->db);
+                $players[$i]->setPlayerID($data['playerID']);
+                $players[$i]->setPlayerName($data['playerName']);
+                $players[$i]->setTeamID($data['teamID']);
+                
+                $i++;
+            }
+            return $players;
+        }
 
 	/* ----- GETTERS AND SETTERS ----- */
 

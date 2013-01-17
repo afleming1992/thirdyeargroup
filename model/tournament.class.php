@@ -14,7 +14,7 @@ class Tournament
 
 
 
-        public function __construct($tournamentID,$name,$startDate,$endDate,$registerOpen,$registerClose,$type,$db)
+        public function __construct($tournamentID,$name,$startDate,$endDate,$registerOpen,$registerClose,$db)
 	{
 		$this->setTournamentID($tournamentID);
 		$this->setStartDate($startDate);
@@ -22,7 +22,6 @@ class Tournament
 		$this->setRegisterOpen($registerOpen);
 		$this->setRegisterClose($registerClose);
 		$this->setName($name);
-                $this->setType($type);
                 $this->db = $db;
 	}
         
@@ -42,8 +41,7 @@ class Tournament
         
         public function getNumberOfTeam()
         {
-            $result = $this->db->query("SELECT COUNT(*) AS number FROM wattball_team wt JOIN tournament t ON t.tournamentID = wt.tournamentID WHERE t.type = 'WattBall' 
-                AND wt.tournamentID =".$this->tournamentID);
+            $result = $this->db->query("SELECT COUNT(*) AS number FROM wattball_team wt JOIN tournament t ON t.tournamentID = wt.tournamentID WHERE wt.tournamentID =".$this->tournamentID);
             $data = $result->fetch();
             return $data['number'];
         }
@@ -66,15 +64,39 @@ class Tournament
             $matches = array();
             $i = 0;
             $result = $this->db->query("SELECT matchID,DATE_FORMAT(matchDate,'%D %M %Y') as matchDate, matchTime,pitch,team1,team2,umpire
-                                        FROM wattball_matches 
-                                        WHERE tournamentID = ".$this->tournamentID);   
-			while ($data = $result->fetch())
-			{
-				$matches[$i] = new Match($data['matchID'], $data['team1'], $data['team2'], $data['matchDate'], $data['matchTime'], $data['pitch'], $data['umpire'], $this->db);
-				$i++;
-			}
-			return $matches;
-		}
+                                        FROM wattBall_matches 
+                                        WHERE tournamentID = ".$this->tournamentID);
+            while ($data = $result->fetch())
+            {
+                $matches[$i] = new Match($data['matchID'], $data['team1'], $data['team2'], $data['matchDate'], $data['matchTime'], $data['pitch'], $data['umpire'], $this->db);
+                $i++;
+            }
+            return $matches;
+        }
+        
+        public function getAllFinishedMatches()
+        {
+            $matches = array();
+            $i = 0;
+            
+            $result = $this->db->query("SELECT matchID,DATE_FORMAT(matchDate,'%D %M %Y') as matchDate, matchTime,pitch,team1,team2,umpire
+                                        FROM wattBall_matches WHERE tournamentID = $this->tournamentID AND matchDate <= CURDATE()");
+            
+            
+            while ($data = $result->fetch())
+            {
+                $m = new Match($data['matchID'], $data['team1'], $data['team2'], $data['matchDate'], $data['matchTime'], $data['pitch'],null, $this->db);
+                $t1 = $m->getTeam1Info();
+                $t2 = $m->getTeam2Info();
+                $matches[$i]['match'] = $m;
+                $matches[$i]['team1'] = $t1;
+                $matches[$i]['team2'] = $t2;
+                $matches[$i]['playersTeam1'] = $t1->getPlayersInfo();
+                $matches[$i]['playersTeam2'] = $t2->getPlayersInfo();
+                $i++;
+            }
+            return $matches;
+        }
 	
 	public function getDateSQLFormat($date)
 	{

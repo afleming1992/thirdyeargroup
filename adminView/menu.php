@@ -1,74 +1,46 @@
 <div class='row-fluid'>
     <div class='span3 contentbox'>
-	
-        <div class="accordion" id="accordion2">
-                  <div class="accordion-group">
-                        <div class="accordion-heading">
-                          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                                Scheduling
-                          </a>
-                        </div>
-                        <div id="collapseOne" class="accordion-body collapse in">
-                          <div class="accordion-inner">
-                                <a href="index.php?adminPage=wattBallScheduling">Initiate WattBall Scheduling</a>
-                                <p>Initiate Hurdles Scheduling</p>
-                                <p>Edit WattBall Schedule</p>
-                                <p>Edit Hurdle Schedule</p>
-                                <a href='index.php?adminPage=umpireManagement'>Umpire Management</a>
-                                <p>Update Performance Time</p>
-                          </div>
-                        </div>
-                  </div>
-                  <div class="accordion-group">
-                        <div class="accordion-heading">
-                          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                                Registration
-                          </a>
-                        </div>
-                        <div id="collapseTwo" class="accordion-body collapse">
-                          <div class="accordion-inner">
-                                <p>View Wattball</p>
-                                <p>View Male Hurdles</p>
-                                <p>View Female Hurdles</p>
-                          </div>
-                        </div>
-                  </div>
-                   <div class="accordion-group">
-                        <div class="accordion-heading">
-                          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-                                Ticketing
-                          </a>
-                        </div>
-                        <div id="collapseThree" class="accordion-body collapse">
-                          <div class="accordion-inner">
-                                <p>Ticket Status</p>
-                                <p>Process Ticket Purchase</p>
-                                <p>Postal Ticket Sales List</p>
-                                <p>On Day Ticket Sales List</p>
-                          </div>
-                        </div>
-                  </div>
-        <?php
-                if($staff->getManager() == 1)
-                {
-        ?>
-                  <div class="accordion-group">
-                        <div class="accordion-heading">
-                          <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
-                                Management
-                          </a>
-                        </div>
-                        <div id="collapseFour" class="accordion-body collapse">
-                          <div class="accordion-inner">
-                                        <a href='index.php?adminPage=tournamentManagement'>Tournaments Managment</a>
-                                        <p>Staff Manager</p>
-                          </div>
-                        </div>
-                  </div>
-        <?php
-                }
-        ?>
-                </div>
-        
+        <ul class="nav nav-list">
+            
+            <li <?php if($pageName == "home") echo "class='active'"; ?> ><a href="index.php?adminPage=home">Home</a></li>
+            
+            <li class="nav-header">Scheduling</li>
+            <li class="divider"></li>
+            <li <?php if($pageName == "wattBallScheduling") echo "class='active'"; ?>><a href="index.php?adminPage=wattBallScheduling">Initiate WattBall Scheduling</a></li>
+            <li>Initiate Hurdles Scheduling</li>
+            <li>Edit WattBall Schedule</li>
+            <li>Edit Hurdle Schedule</li>
+            <li <?php if($pageName == "umpireManagement") echo "class='active'"; ?>><a href='index.php?adminPage=umpireManagement'>Umpire Management</a></li>
+            <li>Update Performance Time</li>
+            
+            <li class="nav-header">Registration</li>
+            <li class="divider"></li>
+            <li>View Wattball</li>
+            <li>View Male Hurdles</li>
+            <li>View Female Hurdles</li>
+            
+            <li class="nav-header">Ticketing</li>
+            <li class="divider"></li>
+            <li>Ticket Status</li>
+            <li>Process Ticket Purchase</li>
+            <li>Postal Ticket Sales List</li>
+            <li>On Day Ticket Sales List</li>
+            
+            <li class="nav-header">Results</li>
+            <li class="divider"></li>
+            <li <?php if($pageName == "addWattBallResults") echo "class='active'"; ?>><a href='index.php?adminPage=addWattBallResults'>Add WattBall Results</a></li>
+            <li>Add Hurdle results</li>
+            <?php 
+            if($staff->getManager() == 1)
+            {
+                ?>
+                <li class="nav-header">Management</li>
+                <li class="divider"></li>
+                <li <?php if($pageName == "tournamentManagement") echo "class='active'"; ?>><a href='index.php?adminPage=tournamentManagement'>Tournaments Managment</a></li>
+                <li>Staff Manager</li>
+                <?php
+            }
+            ?>
+        </ul>
     </div>
 

@@ -87,8 +87,7 @@ $(document).ready(function()
         		    startDate: $('#startDate').val(),
         		    endDate: $('#endDate').val(),                           
         		    registrationStartDate: $('#registrationStartDate').val(),
-        		    registrationEndDate: $('#registrationEndDate').val(),
-                            type: $('#tournamentType option:selected').text()
+        		    registrationEndDate: $('#registrationEndDate').val()
         		  }, 
         		  success: function(data, textStatus, jqXHR) {
         			  $('#addTournament').modal('hide');

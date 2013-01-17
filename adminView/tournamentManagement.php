@@ -21,14 +21,7 @@ if ($staff->getManager()== 1)
     		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
    			 <h3 id="myModalLabel">Add a tournament</h3>
  		</div>
- 		<div class="modal-body">
-                    <div id="addTournamentType">
-			<label for="tournamentType">Tournament Type: </label>
-			<select type="text" name="tournamentType" id="tournamentType">
-                            <option value="wattBall">WattBall</option>
-                            <option value="hurdle">Hurdle</option>
-                        </select>
-                    </div>                    
+ 		<div class="modal-body">                
                     <div id="addTournamentName">
 			<label for="tournamentName">Tournament Name: </label>
 			<input type="text" name="tournamentName" id="tournamentName"></br><span id="help-inline-tournamentName" class="help-inline"></span></br>

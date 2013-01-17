@@ -15,14 +15,27 @@ if(isset($_POST['submitButtonLogin']))
 }
 else if(isset($_POST['tournamentId']) && isset($_POST['teamName']) && isset($_POST['nwaNumber']) && isset($_POST['contactName']) && isset($_POST['contactNumber']) && isset($_POST['email']) && isset($_POST['players']))
 {
-	//Process WattballRegistration
-	$app->processWattballRegistration(htmlspecialchars($_POST['tournamentId']),htmlspecialchars($_POST['teamName']),htmlspecialchars($_POST['contactName']),htmlspecialchars($_POST['contactNumber']),htmlspecialchars($_POST['nwaNumber']),htmlspecialchars($_POST['email']),$_POST['players']);
-	$app->loadPage('wattBallRegistration');
-	unset($_SESSION['completed']);
-	unset($_SESSION['nwaValidationError']);
-	unset($_SESSION['nwaLengthError']);
-	unset($_SESSION['contactNumberError']);
-	unset($_SESSION['NotEnoughPlayers']);
+    if($app->processWattballRegistration(htmlspecialchars($_POST['teamName']),htmlspecialchars($_POST['contactName']),htmlspecialchars($_POST['contactNumber']),htmlspecialchars($_POST['nwaNumber']),htmlspecialchars($_POST['email']),htmlspecialchars($_POST['players'])) == false)
+    {
+        // if there is some errors
+        if(isset($_SESSION['error']) && isset($_SESSION['teamNameAlreadyUsed']))
+            
+        $_SESSION['teamName'] = htmlspecialchars($_POST['teamName']);
+        $_SESSION['NWANumber'] = htmlspecialchars($_POST['nwaNumber']);
+        $_SESSION['contactName'] = htmlspecialchars($_POST['contactName']);
+        $_SESSION['contactNumber'] = htmlspecialchars($_POST['contactNumber']);
+        $_SESSION['players'] = htmlspecialchars($_POST['players']);        
+        $_SESSION['emailValue'] = htmlspecialchars($_POST['email']);       
+        $app->loadPage('wattBallRegistration');
+	
+        
+    }
+    else
+    {
+        $app->saveWattBallRegistration(htmlspecialchars($_POST['tournamentId']),htmlspecialchars($_POST['teamName']),htmlspecialchars($_POST['contactName']),htmlspecialchars($_POST['contactNumber']),htmlspecialchars($_POST['nwaNumber']),htmlspecialchars($_POST['email']),htmlspecialchars($_POST['players']));
+        $app->loadPage('wattBallRegistrationSuccess');
+    }
+	
 }
 else if(isset ($_GET['adminPage']))
 {

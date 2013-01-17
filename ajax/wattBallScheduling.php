@@ -1,26 +1,22 @@
 <?php
-
+include_once '../include/autoload.php';
+include_once '../config/config.php';
 if(isset($_GET['id']))
-{
-    include_once '../config/config.php';
-    include_once '../model/Tournament.class.php';
-    include_once '../model/Team.class.php';
-    include_once '../model/Match.class.php';
-    include_once '../model/Umpire.class.php';
+{   
     $id = htmlspecialchars($_GET['id']);
     try 
     {
         $db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
-        
+ 
         //Get all information about the tournament
         $resultTournament = $db->query("SELECT name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
-				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose 
+                                 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose 
                               FROM tournament
                               WHERE tournamentID = $id");
         $data = $resultTournament->fetch();
-        $tournament = new Tournament($id, $data['name'], $data['startDate'], $data['endDate'], $data['registrationOpen'], $data['registrationClose'], null, $db);
+        $tournament = new Tournament($id, $data['name'], $data['startDate'], $data['endDate'], $data['registrationOpen'], $data['registrationClose'], $db);
         $teams = $tournament->getTeams();
-        
+
         // Get all the information about umpire
         $umpire = array();
         $resultUmpire = $db->query("SELECT * FROM umpire");
@@ -32,10 +28,10 @@ if(isset($_GET['id']))
                    $data["satAfternoon"], $data["sunMorning"], $data["sunAfternoon"]);
            $i++;
         }        
-        
+
         $matches = array();
         $k = 0;
-        
+
         //create matches
         for($i = 0;$i<count($teams);$i++)
         {
@@ -44,15 +40,15 @@ if(isset($_GET['id']))
                $matches[$k] = new Match(null, $teams[$i], $teams[$j], null, null, null, null, $db);
                $k++;
             }
-            
+
         }
-        
-        
+
+
         //give a date and an umpire to the matches
-        
+
         $date = $tournament->getDateSQLFormat($tournament->getStartDate());
         $scheduledMathes = array();
-        
+
         $nb = 0;
         $numberOfMathes = count($matches);
         do
@@ -61,7 +57,7 @@ if(isset($_GET['id']))
             $scheduledMathes[$date] = array(); 
             $scheduleUmpire = array();
             $pitch = 1;
-            
+
             for($i = 0;$i<count($matches);$i++)
             {   
                 if($pitch >8)
@@ -72,7 +68,7 @@ if(isset($_GET['id']))
                     {
                         $matches[$i]->setDate($date);
                         $time = "";
-                        
+
                         if($j%2 == 0)
                         {
                             $time = "morning";
@@ -86,7 +82,7 @@ if(isset($_GET['id']))
                             $matches[$i]->setHour ($time);
                             $matches[$i]->setPitch($pitch);
                         }
-                        
+
                         list($Y,$m,$d)=explode('-',date($date));
                         for($k = 0;$i<count($umpire);$k++)
                         {
@@ -115,10 +111,10 @@ if(isset($_GET['id']))
             $date = $tournament->nextDate($date);
         }
         while ($nb < $numberOfMathes);
-        
+
         for($i = 0;$i<count($matches);$i++)
             $matches[$i]->saveMatch ($id);
-        
+
         echo "All the matches are scheduled !";
         
     } 
@@ -130,23 +126,31 @@ if(isset($_GET['id']))
 }
 else if(isset ($_GET['tournament']))
 {
-    include_once '../config/config.php';
-    include_once '../model/tournament.class.php';
     $id = htmlspecialchars($_GET['tournament']);
     try
     {
        $db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
-       $result = $db->query("SELECT name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
-				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose 
-                              FROM tournament
-                              WHERE tournamentID = $id");
-        $data = $result->fetch();
-        $tournament = new Tournament($id, $data['name'], $data['startDate'], $data['endDate'], $data['registrationOpen'], $data['registrationClose'], null, $db);
-        
-        $numberOfTeam = $tournament->getNumberOfTeam();
-        $numberOfUmpire = $tournament->getNumberOfUmpire();
-        
-        include_once '../include/schedulingInfo.php';
+       //is already schedule ?
+        $isSchedule = $db->query("SELECT COUNT(*) as number FROM wattBall_matches WHERE tournamentID = $id");
+        $data = $isSchedule->fetch();
+        if($data['number']!=0)
+        {
+            echo "This tournament is already schedule";
+        }
+        else
+        {   
+            $result = $db->query("SELECT name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
+                                      DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose 
+                                   FROM tournament
+                                   WHERE tournamentID = $id");
+             $data = $result->fetch();
+             $tournament = new Tournament($id, $data['name'], $data['startDate'], $data['endDate'], $data['registrationOpen'], $data['registrationClose'],$db);
+
+             $numberOfTeam = $tournament->getNumberOfTeam();
+             $numberOfUmpire = $tournament->getNumberOfUmpire();
+
+             include_once '../include/schedulingInfo.php';
+        }
        
     }
     catch (Exception $exc)
@@ -156,10 +160,6 @@ else if(isset ($_GET['tournament']))
 }
 else if(isset ($_GET['schedule']))
 {
-    include_once '../config/config.php';
-    include_once '../model/tournament.class.php';
-    include_once '../model/match.class.php';
-    include_once '../model/team.class.php';
     $id = htmlspecialchars($_GET['schedule']);
     try
     {
@@ -169,7 +169,7 @@ else if(isset ($_GET['schedule']))
                               FROM tournament
                               WHERE tournamentID = $id");
         $data = $result->fetch();
-        $tournament = new Tournament($id, $data['name'], $data['startDate'], $data['endDate'], $data['registrationOpen'], $data['registrationClose'], null, $db);
+        $tournament = new Tournament($id, $data['name'], $data['startDate'], $data['endDate'], $data['registrationOpen'], $data['registrationClose'], $db);
         $matches = $tournament->getAllMatches();
         $teams1 = array();
         $teams2 = array();
