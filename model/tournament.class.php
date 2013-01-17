@@ -64,7 +64,7 @@ class Tournament
             $matches = array();
             $i = 0;
             $result = $this->db->query("SELECT matchID,DATE_FORMAT(matchDate,'%D %M %Y') as matchDate, matchTime,pitch,team1,team2,umpire
-                                        FROM wattBall_matches 
+                                        FROM wattball_matches 
                                         WHERE tournamentID = ".$this->tournamentID);
             while ($data = $result->fetch())
             {

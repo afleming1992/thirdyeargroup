@@ -468,7 +468,7 @@ class MainController
         
         public function checkTeamName($teamName)
         {
-            $result = $this->db->query("SELECT * FROM wattBall_team WHERE teamName = '$teamName'");
+            $result = $this->db->query("SELECT * FROM wattball_team WHERE teamName = '$teamName'");
             $data = $result->fetch();
             if(count($data) == 1)
                 return false; //Team name Not found
