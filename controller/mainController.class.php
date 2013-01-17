@@ -123,7 +123,7 @@ class MainController
             else if($pageName=='addWattBallResults')
             {
                 $isTournament = $this->isCurrentTournament();                
-               if($isTournament == false) // if there is no tournament
+               if($this->tournament == null) // if there is no tournament
                 {
                     $this->addBasicView();
                     require_once 'adminView/menu.php';
@@ -131,7 +131,7 @@ class MainController
                     $this->addFooterFile();
                     die();
                 }
-                else if($isTournament == true && count($this->tournament[0]->getAllFinishedMatches()) == 0) // if there is a curent tournament but no matches
+                else if($this->tournament != null && count($this->tournament[0]->getAllFinishedMatches()) == 0) // if there is a curent tournament but no matches
                 {
                     $this->addBasicView();
                     require_once 'adminView/menu.php';
