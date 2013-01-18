@@ -70,8 +70,7 @@ if(isset($_GET['id']))
                     {
                         $matches[$i]->setDate($date);
                         $time = "";
-                        echo $matches[$i]->getTeam1()->getTeamName()." VS ".$matches[$i]->getTeam2()->getTeamName()."  Date: ".$matches[$i]->getDate()."</br>";
-                        echo "initialisation date !</br></br>";
+                       
                         if($j%2 == 0)
                         {
                             $time = "morning";
@@ -85,8 +84,7 @@ if(isset($_GET['id']))
                             $matches[$i]->setHour ($time);
                             $matches[$i]->setPitch($pitch);
                         }
-                        echo $matches[$i]->getTeam1()->getTeamName()." VS ".$matches[$i]->getTeam2()->getTeamName()."  Date: ".$matches[$i]->getDate()." Time: ".$matches[$i]->getHour()." Pitch: ".$matches[$i]->getPitch()."</br>";
-                        echo "initialisation pitch & time !</br></br>";
+                       
                         list($Y,$m,$d)=explode('-',date($date));
                         for($k = 0;$i<count($umpire);$k++)
                         {
@@ -108,8 +106,7 @@ if(isset($_GET['id']))
                             $matches[$i]->setHour(null);
                             $matches[$i]->setPitch(null);
                         }
-                        echo $matches[$i]->getTeam1()->getTeamName()." VS ".$matches[$i]->getTeam2()->getTeamName()."  Date: ".$matches[$i]->getDate()." Time: ".$matches[$i]->getHour()." Pitch: ".$matches[$i]->getPitch()." Umpire:".$matches[$i]->getUmpire()->getName()."</br>";
-                        echo "initialisation umpire!</br></br>";
+                        
                     }
                 }
             }
