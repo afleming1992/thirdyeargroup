@@ -27,7 +27,9 @@ if(isset($_GET['id']))
                    $data["wedMorning"], $data["wedAfternoon"], $data["thursMorning"], $data["thursAfternoon"], $data["friMorning"], $data["friAfternoon"], $data["satMorning"],
                    $data["satAfternoon"], $data["sunMorning"], $data["sunAfternoon"]);
            $i++;
-        }        
+        }  
+        
+        
 
         $matches = array();
         $k = 0;
@@ -68,7 +70,8 @@ if(isset($_GET['id']))
                     {
                         $matches[$i]->setDate($date);
                         $time = "";
-
+                        echo $matches[$i]->getTeam1()->getTeamName()." VS ".$matches[$i]->getTeam2()->getTeamName()."  Date: ".$matches[$i]->getDate()."</br>";
+                        echo "initialisation date !</br></br>";
                         if($j%2 == 0)
                         {
                             $time = "morning";
@@ -82,7 +85,8 @@ if(isset($_GET['id']))
                             $matches[$i]->setHour ($time);
                             $matches[$i]->setPitch($pitch);
                         }
-
+                        echo $matches[$i]->getTeam1()->getTeamName()." VS ".$matches[$i]->getTeam2()->getTeamName()."  Date: ".$matches[$i]->getDate()." Time: ".$matches[$i]->getHour()." Pitch: ".$matches[$i]->getPitch()."</br>";
+                        echo "initialisation pitch & time !</br></br>";
                         list($Y,$m,$d)=explode('-',date($date));
                         for($k = 0;$i<count($umpire);$k++)
                         {
@@ -96,14 +100,16 @@ if(isset($_GET['id']))
                                     $j++;
                                     break;
                                 }
-                                else
-                                {
-                                    $matches[$i]->setDate(null);
-                                    $matches[$i]->setHour(null);
-                                    $matches[$i]->setPitch(null);
-                                }
                             }
-                        }  
+                        }
+                        if($matches[$i]->getUmpire() == null)
+                        {
+                            $matches[$i]->setDate(null);
+                            $matches[$i]->setHour(null);
+                            $matches[$i]->setPitch(null);
+                        }
+                        echo $matches[$i]->getTeam1()->getTeamName()." VS ".$matches[$i]->getTeam2()->getTeamName()."  Date: ".$matches[$i]->getDate()." Time: ".$matches[$i]->getHour()." Pitch: ".$matches[$i]->getPitch()." Umpire:".$matches[$i]->getUmpire()->getName()."</br>";
+                        echo "initialisation umpire!</br></br>";
                     }
                 }
             }
@@ -111,7 +117,7 @@ if(isset($_GET['id']))
             $date = $tournament->nextDate($date);
         }
         while ($nb < $numberOfMathes);
-
+        //var_dump($matches);
         for($i = 0;$i<count($matches);$i++)
             $matches[$i]->saveMatch ($id);
 
@@ -194,6 +200,8 @@ else if(isset ($_GET['schedule']))
 
 function lookinkForTeam($array,$match)
 {
+    //echo $match->getTeam1()->getTeamName()." VS ".$match->getTeam2()->getTeamName();
+    //var_dump($array);
     $find = false;
     if(count($array) == 0)
     {
