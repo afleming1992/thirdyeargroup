@@ -20,6 +20,7 @@ class MainController
 	private $tournament = array();
 	private $umpire = array();
 	
+	
 	public function __construct($db)
 	{
 		$this->setDb($db);
@@ -30,6 +31,7 @@ class MainController
 	 */
 	public function loadHomePage()
 	{
+		$_SESSION['section'] = "home";
 		$this->addBasicView();
 		require_once 'view/login.php';
 		require_once 'view/home.php';
@@ -98,6 +100,7 @@ class MainController
         public function loadAdminPage($pageName)
         {
             //Test login
+            $_SESSION['section'] = "admin";
             if(!isset($_SESSION['login']))
             {
                 addLogin();
@@ -178,6 +181,7 @@ class MainController
 	{ 
 		if($pageName == 'wattBallRegistration') //before load this page: check if there are tournament
                 {
+					$_SESSION['section'] = "wattball"; //Sets the Nav Bar to the Correct Location
                     $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
                     $numberOfRows = $result->fetchColumn();
                     if($numberOfRows < 1) //No tournament: Load a page said there are no tournament
@@ -243,6 +247,7 @@ class MainController
                 }
                 else if($pageName == "wattBall" || $pageName == "wattBallScheduling" || $pageName == "wattBallRegistrationSuccess")
                 {
+					$_SESSION['section'] = "wattball";
                     if($pageName == "wattBallScheduling");
                     {
                         $this->getWattBallTournament();
@@ -266,13 +271,31 @@ class MainController
                            $i++;
                         }
                     }
-                    $this->addBasicView();
+                     $this->addBasicView();
                     require_once 'view/wattBallNav.php';
                     require_once 'view/'.$pageName.'.php';
                     require_once 'view/login.php';
                     $this->addFooterFile();
                     die();
-                }
+               }
+              else if($pageName == "aboutUs")
+              {
+				  $_SESSION['section'] = "aboutus";
+			  }
+			  else if($pageName == "menHurdles")
+			  {
+				  $_SESSION['section'] = "menhurdles";
+			  }
+			  else if($pageName == "femaleHurdles")
+			  {
+				  $_SESSION['section'] = "femalehurdles";
+			  }
+			  else if($pageName == "tickets")
+			  {
+				  $_SESSION['section'] = "tickets";
+			  }
+              
+               
                
               
 		$this->addBasicView();

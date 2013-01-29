@@ -33,7 +33,7 @@ catch (Exception $e)
 {
 	echo "Connection error".$e->getMessage();
 }
-
+$section;
 require_once 'controller/controller.php';
 
 
