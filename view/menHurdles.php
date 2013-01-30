@@ -1,5 +1,3 @@
-<?php
+<div class='span9 contentbox'>
 
-echo "Men's hurdles !";
-
-?>
+</div>
