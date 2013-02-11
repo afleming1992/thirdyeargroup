@@ -156,32 +156,38 @@ $(document).ready(function()
         	});
         
         $("#tournamentList").on( 'click',".btn-danger", function()
-            	{
-			        jQuery.ajax({
-			  		  type: 'GET',
-			  		  url: 'ajax/deleteTournament.php',
-			  		  data: {
-			  		    id: $(this).attr('id')
-			  		  }, 
-			  		  success: function(data, textStatus, jqXHR) {
-			  			 $('#tournamentList').html(data);
-			  		  },
-			  		  error: function(jqXHR, textStatus, errorThrown) {
-			  			  alert("Error during form validation, try later !");
-			  		  }
-			        });
-            	});
+        {
+            var id= $(this).attr('id');
+            $("#deleteTournament").modal('show');
+            $("#buttonDeleteTournament").attr('tournamentID',id);
+        });
+        
+        $("#buttonDeleteTournament").click(function(){
+           jQuery.ajax({
+                      type: 'GET',
+                      url: 'ajax/deleteTournament.php',
+                      data: {
+                        id: $(this).attr('tournamentID')
+                      }, 
+                      success: function(data, textStatus, jqXHR) {
+                             $("#deleteTournament").modal('hide'); 
+                             $('#tournamentList').html(data);
+                      },
+                      error: function(jqXHR, textStatus, errorThrown) {
+                              alert("Error during form validation, try later !");
+                      }
+            });
+        });
         
         $("#tournamentList").on("click",".btn-warning", function()
-            	{
-        			//alert('test '+$(this).parent().parent().children('.startDate').attr('startDate'));
-        			$('#changeTournament #tournamentNameChange').val($(this).parent().parent().children('.name').text());
-        			$('#changeTournament #startDateChange').val($(this).parent().parent().children('.startDate').attr('startDate'));
-        			$('#changeTournament #endDateChange').val($(this).parent().parent().children('.endDate').attr('endDate'));
-        			$('#changeTournament #registrationStartDateChange').val($(this).parent().parent().children('.registrationStart').attr('registrationStart'));
-        			$('#changeTournament #registrationEndDateChange').val($(this).parent().parent().children('.registrationEnd').attr('registrationEnd'));
-        			$('#changeTournament #changeTournamentValidation').attr('tournamentID',$(this).attr('id'));
-            	});
+        {
+                $('#changeTournament #tournamentNameChange').val($(this).parent().parent().children('.name').text());
+                $('#changeTournament #startDateChange').val($(this).parent().parent().children('.startDate').attr('startDate'));
+                $('#changeTournament #endDateChange').val($(this).parent().parent().children('.endDate').attr('endDate'));
+                $('#changeTournament #registrationStartDateChange').val($(this).parent().parent().children('.registrationStart').attr('registrationStart'));
+                $('#changeTournament #registrationEndDateChange').val($(this).parent().parent().children('.registrationEnd').attr('registrationEnd'));
+                $('#changeTournament #changeTournamentValidation').attr('tournamentID',$(this).attr('id'));
+        });
                 
        $('#addTournament').on('hidden', function () {
             $('#addTournamentName').removeClass('control-group error');

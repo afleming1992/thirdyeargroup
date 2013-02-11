@@ -13,14 +13,22 @@
     </br>
     <fieldset class="center">
       <?php
-        echo "<div id='schedulingInfo'>";
-        include_once 'include/schedulingInfo.php';
-        echo "</div>";
-        echo "<button id='startScheduling' class='btn btn-large btn-primary' type='button'>Begin</button>";
         
+        if($is_scheduled == false)
+        {
+            echo "<div id='schedulingInfo'>";
+            include_once 'include/schedulingInfo.php';
+            echo "</div>";
+            echo "<button id='startScheduling' class='btn btn-large btn-primary' type='button'>Begin</button>";
+        }
+        else 
+        {
+            echo "This tournament is already scheduled</br>";
+        }
       ?>
     </fieldset>
     <div id="resultScheduling">
         
     </div>
+</div>
 </div>

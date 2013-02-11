@@ -56,7 +56,13 @@
 			{
 				return false;
 			}
-		}	
+		}
+                
+                public function saveGoals($matchID,$minute)
+                {
+                    $this->db->exec("INSERT INTO wattball_goals(matchID,minute,playerID) VALUES($matchID,$minute,".$this->playerID.")");
+                }
+                
 		/** --- GETTERS AND SETTERS --- **/
 		
 		public function getPlayerID()

@@ -1,26 +1,32 @@
 <?php ?>
 <fieldset>
         <legend>Search a match</legend>
+        
         <div class="span5">
             <label class='control-label'>Date</label>
             <div class="controls">
                 <input type="text" name='date' id='date'>
-                <input type="hidden" id="tournamentID" value="<?php echo $tournament[0]->getTournamentID();?>">
+                <input type="hidden" id="tournamentID" value="<?php if(count($matches) > 0){ echo $tournament[0]->getTournamentID();}else{echo "0";}?>">
                 <button id="search" class="btn btn-success"><i class="icon-white icon-ok"></i> Search a match</button>
             </div>
         </div>
         <div class="span5">
            <label class='control-label'>Choose a match: </label>
                 <div class="controls">
-                        <select name="matches" id='matches'>
+                        <select class="span12" name="matches" id='matches'>
                                 <?php
+                                if(count($matches) > 0)
+                                {
                                     for($i = 0;$i<count($matches);$i++)
                                     {
                                         echo "<option value='".$matches[$i]['match']->getId()."'>".$matches[$i]['team1']->getTeamName()." VS ".$matches[$i]['team2']->getTeamName()."</option>";
                                     }
+                                }
+                                else
+                                    echo "<option>No Matches</option>";
+                                    
                                         
                                 ?>
-                            <option> TEST</option>
                         </select>
                 </div>
         </div>
@@ -28,13 +34,14 @@
     </br>
     <fieldset>
         <legend>Result</legend>
+        <?php 
+        if(count($matches) > 0)
+        {
+        ?>
         <div class="span5">
             <?php echo "<p class='text-info'>".$matches[0]['team1']->getTeamName()."</p>"; ?>
-            <label class='control-label'>Total number of Goals</label>
-            <div class="controls">
-                <input type="text" name='goalTeam1' id='goalTeam1'>
-            </div>
-            <label class='control-label'>By</label>
+            
+            <label class='control-label'>Goal By</label>
             <div class="controls">
                 <select name="playersTeam1" id='playersTeam1'>
                     <?php
@@ -66,11 +73,8 @@
         
         <div class="span5">
             <?php echo "<p class='text-info'>".$matches[0]['team2']->getTeamName()."</p>"; ?>
-            <label class='control-label'>Total number of Goals</label>
-            <div class="controls">
-                <input type="text" name='goalTeam2' id='goalTeam2'>
-            </div>
-            <label class='control-label'>By</label>
+            
+            <label class='control-label'>Goal By</label>
             <div class="controls">
                 <select name="playersTeam2" id='playersTeam2'>
                     <?php
@@ -99,5 +103,10 @@
                 </tbody> 
             </table>
         </div>
-        
+        <?php
+        }
+        ?>
     </fieldset>
+   <button type="submit" id="save" class="btn btn-primary"><i class="icon-white icon-ok"></i> Save</button> 
+
+    

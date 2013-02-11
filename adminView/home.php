@@ -11,3 +11,4 @@ if ($staff->getManager()== 1)
 
 ?>
 </div>
+</div>

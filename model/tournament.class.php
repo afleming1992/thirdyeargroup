@@ -65,7 +65,8 @@ class Tournament
             $i = 0;
             $result = $this->db->query("SELECT matchID,DATE_FORMAT(matchDate,'%D %M %Y') as matchDate, matchTime,pitch,team1,team2,umpire
                                         FROM wattball_matches 
-                                        WHERE tournamentID = ".$this->tournamentID);
+                                        WHERE tournamentID = ".$this->tournamentID."
+                                        ORDER BY 2");
             while ($data = $result->fetch())
             {
                 $matches[$i] = new Match($data['matchID'], $data['team1'], $data['team2'], $data['matchDate'], $data['matchTime'], $data['pitch'], $data['umpire'], $this->db);
@@ -80,7 +81,7 @@ class Tournament
             $i = 0;
             
             $result = $this->db->query("SELECT matchID,DATE_FORMAT(matchDate,'%D %M %Y') as matchDate, matchTime,pitch,team1,team2,umpire
-                                        FROM wattBall_matches WHERE tournamentID = $this->tournamentID AND matchDate <= CURDATE()");
+                                        FROM wattball_matches WHERE tournamentID = $this->tournamentID AND matchDate <= CURDATE()");
             
             
             while ($data = $result->fetch())
@@ -96,6 +97,17 @@ class Tournament
                 $i++;
             }
             return $matches;
+        }
+        
+        public function is_scheduled() 
+        {
+            $result = $this->db->query("SELECT COUNT(*) AS nb FROM wattball_matches WHERE tournamentID =".$this->tournamentID);
+            
+             $data = $result->fetch();
+             if($data["nb"] == 0)
+               return false;
+             else
+               return true;
         }
 	
 	public function getDateSQLFormat($date)

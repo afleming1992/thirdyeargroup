@@ -82,7 +82,19 @@ if ($staff->getManager()== 1)
 		    <button type='button' value='submit' id='changeTournamentValidation' class="btn btn-primary btn-medium"><i class="icon-white icon-ok-sign"></i> Save</button>
   		</div>
 	</div>
-	
+        
+        <!-- Div delete tournament  -->
+        
+        <div id="deleteTournament" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+            <div class="modal-header">
+    		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+   			 <h3 id="myModalLabel">Are you sure you want to delete this tournament ?</h3>
+            </div>
+            <div class="modal-body center">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		<button type='button' id='buttonDeleteTournament' class="btn btn-danger btn-medium"><i class="icon-white icon-remove-sign"></i> Delete</button>
+            </div>
+        </div>
 </div>
 	<?php 
 }

@@ -52,8 +52,7 @@ class MainController
 			$_SESSION['login'] = true;
 			$_SESSION['username'] = $username;		
 			$_SESSION['login-popup'] = true;
-                        $this->getAllTournament();
-                        $allTournament = $this->tournament;
+                        $_SESSION['section'] = "admin";
                         $pageName = "home";
 			$this->addBasicView();
                         require_once 'adminView/menu.php';
@@ -118,19 +117,19 @@ class MainController
             
             if($pageName=='umpireManagement')
                 $this->getAllUmpires();
-            else if($pageName=='tournamentManagement')
+            else if($pageName == 'tournamentManagement')
             {
                 $this->getAllTournament();
                 $allTournament = $this->tournament;
             }
-            else if($pageName=='addWattBallResults')
+            else if($pageName == 'addWattBallResults' || $pageName == 'wattBallReScheduling')
             {
-                $isTournament = $this->isCurrentTournament();                
-               if($this->tournament == null) // if there is no tournament
+                $isTournament = $this->isCurrentTournament();              
+                if($this->tournament == null) // if there is no tournament
                 {
                     $this->addBasicView();
                     require_once 'adminView/menu.php';
-                    require_once 'adminView/addWattBallResultNoTournament.php';
+                    require_once 'adminView/wattBallNoTournament.php';
                     $this->addFooterFile();
                     die();
                 }
@@ -138,17 +137,36 @@ class MainController
                 {
                     $this->addBasicView();
                     require_once 'adminView/menu.php';
-                    require_once 'adminView/addWattBallResultNoTournament.php';
+                    require_once 'adminView/wattBallNoTournament.php';
                     $this->addFooterFile();
                     die();
                 }
                 else //there are matches for the current tournament
                 {
-                    $tournament = $this->tournament;
-                    $matches = $tournament[0]->getAllFinishedMatches();
+                    if($pageName == 'addWattBallResults')
+                    {
+                        $tournament = $this->tournament; 
+                        $matches = $tournament[0]->getAllFinishedMatches();
+                    }
+                    else 
+                    {
+                        $this->getWattBallTournament();
+                        $allTournament = $this->tournament;
+                        $matches = $allTournament[0]->getAllMatches();
+                        $teams1 = array();
+                        $teams2 = array();
+                        $i = 0;
+                        foreach ($matches as $m) 
+                        {
+                           $teams1[$i] = $m->getTeam1Info();
+                           $teams2[$i] = $m->getTeam2Info();
+                           $i++;
+                        }
+                    }
+                    
                 }
                     
-            }
+            } 
             else if($pageName == 'wattBallScheduling')
             {
                 $this->getAllTournament();
@@ -163,7 +181,8 @@ class MainController
                     die();
                 } 
                 $numberOfTeam = $allTournament[0]->getNumberOfTeam();
-                $numberOfUmpire = $allTournament[0]->getNumberOfUmpire(); 
+                $numberOfUmpire = $allTournament[0]->getNumberOfUmpire();                
+                $is_scheduled = $allTournament[0]->is_scheduled();
             }            
             
             $this->addBasicView();
@@ -181,7 +200,7 @@ class MainController
 	{ 
 		if($pageName == 'wattBallRegistration') //before load this page: check if there are tournament
                 {
-					$_SESSION['section'] = "wattball"; //Sets the Nav Bar to the Correct Location
+                    $_SESSION['section'] = "wattball"; //Sets the Nav Bar to the Correct Location
                     $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
                     $numberOfRows = $result->fetchColumn();
                     if($numberOfRows < 1) //No tournament: Load a page said there are no tournament
@@ -247,7 +266,7 @@ class MainController
                 }
                 else if($pageName == "wattBall" || $pageName == "wattBallScheduling" || $pageName == "wattBallRegistrationSuccess")
                 {
-					$_SESSION['section'] = "wattball";
+                    $_SESSION['section'] = "wattball";
                     if($pageName == "wattBallScheduling");
                     {
                         $this->getWattBallTournament();
@@ -280,70 +299,70 @@ class MainController
                }
               else if($pageName == "aboutUs")
               {
-				  $_SESSION['section'] = "aboutus";
-			  }
-			  else if($pageName == "menHurdles" || $pageName == "menHurdlesRegistration" || $pageName == "menHurdlesSchedule")
-			  {
-				  $_SESSION['section'] = "menhurdles";
-				  if($pageName == "menHurdleRegistration")
-				  {
-                    $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
-                    $numberOfRows = $result->fetchColumn();
-                    if($numberOfRows < 1) //No tournament: Load a page said there are no tournament
-                    {
-                        $this->addBasicView();		
-                        require_once 'view/login.php';
-                        require_once 'view/menHurdlesNav.php';
-                        require_once 'view/menHurdlesRegistration_noTournament.php';
-                        $this->addFooterFile();
-                        die();
-                    }
-                    else // tournament: Load the information about the tournament
-                    {
-                        $result = $this->db->query("SELECT `tournamentID`, `name`, `startDate`, `endDate` FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
-                        if($result != false)
+                    $_SESSION['section'] = "aboutus";
+              }
+             else if($pageName == "menHurdles" || $pageName == "menHurdlesRegistration" || $pageName == "menHurdlesSchedule")
+             {
+                     $_SESSION['section'] = "menhurdles";
+                     if($pageName == "menHurdleRegistration")
+                     {
+                        $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
+                        $numberOfRows = $result->fetchColumn();
+                        if($numberOfRows < 1) //No tournament: Load a page said there are no tournament
                         {
-                            $tournament = array();
-                            $i = 0;
-                            while($data = $result->fetch())
+                            $this->addBasicView();	
+                            require_once 'view/login.php';
+                            require_once 'view/menHurdlesNav.php';
+                            require_once 'view/menHurdlesRegistration_noTournament.php';
+                            $this->addFooterFile();
+                            die();
+                        }
+                        else // tournament: Load the information about the tournament
+                        {
+                            $result = $this->db->query("SELECT `tournamentID`, `name`, `startDate`, `endDate` FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
+                            if($result != false)
                             {
-                                $tournament[$i]['tournamentID'] = $data['tournamentID'];
-                                $tournament[$i]['name'] = $data['name'];
-                                $tournament[$i]['startDate'] = $data['startDate'];
-                                $tournament[$i]['endDate'] = $data['endDate'];
-                                $i++;                                   
+                                $tournament = array();
+                                $i = 0;
+                                while($data = $result->fetch())
+                                {
+                                    $tournament[$i]['tournamentID'] = $data['tournamentID'];
+                                    $tournament[$i]['name'] = $data['name'];
+                                    $tournament[$i]['startDate'] = $data['startDate'];
+                                    $tournament[$i]['endDate'] = $data['endDate'];
+                                    $i++;                                   
+                                }
                             }
+                            $this->addBasicView();
+                            require_once 'view/menHurdlesNav.php';
+                            require_once 'view/'.$pageName.'.php';
+                            require_once 'view/login.php';
+                            $this->addFooterFile();
+                            if(isset($_SESSION['error']))
+                            {
+
+                            }
+                            die();
+
+                           }
                         }
-                        $this->addBasicView();
-                        require_once 'view/menHurdlesNav.php';
-                        require_once 'view/'.$pageName.'.php';
-                        require_once 'view/login.php';
-                        $this->addFooterFile();
-                        if(isset($_SESSION['error']))
-                        {
-                           
-                        }
-                        die();
-                        
-                    }
-                }
 				
-				   //Processing of the Form in here
-				$this->addBasicView();
-                require_once 'view/menHurdleNav.php';
-                require_once 'view/'.$pageName.'.php';
-                require_once 'view/login.php';
-                $this->addFooterFile();
-                die();
-			  }
-			  else if($pageName == "femaleHurdles")
-			  {
-				  $_SESSION['section'] = "femalehurdles";
-			  }
-			  else if($pageName == "tickets")
-			  {
-				  $_SESSION['section'] = "tickets";
-			  }
+                    //Processing of the Form in here
+                    $this->addBasicView();
+                    require_once 'view/menHurdleNav.php';
+                    require_once 'view/'.$pageName.'.php';
+                    require_once 'view/login.php';
+                    $this->addFooterFile();
+                    die();
+            }
+            else if($pageName == "femaleHurdles")
+            {
+                    $_SESSION['section'] = "femalehurdles";
+            }
+            else if($pageName == "tickets")
+            {
+                    $_SESSION['section'] = "tickets";
+            }
               
                
                
@@ -433,7 +452,7 @@ class MainController
 		$result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
 				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose 
                                  FROM tournament WHERE startDate < CURDATE() AND  endDate > CURDATE() ORDER BY startDate DESC");
-		if($data = $result->fetch())
+		if($data == $result->fetch())
 		{
                     $i = 0;
                     while($data = $result->fetch())
@@ -447,7 +466,7 @@ class MainController
 			$result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
 				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose 
                                  FROM tournament WHERE CURDATE() < starDate ORDER BY startDate DESC");
-			if($data = $result->fetch())
+			if($data == $result->fetch())
 			{
                             $i = 0;
                             while($data = $result->fetch())

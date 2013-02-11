@@ -44,7 +44,7 @@ if(isset($_GET['id']))
             }
 
         }
-
+        //var_dump($matches);
 
         //give a date and an umpire to the matches
 
@@ -53,7 +53,56 @@ if(isset($_GET['id']))
 
         $nb = 0;
         $numberOfMathes = count($matches);
-        do
+        
+        while ($nb < $numberOfMathes)
+        {    
+            $j = 0;
+            $scheduledMathes[$date] = array(); 
+            $scheduleUmpire["morning"] = array();
+            $scheduleUmpire["afternoon"] = array();
+            $pitch = 0;
+            for($i=0;$i<$numberOfMathes;$i++)
+            {
+                if($matches[$i]->getDate() == null)
+                {
+                    if($j%2 == 0)
+                    {
+                        $time = "morning";
+                        $pitch++;
+                    }
+                    else
+                    {
+                        $time = "afternoon";
+                    }
+                    $teamAvailability = checkTeamAvailability($scheduledMathes[$date],$matches[$i],$time);
+                    $umpireFound = findUmpire($scheduleUmpire,$umpire,$time,$date);
+                    if($teamAvailability == TRUE && $umpireFound != FALSE)
+                    {                        
+                        $matches[$i]->setDate($date);
+                        $matches[$i]->setHour($time);
+                        $matches[$i]->setPitch($pitch);
+                        $matches[$i]->setUmpire($umpireFound);
+                        $scheduledMathes[$date][$j] = $matches[$i];
+                        $scheduleUmpire[$time][$j] = $umpireFound->getID();
+                        $j++;
+                    }
+                    else if($time == "morning")
+                        $pitch--;
+                    
+                }
+            }
+            $nb += count($scheduledMathes[$date]);
+            $date = $tournament->nextDate($date);
+            
+        }    
+        
+        for($i = 0;$i<count($matches);$i++)
+            $matches[$i]->saveMatch ($id);
+            //var_dump($matches);
+        echo "All the matches are scheduled !";
+        
+        //var_dump($matches);
+        /*do
         {
             $j = 0;
             $scheduledMathes[$date] = array(); 
@@ -85,7 +134,7 @@ if(isset($_GET['id']))
                             $matches[$i]->setPitch($pitch);
                         }
                        
-                        list($Y,$m,$d)=explode('-',date($date));
+                        /*list($Y,$m,$d)=explode('-',date($date));
                         for($k = 0;$i<count($umpire);$k++)
                         {
                             if(!in_array($umpire[$k], $scheduleUmpire))
@@ -113,12 +162,12 @@ if(isset($_GET['id']))
             $nb += count($scheduledMathes[$date]);
             $date = $tournament->nextDate($date);
         }
-        while ($nb < $numberOfMathes);
+        while ($nb < $numberOfMathes);*/
         //var_dump($matches);
-        for($i = 0;$i<count($matches);$i++)
-            $matches[$i]->saveMatch ($id);
-
-        echo "All the matches are scheduled !";
+        //for($i = 0;$i<count($matches);$i++)
+            //$matches[$i]->saveMatch ($id);
+            //var_dump($matches);
+        //echo "All the matches are scheduled !";
         
     } 
     catch (Exception $exc) 
@@ -192,7 +241,54 @@ else if(isset ($_GET['schedule']))
     }
 }
 
+function checkTeamAvailability($scheduledMatches,$match,$time)
+{
+    $availability = true;
+    for($i=0;$i<count($scheduledMatches);$i++)
+    {
+        if($scheduledMatches[$i]->getHour() == $time)
+        {
+            $team1 = $match->getTeam1();
+            $team2 = $match->getTeam2();
+            if($scheduledMatches[$i]->getTeam1() == $team1 || $scheduledMatches[$i]->getTeam2() == $team1 || $scheduledMatches[$i]->getTeam1() == $team2 || $scheduledMatches[$i]->getTeam2() == $team2)
+            {
+                $availability = false;
+                break;
+            }
+        }
+    }
+    return $availability;
+}
 
+function findUmpire($scheduledUmpire,$umpire,$time,$date)
+{
+    $umpireFound = false;
+    for($i=0;$i<count($umpire);$i++)
+    {
+        if(count($scheduledUmpire[$time]) >0)
+        {
+            if(!in_array($umpire[$i]->getID(), $scheduledUmpire[$time]))
+            {
+                list($Y,$m,$d)=explode('-',date($date));
+                if($umpire[$i]->is_available(Date("l", mktime(0,0,0,$m,$d,$Y)), $time))
+                {
+                    $umpireFound = $umpire[$i];
+                    break;
+                }
+            }
+        }
+        else
+        {
+            list($Y,$m,$d)=explode('-',date($date));
+            if($umpire[$i]->is_available(Date("l", mktime(0,0,0,$m,$d,$Y)), $time))
+            {
+                $umpireFound = $umpire[$i];
+                break;
+            }
+        }
+    }
+    return $umpireFound;
+}
 
 
 function lookinkForTeam($array,$match)

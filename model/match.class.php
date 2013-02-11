@@ -34,13 +34,13 @@ Class Match
        else if($this->hour == "afternoon")
            $time = "2pm";
        
-       $this->db->exec("INSERT INTO wattBall_matches(tournamentID,matchDate,matchTime,pitch,team1,team2,umpire) VALUES($tournamentID,'".$this->date."','$time',".$this->pitch.",
+       $this->db->exec("INSERT INTO wattball_matches(tournamentID,matchDate,matchTime,pitch,team1,team2,umpire) VALUES($tournamentID,'".$this->date."','$time',".$this->pitch.",
                 ".$this->team1->getTeamId().",".$this->team2->getTeamId().",".$this->umpire->getID().")");
     }
     
     public function getTeam1Info()
     {        
-        $result = $this->db->query("SELECT * FROM wattBall_team WHERE teamID = ".$this->team1);
+        $result = $this->db->query("SELECT * FROM wattball_team WHERE teamID = ".$this->team1);
         $data = $result->fetch();
         $team1 = new Team($this->db, $data['teamID']);
         $team1->getTeamInfo();
@@ -49,11 +49,23 @@ Class Match
     
     public function getTeam2Info()
     {        
-        $result = $this->db->query("SELECT * FROM wattBall_team WHERE teamID = ".$this->team2);
+        $result = $this->db->query("SELECT * FROM wattball_team WHERE teamID = ".$this->team2);
         $data = $result->fetch();
         $team2 = new Team($this->db, $data['teamID']);
         $team2->getTeamInfo();
         return $team2;
+    }
+    
+    public function getDateSQLFormat()
+    {
+        $result = $this->db->query("SELECT matchDate FROM wattball_matches WHERE matchID = ".$this->id);
+        $data = $result->fetch();
+        return $data['matchDate'];
+    }
+    
+    public function saveResult($team1Score , $team2Score)
+    {
+        $this->db->exec("INSERT INTO wattball_results(matchID,team1Score,team2Score) VALUES(".$this->id.",$team1Score,$team2Score)");
     }
     
     public function setId($id)

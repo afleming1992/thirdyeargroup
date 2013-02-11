@@ -1,6 +1,6 @@
 <fieldset>
 <legend>All Tournament</legend>
-        <table  class='table table-hover table-bordered'>
+        <table  class='table table-hover'>
                 <tr>
                <th>Name</th>
                <th>Start Date</th>

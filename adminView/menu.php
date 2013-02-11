@@ -8,7 +8,7 @@
             <li class="divider"></li>
             <li <?php if($pageName == "wattBallScheduling") echo "class='active'"; ?>><a href="index.php?adminPage=wattBallScheduling">Initiate WattBall Scheduling</a></li>
             <li>Initiate Hurdles Scheduling</li>
-            <li>Edit WattBall Schedule</li>
+            <li <?php if($pageName == "wattBallReScheduling") echo "class='active'"; ?>><a href="index.php?adminPage=wattBallReScheduling">Edit WattBall Scheduling</a></li>
             <li>Edit Hurdle Schedule</li>
             <li <?php if($pageName == "umpireManagement") echo "class='active'"; ?>><a href='index.php?adminPage=umpireManagement'>Umpire Management</a></li>
             <li>Update Performance Time</li>

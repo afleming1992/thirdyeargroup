@@ -1,4 +1,5 @@
 <script src="javascript/wattBall.js"> </script>
+
 <div class='span9 contentbox'>
     <h3 class="center">WattBall Schedule</h3>
     <?php
@@ -18,3 +19,6 @@
     </div>
 </div>
 </div>
+</div>
+</div>
+

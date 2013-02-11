@@ -95,21 +95,29 @@ $(document).ready(function()
         	});
         
         $(".btn-danger").live("click", function()
-            	{
-			        jQuery.ajax({
-			  		  type: 'GET',
-			  		  url: 'ajax/deleteUmpire.php',
-			  		  data: {
-			  		    id: $(this).attr('id')
-			  		  }, 
-			  		  success: function(data, textStatus, jqXHR) {
-			  			 $('#umpireList').html(data);
-			  		  },
-			  		  error: function(jqXHR, textStatus, errorThrown) {
-			  			  alert("Error during form validation, try later !");
-			  		  }
-			        });
-            	});
+        {
+            var id= $(this).attr('id');
+            $("#deleteUmpire").modal('show');            
+            $("#buttonDeleteUmpire").attr('umpireID',id);
+                        
+        });
+        
+        $("#buttonDeleteUmpire").click(function(){
+            jQuery.ajax({
+                        type: 'GET',
+                        url: 'ajax/deleteUmpire.php',
+                        data: {
+                          id: $("#buttonDeleteUmpire").attr('umpireID')
+                        }, 
+                        success: function(data, textStatus, jqXHR) {
+                               $("#deleteUmpire").modal('hide');  
+                               $('#umpireList').html(data);
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                                alert("Error during form validation, try later !");
+                        }
+              });
+        });
         
         $(".btn-warning").live("click", function()
             	{
