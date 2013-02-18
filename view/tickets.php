@@ -15,7 +15,7 @@
 				$row = 0;
 			}
 			?>
-			<a href=''>
+			<a href='?page=ticketPurchase&date=<?php echo $days[$i] ?>'>
 				<div class='span3 datebox'>
 					<center>
 					<?php
