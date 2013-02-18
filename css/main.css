@@ -26,6 +26,22 @@ table
 	padding:10px;
 }
 
+.datebox
+{
+	background-color:#FFFFFF;
+	border:1px #E5E5E5 solid;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+	padding:10px;
+	text-align:center;
+}
+
+.datebox:hover
+{
+	background-color:#AEEEFF;
+	cursor:pointer;
+}
+
 .home-info
 {
 	margin-left:-5px;

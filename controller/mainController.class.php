@@ -362,6 +362,29 @@ class MainController
             else if($pageName == "tickets")
             {
                     $_SESSION['section'] = "tickets";
+                    if($pageName == "tickets")
+                    {
+							$result = $this->db->query("SELECT * FROM tournament WHERE startDate > CURDATE() OR (startDate < CURDATE() AND endDate > CURDATE()) ORDER BY startDate ASC");
+							if($result == false)
+							{
+								$this->addBasicView();
+								require_once 'view/tickets_notournament.php';
+								require_once 'view/login.php';
+								$this->addFooterFile();
+								die();
+							}
+							$data = $result->fetch();
+							$this->tournament[0] = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose'], $this->db);
+							$days = array();
+							$days = $this->tournament[0]->GetDays();
+							$tournamentName = $this->tournament[0]->getName();
+							$this->addBasicView();
+							require_once 'view/'.$pageName.'.php';
+							require_once 'view/login.php';
+							$this->addFooterFile();
+							die();
+					}
+					
             }
               
                
