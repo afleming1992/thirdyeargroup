@@ -9,6 +9,12 @@
 		$row = 0;
 		for($i = 0;$i < count($days);$i++)
 		{
+			$result = $this->db->query("SELECT count(ticketID) AS total FROM ticket WHERE dateOfTicket = '".$days[$i]."'");
+			if($result != false)
+			{
+				$data = $result->fetch();
+			}
+			
 			if($row >= 4)
 			{
 				print("</div><br /><br /><div class='row-fluid'>");
@@ -20,6 +26,8 @@
 					<center>
 					<?php
 						echo date("D jS F Y", strtotime($days[$i]));
+						$ticketsRemaining = $capacity - $data['total'];
+						print("<br />Tickets Remaining :- ". $ticketsRemaining);
 					?>
 					</center>
 				</div>

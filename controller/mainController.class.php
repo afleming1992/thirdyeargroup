@@ -378,6 +378,11 @@ class MainController
 							$days = array();
 							$days = $this->tournament[0]->GetDays();
 							$tournamentName = $this->tournament[0]->getName();
+							
+							$capacityResult = $this->db->query("SELECT * FROM properties");
+							$capacityResult = $capacityResult->fetch();
+							$capacity = $capacityResult['ticketLimit'];
+							
 							$this->addBasicView();
 							require_once 'view/'.$pageName.'.php';
 							require_once 'view/login.php';
