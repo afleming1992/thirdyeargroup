@@ -38,6 +38,11 @@ table
     text-align: center;
 }
 
+#deleteUmpire {
+	width: 600px; 
+	margin: -250px 0 0 -300px;
+}
+
 .bordered
 {
     border: 1px #E5E5E5 solid;
