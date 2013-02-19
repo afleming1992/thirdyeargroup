@@ -31,11 +31,24 @@ class MainController
 	 */
 	public function loadHomePage()
 	{
-		$_SESSION['section'] = "home";
-		$this->addBasicView();
-		require_once 'view/login.php';
-		require_once 'view/home.php';
-		$this->addFooterFile();
+            
+            $result = $this->db->query("SELECT * FROM wattball_results r
+                                        JOIN wattball_matches m ON r.matchID = m.matchID
+                                        ORDER BY 1 DESC LIMIT 1");
+            
+            $data = $result->fetch();
+            if($data != FALSE)
+            {
+                $matchResult = new Result($data['resultID'], new Team($this->db , $data['team1']) , new Team($this->db , $data['team2']) , $data['team1Score'] , $data['team2Score'] , $this->db);
+                $matchResult->getTeamsInfo();
+                $matchResult->getGoals();
+            }            
+            
+            $_SESSION['section'] = "home";
+            $this->addBasicView();
+            require_once 'view/login.php';
+            require_once 'view/home.php';
+            $this->addFooterFile();
 	}
 	
 	/**
@@ -362,15 +375,12 @@ class MainController
             else if($pageName == "tickets")
             {
                     $_SESSION['section'] = "tickets";
-            }
-              
-               
-               
-              
-		$this->addBasicView();
-		require_once 'view/'.$pageName.'.php';
-                require_once 'view/login.php';
-		$this->addFooterFile();
+            } 
+                       
+            $this->addBasicView();
+            require_once 'view/'.$pageName.'.php';
+            require_once 'view/login.php';
+            $this->addFooterFile();
 	}
 	
 	/**
