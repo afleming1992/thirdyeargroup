@@ -282,6 +282,10 @@ class MainController
               {
 				  $_SESSION['section'] = "aboutus";
 			  }
+			  else if($pageName == "processHurdleRegistration")
+			  {
+			  		
+			  }			  
 			  else if($pageName == "menHurdles" || $pageName == "menHurdlesRegistration" || $pageName == "menHurdlesSchedule")
 			  {
 				  $_SESSION['section'] = "menhurdles";
@@ -336,9 +340,15 @@ class MainController
                 $this->addFooterFile();
                 die();
 			  }
-			  else if($pageName == "femaleHurdles")
+			  else if($pageName == "femaleHurdles" || $pageName == "femaleHurdlesRegistration")
 			  {
 				  $_SESSION['section'] = "femalehurdles";
+				  $this->addBasicView();
+                require_once 'view/femaleHurdleNav.php';
+                require_once 'view/'.$pageName.'.php';
+                require_once 'view/login.php';
+                $this->addFooterFile();
+                die();
 			  }
 			  else if($pageName == "tickets")
 			  {
