@@ -280,7 +280,7 @@ class MainController
                 else if($pageName == "wattBall" || $pageName == "wattBallScheduling" || $pageName == "wattBallRegistrationSuccess")
                 {
                     $_SESSION['section'] = "wattball";
-                    if($pageName == "wattBallScheduling");
+                    if($pageName == "wattBallScheduling")
                     {
                         $this->getWattBallTournament();
                         $allTournament = $this->tournament;
@@ -303,7 +303,23 @@ class MainController
                            $i++;
                         }
                     }
-                     $this->addBasicView();
+                    else if($pageName == "wattBall")
+                    {
+                        $result = $this->db->query("SELECT * FROM wattball_results r
+                                                    JOIN wattball_matches m ON r.matchID = m.matchID
+                                                    ORDER BY m.matchDate");
+            
+                        $data = $result->fetchAll();
+                        var_dump($data);
+                        if($data != FALSE)
+                        {
+                            //$matchResult = new Result($data['resultID'], new Team($this->db , $data['team1']) , new Team($this->db , $data['team2']) , $data['team1Score'] , $data['team2Score'] , $this->db);
+                            //$matchResult->getTeamsInfo();
+                            //$matchResult->getGoals();
+                        }
+                    }
+                    
+                    $this->addBasicView();
                     require_once 'view/wattBallNav.php';
                     require_once 'view/'.$pageName.'.php';
                     require_once 'view/login.php';
