@@ -9,7 +9,7 @@
                                             <?php 
                                             if($data != FALSE)
                                             {
-                                                echo "<a href='#'>";
+                                                echo "<a href='index.php?page=wattBall'>";
                                                 echo "<div style='font-weight:bold;text-align:center;'>".$matchResult->getTeam1()->getTeamName()." VS ".$matchResult->getTeam2()->getTeamName()."</div>";
                                                 echo "<p style='text-align:center'>".$matchResult->getTeam1Score()." - ".$matchResult->getTeam2Score()."</p>";
                                                 echo "</a>";

@@ -20,6 +20,7 @@ Class Result
     private $team2Score;
     private $team1Goals;
     private $team2Goals;
+    private $matchDate;
     /**
      *
      * @var Database 
@@ -80,6 +81,16 @@ Class Result
         
         
         
+    }
+    
+    public function setMatchDate($date)
+    {
+        $this->matchDate = $date;
+    }
+    
+    public function getMatchDate()
+    {
+        return $this->matchDate;
     }
     
     public function getTeam1()

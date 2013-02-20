@@ -305,17 +305,23 @@ class MainController
                     }
                     else if($pageName == "wattBall")
                     {
-                        $result = $this->db->query("SELECT * FROM wattball_results r
+                        $result = $this->db->query("SELECT *,DATE_FORMAT(m.matchDate,'%D %M %Y') AS date FROM wattball_results r
                                                     JOIN wattball_matches m ON r.matchID = m.matchID
-                                                    ORDER BY m.matchDate");
+                                                    ORDER BY m.matchDate DESC");
             
                         $data = $result->fetchAll();
-                        var_dump($data);
+                        $matchesResults = array();
+                        $i = 0;
                         if($data != FALSE)
                         {
-                            //$matchResult = new Result($data['resultID'], new Team($this->db , $data['team1']) , new Team($this->db , $data['team2']) , $data['team1Score'] , $data['team2Score'] , $this->db);
-                            //$matchResult->getTeamsInfo();
-                            //$matchResult->getGoals();
+                            foreach ($data as $d) 
+                            {
+                                $matchesResults[$i] = new Result($d['resultID'], new Team($this->db , $d['team1']) , new Team($this->db , $d['team2']) , $d['team1Score'] , $d['team2Score'] , $this->db);
+                                $matchesResults[$i]->getTeamsInfo();
+                                $matchesResults[$i]->getGoals();
+                                $matchesResults[$i]->setMatchDate($d['date']);
+                                $i++;
+                            }
                         }
                     }
                     
