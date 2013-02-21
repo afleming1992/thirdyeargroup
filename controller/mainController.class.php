@@ -9,7 +9,7 @@ class MainController
 {
 	/**
 	 * Object PDO for database connection, query ...
-	 * @var PDO
+	 * @var Database
 	 */
 	private $db;
 	
@@ -326,7 +326,21 @@ class MainController
                     }
                     else if($pageName == "teams")
                     {
-                        
+                        $result = $this->db->query("SELECT * FROM wattball_team");
+                        $data = $result->fetchAll();
+                        $teams = array();
+                        $i = 0;
+                        if($data != false)
+                        {
+                            foreach ($data as $d)
+                            {
+                                $teams[$i] = new Team($this->db, $d['teamID']);
+                                $teams[$i]->setContactName($d['contactName']);
+                                $teams[$i]->setTeamName($d['teamName']);
+                                $teams[$i]->setNwaNumber($d['NWANumber']);
+                                $i++;
+                            }
+                        }
                     }
                     
                     $this->addBasicView();
