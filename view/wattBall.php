@@ -6,6 +6,7 @@
             }
             else
             {
+                echo "<a class='pull-right' href='index.php?page=generalranking'>Go to Ranking <i class='icon-arrow-right'></i></a></br></br>";
                 $date = $matchesResults[0]->getMatchDate();
                 echo "<h3 class='text-info'>$date</h3>";
                 echo "<table class='table table-hover'>";
@@ -26,7 +27,7 @@
                             echo "<td>".$m->getTeam1()->getTeamName()."</td>";
                             echo "<td>".$m->getTeam1Score()." - ".$m->getTeam2Score()."</td>";
                             echo "<td>".$m->getTeam2()->getTeamName()."</td>";
-                            echo "<td><a href='index.php?result=".$m->getResultID()."' role='button' class='btn btn-small btn-info'>See details</a></td>";
+                            echo "<td><a href='index.php?result=".$m->getResultID()."' role='button' class='btn btn-small btn-info'>Match Details</a></td>";
                         echo "</tr>";
                     }
                     else
@@ -49,7 +50,7 @@
                             echo "<td>".$m->getTeam1()->getTeamName()."</td>";
                             echo "<td>".$m->getTeam1Score()." - ".$m->getTeam2Score()."</td>";
                             echo "<td>".$m->getTeam2()->getTeamName()."</td>";
-                            echo "<td><a href='index.php?result=".$m->getResultID()."' role='button' class='btn btn-small btn-info'>See details</a></td>";
+                            echo "<td><a href='index.php?result=".$m->getResultID()."' role='button' class='btn btn-small btn-info'>Match Details</a></td>";
                         echo "</tr>";
                       }
                 }

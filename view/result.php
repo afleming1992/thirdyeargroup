@@ -3,7 +3,7 @@
     <a href="index.php?page=wattBall"><i class="icon-arrow-left"></i> Back to the results</a>
     <h3 class='text-info center'><?php echo $matchResults->getTeam1()->getTeamName()." ".$matchResults->getTeam1Score()." - ".$matchResults->getTeam2Score()." ".$matchResults->getTeam2()->getTeamName();  ?></h3>
     <fieldset>
-        <legend>General Information</legend>        
+        <legend>Common Informations</legend>        
         <h5 class='text-info'><?php echo "Date: ".$matchResults->getMatchDate();  ?></h5>
         <h5 class='text-info'><?php echo "Hour: ".$time;  ?></h5>
         <h5 class='text-info'><?php echo "Pitch: ".$pitch;  ?></h5>

@@ -6,6 +6,7 @@
 		private $teamID;
 		private $playerName;
 		private $db;
+                private $numberOfGoal;
 		
 		/** --- CONSTRUCTORS --- **/
 		
@@ -58,12 +59,30 @@
 			}
 		}
                 
+                public function getNumberOfGoal()
+                {
+                    $result = $this->db->query("SELECT COUNT(*) AS nb FROM wattball_goals WHERE playerID =".$this->playerID);
+                    $data = $result->fetch();
+                    $this->numberOfGoal = $data['nb'];
+                }
+
+
                 public function saveGoals($matchID,$minute)
                 {
                     $this->db->exec("INSERT INTO wattball_goals(matchID,minute,playerID) VALUES($matchID,$minute,".$this->playerID.")");
                 }
                 
 		/** --- GETTERS AND SETTERS --- **/
+                
+                public function getGoal()
+		{
+			return $this->numberOfGoal;
+		}
+		
+		public function setGoal($number)
+		{
+			$this->numberOfGoal = $number;
+		}
 		
 		public function getPlayerID()
 		{

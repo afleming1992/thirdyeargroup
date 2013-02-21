@@ -2,16 +2,28 @@
 
 class Team
 {
-		private $teamID;
-		private $teamName;
-		private $tournamentID;
-		private $contactName;
-		private $contactNumber;
-		private $nwaNumber;
-		private $email;
-		private $db;
+        private $teamID;
+        private $teamName;
+        private $tournamentID;
+        private $contactName;
+        private $contactNumber;
+        private $nwaNumber;
+        private $email;
+        private $db;
+        
+        private $won;
+        private $lost;
+        private $drawn;
+        private $goalFor;
+        private $goalAgainst;
+        private $goalDifference;
+        private $matchPoint;
+        private $ranking;
+        
+        private $matchesDone;
+        private $comingMatches;
 
-	/*--- Constructor ---*/
+        /*--- Constructor ---*/
 	public function __construct($db, $teamID)
 	{
 		$this->setDb($db);
@@ -87,6 +99,20 @@ class Team
                 $i++;
             }
             return $players;
+        }
+        
+        public function getEvent()
+        {
+            $request = $this->db->query("SELECT * FROM wattball_matches WHERE matchDate < CURDATE() AND team1 =".$this->teamID." OR team2 =".$this->teamID);
+            $data = $request->fetchAll();
+            //foreach ()
+        }
+
+
+        public function getRanking()
+        {
+            $request = $this->db->query("SELECT * FROM wattball_ranking WHERE teamID = ".$this->teamID);
+            $data;
         }
 
 	/* ----- GETTERS AND SETTERS ----- */
