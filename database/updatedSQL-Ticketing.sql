@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 08, 2013 at 01:03 AM
+-- Generation Time: Feb 21, 2013 at 09:48 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -99,9 +99,17 @@ CREATE TABLE IF NOT EXISTS `properties` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `concessionPrice` double DEFAULT NULL,
   `adultPrice` double DEFAULT NULL,
+  `ticketLimit` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `properties`
+--
+
+INSERT INTO `properties` (`id`, `concessionPrice`, `adultPrice`, `ticketLimit`) VALUES
+(1, 3, 5, 1000);
 
 -- --------------------------------------------------------
 
@@ -134,15 +142,19 @@ CREATE TABLE IF NOT EXISTS `ticket` (
   `ticketID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `bookingID` bigint(20) unsigned NOT NULL,
   `methodOfSale` varchar(100) DEFAULT NULL,
-  `concessionNo` double DEFAULT NULL,
-  `adultNo` double DEFAULT NULL,
-  `cost` double DEFAULT NULL,
   `dateOfTicket` date DEFAULT NULL,
   `status` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`ticketID`),
   UNIQUE KEY `ticketID` (`ticketID`),
   KEY `fk_ticket_ticketsale` (`bookingID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `ticket`
+--
+
+INSERT INTO `ticket` (`ticketID`, `bookingID`, `methodOfSale`, `dateOfTicket`, `status`) VALUES
+(3, 1, 'postal', '2013-03-25', NULL);
 
 -- --------------------------------------------------------
 
@@ -160,10 +172,18 @@ CREATE TABLE IF NOT EXISTS `ticket_sales` (
   `city` varchar(100) DEFAULT NULL,
   `county` varchar(100) DEFAULT NULL,
   `postcode` varchar(10) DEFAULT NULL,
+  `transactionCost` double NOT NULL,
   PRIMARY KEY (`bookingID`),
   UNIQUE KEY `bookingID` (`bookingID`),
   KEY `fk_ticketsale_transaction` (`transactionID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `ticket_sales`
+--
+
+INSERT INTO `ticket_sales` (`bookingID`, `transactionID`, `name`, `email`, `address1`, `address2`, `city`, `county`, `postcode`, `transactionCost`) VALUES
+(1, 1, 'Andrew Fleming', 'ajf9@hw.ac.uk', '176 Redcraigs', NULL, 'Kirkcaldy', 'Fife', 'KY2 6UG', 0);
 
 -- --------------------------------------------------------
 
@@ -178,9 +198,17 @@ CREATE TABLE IF NOT EXISTS `tournament` (
   `endDate` date DEFAULT NULL,
   `registrationOpen` date DEFAULT NULL,
   `registrationClose` date DEFAULT NULL,
+  `type` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`tournamentID`),
   UNIQUE KEY `tournamentID` (`tournamentID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `tournament`
+--
+
+INSERT INTO `tournament` (`tournamentID`, `name`, `startDate`, `endDate`, `registrationOpen`, `registrationClose`, `type`) VALUES
+(2, 'Annual Tournament', '2013-03-25', '2013-04-07', '2013-02-10', '2013-03-31', NULL);
 
 -- --------------------------------------------------------
 
@@ -197,7 +225,14 @@ CREATE TABLE IF NOT EXISTS `transaction` (
   `validUntil` date DEFAULT NULL,
   PRIMARY KEY (`transactionID`),
   UNIQUE KEY `transactionID` (`transactionID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `transaction`
+--
+
+INSERT INTO `transaction` (`transactionID`, `cardNumber`, `cscNumber`, `issueNo`, `cardType`, `validUntil`) VALUES
+(1, '202', 202, 1, 'Visa', '2019-02-28');
 
 -- --------------------------------------------------------
 
@@ -225,7 +260,14 @@ CREATE TABLE IF NOT EXISTS `umpire` (
   `sunAfternoon` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`umpireID`),
   UNIQUE KEY `umpireID` (`umpireID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `umpire`
+--
+
+INSERT INTO `umpire` (`umpireID`, `umpireName`, `umpireEmail`, `monMorning`, `monAfternoon`, `tuesMorning`, `tuesAfternoon`, `wedMorning`, `wedAfternoon`, `thursMorning`, `thursAfternoon`, `friMorning`, `friAfternoon`, `satMorning`, `satAfternoon`, `sunMorning`, `sunAfternoon`) VALUES
+(1, 'Andrew Fleming', 'ajf9@hw.ac.uk', 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -280,7 +322,46 @@ CREATE TABLE IF NOT EXISTS `wattball_players` (
   PRIMARY KEY (`playerID`),
   UNIQUE KEY `playerID` (`playerID`),
   KEY `fk_wattballplayers_wattballteam` (`teamID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=156 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=89 ;
+
+--
+-- Dumping data for table `wattball_players`
+--
+
+INSERT INTO `wattball_players` (`playerID`, `teamID`, `playerName`) VALUES
+(1, 1, '1\r'),
+(2, 1, '2\r'),
+(3, 1, '3\r'),
+(4, 1, '4\r'),
+(5, 1, '5\r'),
+(6, 1, '6\r'),
+(7, 1, '7\r'),
+(8, 1, '8\r'),
+(9, 1, '9\r'),
+(10, 1, '10\r'),
+(11, 1, '11'),
+(12, 2, '1\r'),
+(13, 2, '2\r'),
+(14, 2, '3\r'),
+(15, 2, '4\r'),
+(16, 2, '5\r'),
+(17, 2, '6\r'),
+(18, 2, '7\r'),
+(19, 2, '8\r'),
+(20, 2, '9\r'),
+(21, 2, '10\r'),
+(22, 2, '11'),
+(78, 3, '1\r'),
+(79, 3, '2\r'),
+(80, 3, '3\r'),
+(81, 3, '4\r'),
+(82, 3, '5\r'),
+(83, 3, '6\r'),
+(84, 3, '7\r'),
+(85, 3, '8\r'),
+(86, 3, '9\r'),
+(87, 3, '10\r'),
+(88, 3, '11');
 
 -- --------------------------------------------------------
 
@@ -335,7 +416,16 @@ CREATE TABLE IF NOT EXISTS `wattball_team` (
   `email` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`teamID`),
   UNIQUE KEY `teamID` (`teamID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `wattball_team`
+--
+
+INSERT INTO `wattball_team` (`teamID`, `tournamentID`, `teamName`, `contactName`, `contactNumber`, `NWANumber`, `email`) VALUES
+(1, 1, 'Team 1', 'Andrew Fleming', '07981473282', '521521A', 'ajf9@hw.ac.uk'),
+(2, 1, 'Team 2', 'Andrew Fleming', '07981473282', '521521A', 'ajf9@hw.ac.uk'),
+(3, 1, 'Team 3', 'Jack', '08596252525', '521521A', 'zechtech@hotmail.co.uk');
 
 --
 -- Constraints for dumped tables
