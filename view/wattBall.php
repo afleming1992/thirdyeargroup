@@ -23,10 +23,10 @@
                     if($date == $m->getMatchDate())
                     {
                         echo "<tr>";
-                            echo "<th>".$m->getTeam1()->getTeamName()."</th>";
-                            echo "<th>".$m->getTeam1Score()." - ".$m->getTeam2Score()."</th>";
-                            echo "<th>".$m->getTeam2()->getTeamName()."</th>";
-                            echo "<th><button class='btn btn-small btn-info' type='button'>See details</button></th>";
+                            echo "<td>".$m->getTeam1()->getTeamName()."</td>";
+                            echo "<td>".$m->getTeam1Score()." - ".$m->getTeam2Score()."</td>";
+                            echo "<td>".$m->getTeam2()->getTeamName()."</td>";
+                            echo "<td><a href='index.php?result=".$m->getResultID()."' role='button' class='btn btn-small btn-info'>See details</a></td>";
                         echo "</tr>";
                     }
                     else
@@ -46,13 +46,12 @@
                         echo "</thead>";
                         echo "<tbody>";
                         echo "<tr>";
-                            echo "<th>".$m->getTeam1()->getTeamName()."</th>";
-                            echo "<th>".$m->getTeam1Score()." - ".$m->getTeam2Score()."</th>";
-                            echo "<th>".$m->getTeam2()->getTeamName()."</th>";
-                            echo "<th><button class='btn btn-small btn-info' type='button'>See details</button></th>";
+                            echo "<td>".$m->getTeam1()->getTeamName()."</td>";
+                            echo "<td>".$m->getTeam1Score()." - ".$m->getTeam2Score()."</td>";
+                            echo "<td>".$m->getTeam2()->getTeamName()."</td>";
+                            echo "<td><a href='index.php?result=".$m->getResultID()."' role='button' class='btn btn-small btn-info'>See details</a></td>";
                         echo "</tr>";
-                        
-                    }
+                      }
                 }
                 echo "</tbody>";
                 echo "</table>";

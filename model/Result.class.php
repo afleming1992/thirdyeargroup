@@ -59,18 +59,20 @@ Class Result
         $j = 0;
         while($data = $result->fetch())
         {
-            if($data['team1'] == $this->team1->getTeamId())
+            if($data['teamID'] == $this->team1->getTeamId())
             {
                 $this->team1Goals[$i] = array(
                     "player" => $data['playerName'],
+                    "playerID" => $data['playerID'],
                     "minute" => $data['minute']
                 );
                 $i++;
             }
-            else if($data['team2'] == $this->team2->getTeamId())
+            else if($data['teamID'] == $this->team2->getTeamId())
             {
                 $this->team2Goals[$j] = array(
                     "player" => $data['playerName'],
+                    "playerID" => $data['playerID'],
                     "minute" => $data['minute']
                 );
                 $j++;
@@ -81,6 +83,11 @@ Class Result
         
         
         
+    }
+    
+    public function getResultID()
+    {
+        return $this->id;
     }
     
     public function setMatchDate($date)
@@ -111,6 +118,16 @@ Class Result
     public function getTeam2Score()
     {
         return $this->team2Score;
+    }
+    
+    public function getTeam1Goals()
+    {
+        return $this->team1Goals;
+    }
+    
+    public function getTeam2Goals()
+    {
+        return $this->team2Goals;
     }
 }
 

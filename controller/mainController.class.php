@@ -34,7 +34,7 @@ class MainController
             
             $result = $this->db->query("SELECT * FROM wattball_results r
                                         JOIN wattball_matches m ON r.matchID = m.matchID
-                                        ORDER BY 1 DESC LIMIT 1");
+                                        ORDER BY matchDate DESC LIMIT 1");
             
             $data = $result->fetch();
             if($data != FALSE)
@@ -277,7 +277,7 @@ class MainController
                         
                     }
                 }
-                else if($pageName == "wattBall" || $pageName == "wattBallScheduling" || $pageName == "wattBallRegistrationSuccess")
+                else if($pageName == "wattBall" || $pageName == "wattBallScheduling" || $pageName == "wattBallRegistrationSuccess" || $pageName == "teams")
                 {
                     $_SESSION['section'] = "wattball";
                     if($pageName == "wattBallScheduling")
@@ -323,6 +323,10 @@ class MainController
                                 $i++;
                             }
                         }
+                    }
+                    else if($pageName == "teams")
+                    {
+                        
                     }
                     
                     $this->addBasicView();
@@ -397,13 +401,37 @@ class MainController
             else if($pageName == "tickets")
             {
                     $_SESSION['section'] = "tickets";
-            } 
+            }
                        
             $this->addBasicView();
             require_once 'view/'.$pageName.'.php';
             require_once 'view/login.php';
             $this->addFooterFile();
 	}
+        
+        public function loadResultPage($id)
+        {
+            $_SESSION['section'] = "wattball";
+            $result = $this->db->query("SELECT *,DATE_FORMAT(m.matchDate,'%D %M %Y') AS date FROM wattball_results r
+                                        JOIN wattball_matches m ON r.matchID = m.matchID
+                                        JOIN umpire u ON m.umpire = u.umpireID
+                                        WHERE resultID = $id");            
+            $data = $result->fetch();
+            $matchResults = new Result($data['resultID'], new Team($this->db , $data['team1']) , new Team($this->db , $data['team2']) , $data['team1Score'] , $data['team2Score'] , $this->db);
+            $umpire = new Umpire($data['umpireID'], $data['umpireName'], $data['umpireEmail'], null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            $time = $data['matchTime'];
+            $pitch = $data['pitch'];
+            $matchResults->getTeamsInfo();
+            $matchResults->getGoals();
+            $matchResults->setMatchDate($data['date']);
+            
+            $pageName = 'wattBall';
+            $this->addBasicView();
+            require_once 'view/wattBallNav.php';
+            require_once 'view/result.php';
+            require_once 'view/login.php';
+            $this->addFooterFile();
+        }
 	
 	/**
 	 * search in the database all tournament and put in an array

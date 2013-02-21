@@ -10,5 +10,8 @@
           <li <?php if($pageName == 'wattBallRegistration'){ echo "class='active'";}  ?>>
                   <a href="?page=wattBallRegistration">Register for Tournament</a>
           </li>
+          <li <?php if($pageName == 'teams'){ echo "class='active'";}  ?>>
+                  <a href="?page=teams">Teams</a>
+          </li>
         </ul>
     </div>
