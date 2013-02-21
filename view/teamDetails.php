@@ -4,7 +4,15 @@
     <h3 class="text-info center"><?php echo $team->getTeamName(); ?></h3>
     <fieldset>
         <legend>Common informations</legend>
-        
+        <p class='text-info'>Contact Name: <?php echo $team->getContactName(); ?></p>
+        <p class='text-info'>NWA Number: <?php echo $team->getNWANumber(); ?></p>
+        <p class='text-info'>Played Matches: <?php echo count($team->getMatchesDone()); ?></p>
+        <p class='text-info'>Upcoming Matches: <?php echo count($team->getComingMatches()); ?></p>
+        <a  href="index.php?nextmatches=<?php echo $team->getTeamID(); ?>" role='button' class='btn btn-medium btn-info'>Team Matches</a>
+    </fieldset>
+    </br>
+    <fieldset>
+        <legend>Ranking</legend>
     </fieldset>
     
     <fieldset>

@@ -454,18 +454,8 @@ class MainController
             $team = new Team($this->db, $teamID);
             $team->getTeamInfo();
             $team->getEvent();
-            $result = $this->db->query("SELECT * FROM wattball_players WHERE teamID = $teamID");
-            $i = 0;
-            $players = array();
-            
-            while($data = $result->fetch())
-            {
-                $players[$i] = new Player($this->db);
-                $players[$i]->setPlayerName($data['playerName']);
-                $players[$i]->setPlayerID($data['playerID']);
-                $players[$i]->getNumberOfGoal();
-                $i++;                
-            }
+            $players = $team->getPlayersInfo();
+
             $this->addBasicView();
             require_once 'view/wattBallNav.php';
             require_once 'view/teamDetails.php';

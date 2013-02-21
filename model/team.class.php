@@ -11,6 +11,8 @@ class Team
         private $email;
         private $db;
         
+        private $players;
+        
         private $won;
         private $lost;
         private $drawn;
@@ -95,28 +97,80 @@ class Team
                 $players[$i]->setPlayerID($data['playerID']);
                 $players[$i]->setPlayerName($data['playerName']);
                 $players[$i]->setTeamID($data['teamID']);
-                
+                $players[$i]->getNumberOfGoal();
                 $i++;
             }
+            $this->players = $players;
             return $players;
         }
         
         public function getEvent()
         {
-            $request = $this->db->query("SELECT * FROM wattball_matches WHERE matchDate < CURDATE() AND team1 =".$this->teamID." OR team2 =".$this->teamID);
+            $request = $this->db->query("SELECT * FROM wattball_matches WHERE matchDate < CURDATE() AND (team1 =".$this->teamID." OR team2 =".$this->teamID.")");
             $data = $request->fetchAll();
-            //foreach ()
+            $this->matchesDone = array();
+            $i = 0;
+            if($data != FALSE)
+            {
+                foreach($data as $d)
+                {
+                    $this->matchesDone[$i] = new Match($d['matchID'], $d['team1'], $d['team2'], $d['matchDate'], $d['matchTime'], $d['pitch'], $d['umpire'], $this->db);
+                    $i++;
+                }
+            }
+            
+            $request2 = $this->db->query("SELECT * FROM wattball_matches WHERE matchDate > CURDATE() AND (team1 =".$this->teamID." OR team2 =".$this->teamID.")");
+            $data2 = $request2->fetchAll();
+            $this->comingMatches = array();
+            $j = 0;
+            if($data2 != FALSE)
+            {
+                foreach($data2 as $d2)
+                {
+                    $this->comingMatches[$i] = new Match($d2['matchID'], $d2['team1'], $d2['team2'], $d2['matchDate'], $d2['matchTime'], $d2['pitch'], $d2['umpire'], $this->db);
+                    $j++;
+                }
+            }
         }
 
 
         public function getRanking()
         {
             $request = $this->db->query("SELECT * FROM wattball_ranking WHERE teamID = ".$this->teamID);
-            $data;
+            $data = $request->fetch();
+            $this->won = $data['won'];
+            $this->lost = $data['lost'];
+            $this->drawn = $data['drawn'];
+            $this->matchPoint = $data['matchPoint'];
+            $this->goalFor = $data['goalFor'];
+            $this->goalAgainst = $data['goalAgainst'];
+            $this->goalDifference = $data['goalDifference'];            
         }
+        
+        
 
 	/* ----- GETTERS AND SETTERS ----- */
+        
+        public function getMatchesDone()
+	{
+                return $this->matchesDone;
+	}
 
+	public function setMatchesDone($matches)
+	{
+		$this->matchesDone = $matches;
+	}
+        
+        public function getComingMatches()
+	{
+                return $this->comingMatches;
+	}
+
+	public function setComingMatches($matches)
+	{
+		$this->comingMatches = $matches;
+	}
+        
 	public function getTeamId()
 	{
 			return $this->teamID;
