@@ -26,11 +26,17 @@ class Ranking
     public function ranking()
     {
         $result = $this->db->query("SELECT * FROM wattball_ranking r
+                                    JOIN wattball_team t on t.teamID = r.teamID
                                     ORDER BY goalDifference DESC , matchPoint DESC");
         $i = 0;
         while($data = $result->fetch())
         {
             $this->teams[$i] = new Team($this->db, $data['teamID']);
+            $this->teams[$i]->setDrawn($data['drawn']);
+            $this->teams[$i]->setWon($data['won']);
+            $this->teams[$i]->setLost($data['lost']);
+            $this->teams[$i]->setTeamName($data['teamName']);
+            $this->teams[$i]->setMatchPoint($data['matchPoint']);
             $i++;
         }
     }

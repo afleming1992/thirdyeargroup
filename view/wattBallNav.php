@@ -13,5 +13,8 @@
           <li <?php if($pageName == 'teams'){ echo "class='active'";}  ?>>
                   <a href="?page=teams">Teams</a>
           </li>
+          <li <?php if($pageName == 'ranking'){ echo "class='active'";}  ?>>
+                  <a href="?page=ranking">Ranking</a>
+          </li>
         </ul>
     </div>

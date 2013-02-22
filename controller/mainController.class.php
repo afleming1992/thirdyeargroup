@@ -277,7 +277,7 @@ class MainController
                         
                     }
                 }
-                else if($pageName == "wattBall" || $pageName == "wattBallScheduling" || $pageName == "wattBallRegistrationSuccess" || $pageName == "teams")
+                else if($pageName == "wattBall" || $pageName == "wattBallScheduling" || $pageName == "wattBallRegistrationSuccess" || $pageName == "teams" || $pageName == "ranking")
                 {
                     $_SESSION['section'] = "wattball";
                     if($pageName == "wattBallScheduling")
@@ -341,6 +341,13 @@ class MainController
                                 $i++;
                             }
                         }
+                    }          
+                    else if($pageName == "ranking")
+                    {
+                        $_SESSION['section'] = "wattball";
+                        $ranking = new Ranking($this->db);
+                        $ranking->ranking();
+                        $teams = $ranking->getTeams();
                     }
                     
                     $this->addBasicView();
@@ -415,7 +422,7 @@ class MainController
             else if($pageName == "tickets")
             {
                     $_SESSION['section'] = "tickets";
-            }
+            }            
                        
             $this->addBasicView();
             require_once 'view/'.$pageName.'.php';

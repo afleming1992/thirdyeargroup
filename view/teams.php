@@ -5,7 +5,8 @@
         else
         {            
         ?>
-            <a class="pull-right" href="index.php?page=globalranking">Go to Ranking <i class="icon-arrow-right"></i></a></br></br>
+            <a class="pull-right" href="index.php?page=ranking">Go to Ranking <i class="icon-arrow-right"></i></a></br></br>
+            <h3 class="center">WattBall Teams</h3>
             <table class="table table-hover">
                 <thead>
                   <tr>

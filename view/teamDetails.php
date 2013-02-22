@@ -1,4 +1,3 @@
-<script src="javascript/teamDetails.js"></script>
 <div class='span9 contentbox'>
     
     <a href="index.php?page=teams"><i class="icon-arrow-left"></i> Back to the Teams</a></br></br>
@@ -14,7 +13,7 @@
     </br>
     <fieldset>
         <legend>Ranking</legend>
-            <a class="pull-right" href="index.php?page=globalRanking">Go to Gloabal Ranking <i class="icon-arrow-right"></i> </a></br></br>
+            <a class="pull-right" href="index.php?page=ranking">Go to Gloabal Ranking <i class="icon-arrow-right"></i> </a></br></br>
             <?php
             if(!$isRanking)
                 echo "<div class='alert alert-block'><p>No Ranking</p></br>";
