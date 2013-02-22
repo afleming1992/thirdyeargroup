@@ -20,11 +20,12 @@ class Team
         private $goalAgainst;
         private $goalDifference;
         private $matchPoint;
-        private $ranking;
+        private $teamranking;
         
         private $matchesDone;
         private $comingMatches;
 
+        
         /*--- Constructor ---*/
 	public function __construct($db, $teamID)
 	{
@@ -33,10 +34,8 @@ class Team
 		$this->players = array();
 	}
 
-	/*--- Method Calls ---*/
-
 	// Add New Team
-	
+        
 	public function addTeamInfo()
 	{
 		$result = $this->db->query("INSERT INTO wattball_team VALUES ('0','$this->tournamentID','$this->teamName','$this->contactName','$this->contactNumber','$this->nwaNumber','$this->email')");
@@ -136,20 +135,99 @@ class Team
 
         public function getRanking()
         {
-            $request = $this->db->query("SELECT * FROM wattball_ranking WHERE teamID = ".$this->teamID);
+            $request = $this->db->query("SELECT * FROM wattball_ranking WHERE teamID = ".$this->teamID);           
             $data = $request->fetch();
-            $this->won = $data['won'];
-            $this->lost = $data['lost'];
-            $this->drawn = $data['drawn'];
-            $this->matchPoint = $data['matchPoint'];
-            $this->goalFor = $data['goalFor'];
-            $this->goalAgainst = $data['goalAgainst'];
-            $this->goalDifference = $data['goalDifference'];            
-        }
-        
-        
+            if($data != FALSE)
+            {
+                $this->won = $data['won'];
+                $this->lost = $data['lost'];
+                $this->drawn = $data['drawn'];
+                $this->matchPoint = $data['matchPoint'];
+                $this->goalFor = $data['goalsFor'];
+                $this->goalAgainst = $data['goalsAgainst'];
+                $this->goalDifference = $data['goalDifference'];
+                $r = new Ranking($this->db);
+                $r->ranking();
+                $this->teamranking = $r->getRanking($this->teamID);
+                return TRUE;
+            }
+            else
+                return FALSE;
+        }        
 
 	/* ----- GETTERS AND SETTERS ----- */
+        
+        public function getTeamranking() {
+            return $this->teamranking;
+        }
+
+        public function setTeamranking($Teamranking) {
+            $this->teamranking = $Teamranking;
+        }
+        
+        public function getPlayers() {
+            return $this->players;
+        }
+
+        public function setPlayers($players) {
+            $this->players = $players;
+        }
+
+        public function getWon() {
+            return $this->won;
+        }
+
+        public function setWon($won) {
+            $this->won = $won;
+        }
+
+        public function getLost() {
+            return $this->lost;
+        }
+
+        public function setLost($lost) {
+            $this->lost = $lost;
+        }
+
+        public function getDrawn() {
+            return $this->drawn;
+        }
+
+        public function setDrawn($drawn) {
+            $this->drawn = $drawn;
+        }
+
+        public function getGoalFor() {
+            return $this->goalFor;
+        }
+
+        public function setGoalFor($goalFor) {
+            $this->goalFor = $goalFor;
+        }
+
+        public function getGoalAgainst() {
+            return $this->goalAgainst;
+        }
+
+        public function setGoalAgainst($goalAgainst) {
+            $this->goalAgainst = $goalAgainst;
+        }
+
+        public function getGoalDifference() {
+            return $this->goalDifference;
+        }
+
+        public function setGoalDifference($goalDifference) {
+            $this->goalDifference = $goalDifference;
+        }
+
+        public function getMatchPoint() {
+            return $this->matchPoint;
+        }
+
+        public function setMatchPoint($matchPoint) {
+            $this->matchPoint = $matchPoint;
+        }
         
         public function getMatchesDone()
 	{

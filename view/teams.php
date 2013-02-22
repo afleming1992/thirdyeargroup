@@ -5,7 +5,7 @@
         else
         {            
         ?>
-            <a class="pull-right" href="index.php?page=generalranking">Go to Ranking <i class="icon-arrow-right"></i></a></br></br>
+            <a class="pull-right" href="index.php?page=globalranking">Go to Ranking <i class="icon-arrow-right"></i></a></br></br>
             <table class="table table-hover">
                 <thead>
                   <tr>

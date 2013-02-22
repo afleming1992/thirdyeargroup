@@ -1,3 +1,4 @@
+<script src="javascript/teamDetails.js"></script>
 <div class='span9 contentbox'>
     
     <a href="index.php?page=teams"><i class="icon-arrow-left"></i> Back to the Teams</a></br></br>
@@ -13,11 +14,49 @@
     </br>
     <fieldset>
         <legend>Ranking</legend>
+            <a class="pull-right" href="index.php?page=globalRanking">Go to Gloabal Ranking <i class="icon-arrow-right"></i> </a></br></br>
+            <?php
+            if(!$isRanking)
+                echo "<div class='alert alert-block'><p>No Ranking</p></br>";
+            else
+            {?>
+                <table class="table table-condensed">
+                    <thead>
+                        <tr>
+                            <th colspan="3"><p class="center">Match</p></th>
+                            <th colspan="2"><p class="center">Goals</p></th>
+                        </tr>
+                        <tr>
+                            <th>Won</th>
+                            <th>Lost</th>
+                            <th>Drawn</th>
+                            <th>For</th>
+                            <th>Against</th>
+                            <th>Match Point</th>
+                            <th>Goal difference</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><?php echo $team->getWon(); ?></td>
+                            <td><?php echo $team->getLost(); ?></td>
+                            <td><?php echo $team->getDrawn(); ?></td>
+                            <td><?php echo $team->getGoalFor(); ?></td>
+                            <td><?php echo $team->getGoalAgainst(); ?></td>
+                            <td><?php echo $team->getMatchPoint(); ?></td>
+                            <td><?php echo $team->getGoalDifference(); ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class='text-info'>Ranking: <?php echo $team->getTeamRanking(); ?></p>
+            <?php
+            }
+            ?>
     </fieldset>
     
     <fieldset>
         <legend>Players</legend>    
-        <table class='table table-striped'>
+        <table class='table table-striped table-condensed'>
             <thead>
                 <tr>
                     <th>Name</th>

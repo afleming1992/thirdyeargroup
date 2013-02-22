@@ -23,7 +23,7 @@
         }
         else 
         {
-            echo "This tournament is already scheduled</br>";
+            echo "<div class='alert alert-block'><p>This tournament is already scheduled</p></br>";
         }
       ?>
     </fieldset>

@@ -455,6 +455,7 @@ class MainController
             $team->getTeamInfo();
             $team->getEvent();
             $players = $team->getPlayersInfo();
+            $isRanking = $team->getRanking();
 
             $this->addBasicView();
             require_once 'view/wattBallNav.php';
