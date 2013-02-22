@@ -2,37 +2,54 @@
 <div class='span9 contentbox'>
 
 <form id="frmContact" name="frmContact" method="post" action="successTest.php">
-          
-          <fieldset id="personalInfo">
+        <fieldset id="personalInfo">
             <legend><strong>Personal Information</strong></legend>
-        	
-        	<p><font color="red"><span id="nameerror"</span></font></p>
-            <p><font color="red"><span id="emailerror"</span></font></p>
-            <p><font color="red"><span id="date"</span></font></p>
-            
-            <p>
+        	<p>
               <label for="firstname">*First Name: </label>
               <input name="firstname" type="text" class="text" id="firstname" tabindex="100" />
+              <p><font color="red"><span id="nameerror"</span></font></p>
             </p>
             <p>
               <label for="lastname">*Last Name: </label>
               <input name="lastname" type="text" class="text" id="lastname" tabindex="100" />
+              <p><font color="red"><span id="lastnameerror"</span></font></p>
             </p>
             <p>
               <label for="dob">*Date of Birth: </label>
               <input name="dob" class="text" id="dob" tabindex="100" />
+              <p><font color="red"><span id="date"</span></font></p>
             </p>
             <p>
-              <label for="address">*Address: </label>
-              <input name="address" type="text" class="text" id="address" tabindex="140" />
+            <hr>
+              <label for="addressone">*House No: </label>
+              <input name="addressone" type="text" class="text" id="addressone" tabindex="140" />
+              <p><font color="red"><span id="erroraddressone"</span></font></p>
             </p>
+            <p>
+              <label for="addresstwo">*Street Name: </label>
+              <input name="addresstwo" type="text" class="text" id="addresstwo" tabindex="140" />
+              <p><font color="red"><span id="erroraddresstwo"</span></font></p>
+            </p>
+            <p>
+              <label for="city">*City: </label>
+              <input name="city" type="text" class="text" id="city" tabindex="140" />
+              <p><font color="red"><span id="errorcity"</span></font></p>
+            </p>
+            <p>
+              <label for="postcode">*Postcode: </label>
+              <input name="postcode" type="text" class="text" id="postcode" tabindex="140" />
+              <p><font color="red"><span id="errorpostcode"</span></font></p>
+            </p>
+            <hr>
             <p>
               <label for="emailcheck">*Email: </label>
               <input name="emailcheck" type="text" class="text" id="email" tabindex="110" />
+              <p><font color="red"><span id="emailerror"</span></font></p>
             </p>
             <p>
               <label for="phone">*Emergency Contact Number: </label>
               <input name="emcontact" type="text" class="text" id="emcontact" tabindex="130" />
+              <p><font color="red"><span id="emcontacterror"</span></font></p>
             </p>
             <p>
               <label for="phone">Performance Time: </label>

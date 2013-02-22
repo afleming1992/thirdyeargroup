@@ -2,10 +2,8 @@ $(document).ready(function(){
 
 // handle the form submit event
 function emailCheck() {
-	document.getElementById("frmContact").onsubmit = function() {
-		// prevent a form from submitting if no email.
 	
-	var x = document.forms["frmContact"]["email"].value;
+	var x = document.getElementById("email").value;
 	var atpos = x.indexOf("@"); 
 	//The indexOf() method returns the position of the first occurrence of a specified value in a string.
 	var dotpos = x.lastIndexOf(".");
@@ -22,30 +20,72 @@ if (atpos<1 || dotpos<atpos+2 || dotpos+2>=x.length || x == "")
 	return false;
 		} else {
 			// reset and allow the form to submit
+			document.getElementById("emailerror").innerHTML = "";
 			return true;
 		}
-    };
+    
 }
 
-
-
 function firstnameCheck() {
-	document.getElementById("frmContact").onsubmit = function() {
-	var y = document.forms["frmContact"]["firstname"].value;
-	var reg = /[A-Za-z]/;
-	if(y == "")  {
-		document.getElementById("nameerror").innerHTML = "Please provide a valid name!";
+	
+	var firstName = document.getElementById("firstname").value;
+	var reg = /^([A-z]{2,30})$/;
+	if(reg.test(firstName) == false)  {
+		document.getElementById("nameerror").innerHTML = "Please provide a valid first name!";
 		return false;
 	} else {
+		document.getElementById("nameerror").innerHTML = "";
 		return true;
 			}
-		};
+		
 	}
+function lastnameCheck() {
+	
+	var lastName = document.getElementById("lastname").value;
+	var reg = /^([A-z]{2,30})$/;
+	if(reg.test(lastName) == false)  {
+		document.getElementById("lastnameerror").innerHTML = "Please provide a valid last name!";
+		return false;
+	} else {
+		document.getElementById("lastnameerror").innerHTML = "";
+		return true;
+			}
+		
+	}
+	
+function contactNumberCheck() {
+	
+	var contactNumber = document.getElementById("emcontact").value;
+	var reg = /^([0-9]{11})$/;
+	if(reg.test(contactNumber) == false)  {
+		document.getElementById("emcontacterror").innerHTML = "Please provide a valid contact number!";
+		return false;
+	} else {
+		document.getElementById("emcontacterror").innerHTML = "";
+		return true;
+	} 
+		
+}
+
+function addressCheck() {
+	
+	var getAddress = document.getElementById("address").value;
+	var regNo = /^([0-9]{1,3})$/;
+	if(reg.test(contactNumber) == false)  {
+		document.getElementById("erroraddress").innerHTML = "Please provide a valid contact number!";
+		return false;
+	} else {
+		document.getElementById("erroraddress").innerHTML = "";
+		return true;
+	} 
+		
+}
 
 function calculateAge() {
 
-
+	
 	var birthday = document.getElementById("dob").value;
+	var birthdayEdit = birthday.replace(/\//g,'-');
 	var today = new Date();
     var birthDate = new Date(birthday);
     var age = today.getFullYear() - birthDate.getFullYear();
@@ -53,25 +93,33 @@ function calculateAge() {
     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
         age--;
 }  
-	if (birthday == "") {
-		document.getElementById("date").innerHTML = "Invalid";
+	if (birthdayEdit == "" || age < 16) {
+		document.getElementById("date").innerHTML = "Please provide a valid date of birth. Entrants must be 16 or over";
 		return false;
 }
 	else {
+		document.getElementById("date").innerHTML = "";
 		return true;
 		}
-	//document.getElementById("demo").innerHTML = age;
 }
 
 $('#frmContact').submit(function(){
 	var age = calculateAge();
 	var email = emailCheck();
-	var name = firstnameCheck();
-	
-	if(age == true && email == true && name == true) 
+	var firstName = firstnameCheck();
+	var lastName = lastnameCheck();
+	var contactNo = contactNumberCheck();
+	alert('age:'+age+'email'+email+'name'+firstName+'name'+lastName+'number'+contactNo);
+	if(age == true && email == true && firstName == true && lastName == true && contactNo == true) 
+	{
+		
 		return true;
+	}
 	else
-		return false; 
+	{	
+	alert('Validation Unsuccessful');
+	return false;
+	}	
 });
 
  $( "#dob" ).datepicker({
