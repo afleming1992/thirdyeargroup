@@ -21,14 +21,14 @@
             </p>
             <p>
             <hr>
-              <label for="addressone">*House No: </label>
-              <input name="addressone" type="text" class="text" id="addressone" tabindex="140" />
-              <p><font color="red"><span id="erroraddressone"</span></font></p>
+              <label for="housenumber">*House No: </label>
+              <input name="housenumber" type="text" class="text" id="housenumber" tabindex="140" />
+              <p><font color="red"><span id="errorhousenumber"</span></font></p>
             </p>
             <p>
-              <label for="addresstwo">*Street Name: </label>
-              <input name="addresstwo" type="text" class="text" id="addresstwo" tabindex="140" />
-              <p><font color="red"><span id="erroraddresstwo"</span></font></p>
+              <label for="streetname">*Street Name: </label>
+              <input name="streetname" type="text" class="text" id="streetname" tabindex="140" />
+              <p><font color="red"><span id="errorstreetname"</span></font></p>
             </p>
             <p>
               <label for="city">*City: </label>

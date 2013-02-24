@@ -67,19 +67,62 @@ function contactNumberCheck() {
 		
 }
 
-function addressCheck() {
+function houseNumberCheck() {
 	
-	var getAddress = document.getElementById("address").value;
-	var regNo = /^([0-9]{1,3})$/;
-	if(reg.test(contactNumber) == false)  {
-		document.getElementById("erroraddress").innerHTML = "Please provide a valid contact number!";
+	var getHouseNumber = document.getElementById("housenumber").value;
+	var regHouseNumber = /^([0-9\/]{1,4})$/;
+	if(regHouseNumber.test(getHouseNumber) == false)  {
+		document.getElementById("errorhousenumber").innerHTML = "Please provide a valid house number!";
 		return false;
 	} else {
-		document.getElementById("erroraddress").innerHTML = "";
+		document.getElementById("errorhousenumber").innerHTML = "";
 		return true;
 	} 
 		
 }
+
+function streetNameCheck() {
+	
+	var getStreetName = document.getElementById("streetname").value;
+	var regStreetName = /^([A-z\s]{2,})$/;
+	if(regStreetName.test(getStreetName) == false)  {
+		document.getElementById("errorstreetname").innerHTML = "Please provide a valid street name!";
+		return false;
+	} else {
+		document.getElementById("errorstreetname").innerHTML = "";
+		return true;
+	} 
+		
+}
+
+function cityCheck() {
+	
+	var getCity = document.getElementById("city").value;
+	var regCity = /^([A-z]{2,})$/;
+	if(regCity.test(getCity) == false)  {
+		document.getElementById("errorcity").innerHTML = "Please provide a valid city!";
+		return false;
+	} else {
+		document.getElementById("errorcity").innerHTML = "";
+		return true;
+	} 
+		
+}
+
+function postCodeCheck() {
+	
+	var getPostCode= document.getElementById("postcode").value;
+	var regPostCode = /^([A-Za-z0-9]{1,2}[A-Za-z0-9]{1,2}\s[0-9]{1}[A-Za-z]{2})$/;
+	if(regPostCode.test(getPostCode) == false)  {
+		document.getElementById("errorpostcode").innerHTML = "Please provide a valid postcode!";
+		return false;
+	} else {
+		document.getElementById("errorpostcode").innerHTML = "";
+		return true;
+	} 
+		
+}
+
 
 function calculateAge() {
 
@@ -109,8 +152,12 @@ $('#frmContact').submit(function(){
 	var firstName = firstnameCheck();
 	var lastName = lastnameCheck();
 	var contactNo = contactNumberCheck();
-	alert('age:'+age+'email'+email+'name'+firstName+'name'+lastName+'number'+contactNo);
-	if(age == true && email == true && firstName == true && lastName == true && contactNo == true) 
+	var houseNo = houseNumberCheck();
+	var street = streetNameCheck();
+	var city = cityCheck();
+	var postCode = postCodeCheck();
+	
+	if(age == true && email == true && firstName == true && lastName == true && contactNo == true && houseNo == true && street == true && city == true && postCode == true) 
 	{
 		
 		return true;
