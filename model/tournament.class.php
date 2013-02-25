@@ -166,6 +166,23 @@ class Tournament
 		return "$year-$month-$day";
 		
 	}
+	
+	public function GetDays()
+	{  
+	  $day = 86400;
+	  $format = "Y-m-d";
+	  $startTime = strtotime($this->startDate);
+	  $endTime = strtotime($this->endDate);
+	  $numDays = round(($endTime - $startTime)/$day)+1;
+	  $days = array();
+	  
+	  for($i = 0;$i<$numDays;$i++)
+	  {
+		$days[] = date($format,($startTime +($i * $day)));
+	  }
+	  
+	  return $days;
+	}
         
         
 	
@@ -251,6 +268,7 @@ class Tournament
 	{
 	    $this->registerClose = $registerClose;
 	}
+	
 }
 
 
