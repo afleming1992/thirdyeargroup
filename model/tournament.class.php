@@ -63,7 +63,7 @@ class Tournament
         {
             $matches = array();
             $i = 0;
-            $result = $this->db->query("SELECT matchID,DATE_FORMAT(matchDate,'%D %M %Y') as matchDate, matchDate, matchTime,pitch,team1,team2,umpire
+            $result = $this->db->query("SELECT matchID,DATE_FORMAT(matchDate,'%D %M %Y') as matchDate, matchDate as sqldate, matchTime,pitch,team1,team2,umpire
                                         FROM wattball_matches 
                                         WHERE tournamentID = ".$this->tournamentID."
                                         ORDER BY 3");
