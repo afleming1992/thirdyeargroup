@@ -277,7 +277,7 @@ class MainController
                         
                     }
                 }
-                else if($pageName == "wattBall" || $pageName == "wattBallScheduling" || $pageName == "wattBallRegistrationSuccess" || $pageName == "teams" || $pageName == "ranking")
+                else if($pageName == "wattBall" || $pageName == "wattBallScheduling" || $pageName == "wattBallRegistrationSuccess" || $pageName == "teams" || $pageName == "ranking" || $pageName == "players")
                 {
                     $_SESSION['section'] = "wattball";
                     if($pageName == "wattBallScheduling")
@@ -348,6 +348,25 @@ class MainController
                         $ranking = new Ranking($this->db);
                         $ranking->ranking();
                         $teams = $ranking->getTeams();
+                    }
+                    else if($pageName == "players")
+                    {
+                        $_SESSION['section'] = "wattball";
+                        $players = array();
+                        $teamsName = array();
+                        $i = 0;
+                        $request = $this->db->query("SELECT p.playerName, p.teamID, p.playerID, t.teamName FROM wattball_players p
+                                                    JOIN wattball_team t ON t.teamID = p.teamID 
+                                                    ORDER BY playerName");
+                        while($data = $request->fetch())
+                        {
+                            $players[$i] = new Player(null);
+                            $players[$i]->setPlayerID($data['playerID']);
+                            $players[$i]->setPlayerName($data['playerName']);
+                            $players[$i]->setTeamID($data['teamID']);
+                            $teamsName[$i] = $data['teamName'];
+                            $i++;
+                        }
                     }
                     
                     $this->addBasicView();
@@ -461,16 +480,35 @@ class MainController
             $team = new Team($this->db, $teamID);
             $team->getTeamInfo();
             $team->getEvent();
-            $players = $team->getPlayersInfo();
+            $players = $team->getPlayersInfo();            
             $isRanking = $team->getRanking();
-
+            
             $this->addBasicView();
             require_once 'view/wattBallNav.php';
             require_once 'view/teamDetails.php';
             require_once 'view/login.php';
             $this->addFooterFile();
-            
-            
+        }
+        
+        public function loadPlayersPage($playerID)
+        {
+             $_SESSION['section'] = "wattball";
+             $pageName = "players";
+             
+             $player = new Player($this->db);
+             $player->setPlayerID($playerID);
+             $player->getPlayerInfo();
+             $player->getNumberOfGoal();
+             $request = $this->db->query("SELECT teamName FROM wattball_team WHERE teamID = ".$player->getTeamID());
+             $data = $request->fetch();
+             $teamName = $data['teamName'];
+             
+            $this->addBasicView();
+            require_once 'view/wattBallNav.php';
+            require_once 'view/playerDetails.php';
+            require_once 'view/login.php';
+            $this->addFooterFile();
+             
         }
 	
 	/**

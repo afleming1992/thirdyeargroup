@@ -55,6 +55,10 @@ else if(isset($_GET['team']))
 {
     $app->loadTeamPage(htmlspecialchars($_GET['team']));
 }
+else if(isset($_GET['player']))
+{
+    $app->loadPlayersPage(htmlspecialchars($_GET['player']));
+}
 else
 	$app->loadHomePage();
 

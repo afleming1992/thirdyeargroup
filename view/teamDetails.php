@@ -4,7 +4,6 @@
     <h3 class="text-info center"><?php echo $team->getTeamName(); ?></h3>
     <fieldset>
         <legend>Common informations</legend>
-        <p class='text-info'>Contact Name: <?php echo $team->getContactName(); ?></p>
         <p class='text-info'>NWA Number: <?php echo $team->getNWANumber(); ?></p>
         <p class='text-info'>Played Matches: <?php echo count($team->getMatchesDone()); ?></p>
         <p class='text-info'>Upcoming Matches: <?php echo count($team->getComingMatches()); ?></p>
@@ -70,7 +69,7 @@
                 echo "<tr>";
                 echo "<td>".$p->getPlayerName()."</td>";
                 echo "<td>".$p->getGoal()."</td>";
-                echo "<td><a href='?player='".$p->getPlayerID()."role='button' class='btn btn-small btn-info'>Player Details</a></td>";
+                echo "<td><a href='?player=".$p->getPlayerID()."' role='button' class='btn btn-mini btn-info'>Player Details</a></td>";
                 echo "</tr>";
             }
        ?>

@@ -32,7 +32,7 @@
 		
 		public function getPlayerInfo()
 		{
-			$result=$this->db->query("SELECT * FROM wattball_players WHERE playerID='".$this->playerID."'");
+			$result=$this->db->query("SELECT *  FROM wattball_players WHERE playerID='".$this->playerID."'");
 			if ($result!=false)
 			{
 				while($data = $result->fetch())
