@@ -39,8 +39,7 @@ class Ranking
             $this->teams[$i]->setMatchPoint($data['matchPoint']);
             $i++;
         }
-    }
-    
+    }    
     
     public function getRanking($teamID)
     {

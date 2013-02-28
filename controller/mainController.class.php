@@ -348,6 +348,23 @@ class MainController
                         $ranking = new Ranking($this->db);
                         $ranking->ranking();
                         $teams = $ranking->getTeams();
+                        
+                        $request = $this->db->query("SELECT p.playerName, p.teamID, p.playerID, t.teamName, p.numberOfGoals FROM wattball_players p
+                                                    JOIN wattball_team t ON t.teamID = p.teamID 
+                                                    ORDER BY 4");
+                        $players = array();
+                        $teamsName = array();
+                        $i=0;
+                        while($data = $request->fetch())
+                        {
+                            $players[$i] = new Player(null);
+                            $players[$i]->setPlayerID($data['playerID']);
+                            $players[$i]->setPlayerName($data['playerName']);
+                            $players[$i]->setTeamID($data['teamID']);
+                            $players[$i]->setGoal($data['numberOfGoals']);
+                            $teamsName[$i] = $data['teamName'];
+                            $i++;
+                        }
                     }
                     else if($pageName == "players")
                     {
@@ -498,7 +515,6 @@ class MainController
              $player = new Player($this->db);
              $player->setPlayerID($playerID);
              $player->getPlayerInfo();
-             $player->getNumberOfGoal();
              $request = $this->db->query("SELECT teamName FROM wattball_team WHERE teamID = ".$player->getTeamID());
              $data = $request->fetch();
              $teamName = $data['teamName'];
@@ -723,7 +739,7 @@ class MainController
             }
             catch(PDOException $ex)
             {
-                    print("<b>An Database Error has occured. Please inform an Adminstrator immediately and try again later</b>");
+                    print("<b>A Database Error has occured. Please inform an Adminstrator immediately and try again later</b>");
             }
             $players = explode("\n", $players);
             $number = count($players);

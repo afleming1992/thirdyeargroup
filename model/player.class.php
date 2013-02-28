@@ -19,7 +19,7 @@
 		
 		public function addPlayerInfo()
 		{
-			$result = $this->db->exec("INSERT INTO wattball_players (teamID,playerName) VALUES ('".$this->teamID."','".$this->playerName."')");
+			$result = $this->db->exec("INSERT INTO wattball_players (teamID,playerName,numberOfGoals) VALUES ('".$this->teamID."','".$this->playerName."',0)");
 			if($result != false)
 			{
 				return true;
@@ -39,6 +39,7 @@
 				{
 					$this->setTeamID($data['teamID']);
 					$this->setPlayerName($data['playerName']);
+                                        $this->numberOfGoal = $data['numberOfGoals'];
 				}
 				return true;
 			}
@@ -70,9 +71,16 @@
                 public function saveGoals($matchID,$minute)
                 {
                     $this->db->exec("INSERT INTO wattball_goals(matchID,minute,playerID) VALUES($matchID,$minute,".$this->playerID.")");
+                    $request = $this->db->query("SELECT numberOfGoals FROM wattball_players WHERE playerID = ".$this->playerID);
+                    $data = $request->fetch();
+                    $nb = $data['numberOfGoals'];
+                    $nb++;
+                    $this->db->exec("UPDATE wattball_players SET numberOfGoals = ".$nb." WHERE playerID=".$this->playerID);                 
                 }
                 
 		/** --- GETTERS AND SETTERS --- **/
+                
+                
                 
                 public function getGoal()
 		{
