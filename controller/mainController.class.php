@@ -351,7 +351,7 @@ class MainController
                         
                         $request = $this->db->query("SELECT p.playerName, p.teamID, p.playerID, t.teamName, p.numberOfGoals FROM wattball_players p
                                                     JOIN wattball_team t ON t.teamID = p.teamID 
-                                                    ORDER BY 4");
+                                                    ORDER BY 5 DESC");
                         $players = array();
                         $teamsName = array();
                         $i=0;
