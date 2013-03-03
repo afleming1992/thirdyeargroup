@@ -412,9 +412,40 @@ class MainController
             {
                     $_SESSION['section'] = "femalehurdles";
             }
-            else if($pageName == "tickets")
+            else if($pageName == "tickets" || $pageName = "ticketPurchase")
             {
                     $_SESSION['section'] = "tickets";
+                    if($pageName = "ticketPurchase")
+                    {
+						if(isset($_GET['date']))
+						{
+							$result = $this->db->query("SELECT * FROM tournament WHERE startDate <= '".htmlspecialchars($_GET['date'])."' AND endDate >= '".htmlspecialchars($_GET['date'])."'");
+							$rowCount = $result->rowCount();
+							if($rowCount < 1)
+							{
+								$pageName = "tickets";
+							}
+							else
+							{
+								if($this->ticketCheck($_GET['date'],0))
+								{
+									//Additional Stuff
+								}
+								else
+								{
+									$this->addBasicView();
+									require_once 'view/ticket_capacityReached.php';
+									require_once 'view/login.php';
+									$this->addFooterFile();
+									exit();
+								}
+							}
+						}
+						else
+						{
+							$pageName = "tickets";
+						}
+					}
                     if($pageName == "tickets")
                     {
 							$result = $this->db->query("SELECT * FROM tournament WHERE startDate > CURDATE() OR (startDate < CURDATE() AND endDate > CURDATE()) ORDER BY startDate ASC");
@@ -442,6 +473,7 @@ class MainController
 							$this->addFooterFile();
 							die();
 					}
+					
 					
             }
                        
@@ -677,6 +709,24 @@ class MainController
                     return  false;
 		
 	}
+        
+        public function ticketCheck($date,$additional)
+        {
+			$result = $this->db->query("SELECT count(ticketID) AS total FROM ticket WHERE dateofTicket = '".htmlspecialchars($_GET['date'])."'");
+			$array = $result->fetch();
+			$total = $array['total'] + $additional;
+			$result = $this->db->query("SELECT * FROM properties");
+			$result = $result->fetch();
+			$capacity = $result['ticketLimit'];
+			if($total < $capacity)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
         
         public function checkTeamName($teamName)
         {

@@ -41,7 +41,18 @@
 			}
 		?>
 	</select><br />
-	<input type='hidden' name='ticketDate' value='<?php echo $_GET['date'] ?>' ?>
+	<input type='hidden' name='ticketDate' value='<?php echo $_POST['ticketDate'] ?>' >
+	<input type='hidden' name='firstname' value='<?php echo $_POST['firstname'] ?>'>
+	<input type='hidden' name='surname' value='<?php echo $_POST['surname'] ?>'>
+	<input type='hidden' name='email' value='<?php echo $_POST['email'] ?>'>
+	<input type='hidden' name='address1' value='<?php echo $_POST['address1'] ?>'>
+	<input type='hidden' name='address2' value='<?php echo $_POST['address2'] ?>'>
+	<input type='hidden' name='city' value='<?php echo $_POST['city'] ?>'>
+	<input type='hidden' name='county' value='<?php echo $_POST['county'] ?>'>
+	<input type='hidden' name='postcode' value='<?php echo $_POST['postcode'] ?>'>
+	<input type='hidden' name='collection' value='<?php echo $_POST['collection'] ?>'>
+	<input type='hidden' name='adult' value='<?php echo $_POST['adult'] ?>'>
+	<input type='hidden' name='concession' value='<?php echo $_POST['concession'] ?>'>
     <button type="submit" class="btn btn-success btn-large"><i class='icon-check icon-white'></i> Submit</button>
   </fieldset>
 </form>
