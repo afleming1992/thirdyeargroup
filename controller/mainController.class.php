@@ -412,7 +412,7 @@ class MainController
             {
                     $_SESSION['section'] = "femalehurdles";
             }
-            else if($pageName == "tickets" || $pageName = "ticketPurchase" || $pageName = "ticketCardDetails")
+            else if($pageName == "tickets" || $pageName == "ticketPurchase" || $pageName == "ticketCardDetails")
             {
                     $_SESSION['section'] = "tickets";
                     if(strcmp($pageName,"ticketCardDetails") == 0)
@@ -433,7 +433,11 @@ class MainController
 							{
 								if($this->ticketCheck($_GET['date'],0))
 								{
-									//Additional Stuff
+									//Grab Prices of Tickets
+									$result = $this->db->query("SELECT * FROM properties");
+									$result = $result->fetch();
+									$adult_price = $result['adultPrice'];
+									$concession_price = $result['concessionPrice'];
 								}
 								else
 								{
