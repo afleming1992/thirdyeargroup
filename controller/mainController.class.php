@@ -412,10 +412,14 @@ class MainController
             {
                     $_SESSION['section'] = "femalehurdles";
             }
-            else if($pageName == "tickets" || $pageName = "ticketPurchase")
+            else if($pageName == "tickets" || $pageName = "ticketPurchase" || $pageName = "ticketCardDetails")
             {
                     $_SESSION['section'] = "tickets";
-                    if($pageName = "ticketPurchase")
+                    if(strcmp($pageName,"ticketCardDetails") == 0)
+					{
+						print("<span style='color:#FF0000'>I GOT HERE!!!</span>");
+					}
+                    if($pageName == "ticketPurchase")
                     {
 						if(isset($_GET['date']))
 						{
