@@ -2,8 +2,8 @@
 	<h1>Purchase Ticket for <?php echo date('d-M-Y',strtotime($_GET['date'])); ?></h1>
 <legend>Please complete this form to book your Ticket!</legend>
 <b>Let's Confirm how many Tickets you want</b>
-<form name='ticketPurchase' id='ticketPurchase' method='post' action='?page=ticketCardDetails' >
-	<span id='errorticketnumber' class="help-inline error"></span>
+<form name='ticketPurchase' id='ticketPurchase' method='post' action='?page=ticketCardDetails' onsubmit='return validateForm();' >
+	<p id='errorticketnumber' class="text-error"></p>
     <label for='adult'>Adult Tickets (Cost = £<?php echo $adult_price ?>)</label>
 			<select id='adult' name='adult' class='span1'>
 			<?php
@@ -14,7 +14,7 @@
 			?>
 			</select>
     <label for='concession'>Concession Tickets (Cost = £<?php echo $concession_price ?>)</label>
-		<select name='concession' class='span1'>
+		<select id='concession' name='concession' class='span1'>
 		<?php
 				for($i = 0;$i < 11;$i++)
 				{
@@ -24,7 +24,7 @@
 		</select><br />
 	<p>How would you like to collect your Tickets?</p>
 	<label class="radio">
-	  <input id='concession' type="radio" name="collection" value="pickup">
+	  <input type="radio" name="collection" value="pickup" checked>
 	  Collected at the Centre on the Day!
 	</label>
 	<label class='radio'>
@@ -57,13 +57,13 @@
     <label>County</label>
     <input type="text" name="county" id='county' placeholder="Type something...">
     <label>Postcode</label>
+    <p id='errorpostcode' class="text-error"></p>
     <input type="text" name="postcode" id='postcode' placeholder="Type something..." >
 	<input type='hidden' name='ticketDate' value='<?php echo $_GET['date'] ?>'><br />
 	<input type='hidden' name='continunity' value='1' >
     <center><input type="submit" class="btn btn-success btn-large"></button></center>
   </fieldset>
-  <script src='javascript/ticketingForms.js'></script>
 </form>
-
+<script src="javascript/ticketingForms.js"></script>
 </div>
 
