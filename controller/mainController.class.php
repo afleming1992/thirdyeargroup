@@ -417,7 +417,26 @@ class MainController
                     $_SESSION['section'] = "tickets";
                     if(strcmp($pageName,"ticketCardDetails") == 0)
 					{
-						print("<span style='color:#FF0000'>I GOT HERE!!!</span>");
+						if(!isset($_POST['continunity']))
+						{
+							$pageName = "tickets";
+						}
+						else
+						{
+							$ticketsRequired = $_POST['adult'] + $_POST['concession'];
+							if($this->ticketCheck($_POST['ticketDate'],$ticketsRequired))
+							{
+								//Process as Normal
+							}
+							else
+							{
+								$this->addBasicView();
+								require_once 'view/ticket_capacityCardDetails.php';
+								require_once 'view/login.php';
+								$this->addFooterFile();
+								exit();
+							}
+						}
 					}
                     if($pageName == "ticketPurchase")
                     {
@@ -438,6 +457,8 @@ class MainController
 									$result = $result->fetch();
 									$adult_price = $result['adultPrice'];
 									$concession_price = $result['concessionPrice'];
+									//Let the Customer know how many tickets are left
+									$ticketTotal = $this->ticketsRemaining($_GET['date']);
 								}
 								else
 								{
@@ -720,7 +741,7 @@ class MainController
         
         public function ticketCheck($date,$additional)
         {
-			$result = $this->db->query("SELECT count(ticketID) AS total FROM ticket WHERE dateofTicket = '".htmlspecialchars($_GET['date'])."'");
+			$result = $this->db->query("SELECT count(ticketID) AS total FROM ticket WHERE dateofTicket = '".htmlspecialchars($date)."'");
 			$array = $result->fetch();
 			$total = $array['total'] + $additional;
 			$result = $this->db->query("SELECT * FROM properties");
@@ -734,6 +755,17 @@ class MainController
 			{
 				return false;
 			}
+		}
+		
+		public function ticketsRemaining($date)
+        {
+			$result = $this->db->query("SELECT count(ticketID) AS total FROM ticket WHERE dateofTicket = '".htmlspecialchars($_GET['date'])."'");
+			$array = $result->fetch();
+			$total = $array['total'];
+			$result = $this->db->query("SELECT * FROM properties");
+			$result = $result->fetch();
+			$capacity = $result['ticketLimit'];
+			return $capacity - $total;
 		}
         
         public function checkTeamName($teamName)

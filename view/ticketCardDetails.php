@@ -1,13 +1,37 @@
 <div class='contentbox'>
+	<div class='page-header'>
 	<h1>Purchase Ticket for <?php echo date('d-M-Y',strtotime($_POST['ticketDate'])); ?></h1>
+	</div>
+	<h3>Summary of your Booking</h3>
+	<div class="well well-large">
+	  <table class='table table-bordered'>
+		<tr><th>Your Name</th><td><?php echo $_POST['firstname']." ".$_POST['surname'] ?></td></tr>
+		<tr><th>Your Email</th><td><?php echo $_POST['email'] ?></td></tr>
+		<tr><th>Your Address</th><td><address><?php echo $_POST['address1'] ?><br /><?php if(strlen($_POST['address2']) > 0){ echo $POST['address2'];print("<br />");} echo $_POST['city'] ?><br /><?php echo $_POST['county'] ?><br /><?php echo $_POST['postcode'] ?></address></td></tr>
+		<tr><th>You would like:-</th><td><?php if($_POST['adult'] > 0){echo $_POST['adult'];print(" Adult Ticket(s)<br />");} if($_POST['concession'] > 0){echo $_POST['concession'];print(" Concession Ticket(s)<br />");} ?></td></tr>
+		<tr><th>For Entry on:-</th><td><?php echo date('d-M-Y',strtotime($_POST['ticketDate'])); ?></td></tr>
+		<tr><th colspan='2'>
+		<?php
+			if(strcmp($_POST['collection'],"postal") == 0)
+			{
+				print("<b>Your Ticket will be posted out to the Address listed above around 5 Days before the Ticket Date</b>");
+			}
+			else
+			{
+				print("<b>Your Ticket will be available for collection from the Riccarton Sports Centre Reception on the Day!</b>");
+			}
+		?>
+		</th></tr>
+	  </table>
+	</div>
+	<b>Happy with this? Then enter your Card Details in order to pay!</b>
 <form method='post' action=''>
   <fieldset>
     <legend>Confirm your Card Details!</legend>
-    <h2>Card Details</h2>
     <label>Card Number</label>
-    <input type="text" name="cardNo" placeholder="Type something...">
+    <input type="text" id='cardNo' name="cardNo" placeholder="Type something...">
     <label>Card Type</label>
-	<select name='cardType'>
+	<select id='cardType' name='cardType'>
 		<option value='visa'>Visa</option>
 		<option value='mastercard'>Mastercard</option> 
 		<option value='delta'>Delta</option>
@@ -15,9 +39,9 @@
 		<option value='amex'>American Express</option>  
 	</select>
     <label>CSC Security Code</label>
-    <input type="text" name="csc" placeholder="Type something...">
+    <input type="text" name="csc" id='csc' placeholder="Type something...">
     <label>Valid Until</label>
-    <select name='month' class='span1'>
+    <select name='month'id='month' class='span1'>
 		<option value='1'>1</option>
 		<option value='2'>2</option> 
 		<option value='3'>3</option>
@@ -31,7 +55,7 @@
 		<option value='11'>11</option>
 		<option value='12'>12</option>
 	</select>
-	<select name='year' class='span2'>
+	<select name='year' id='year' class='span2'>
 		<?php
 			$currentyear = date("Y");
 			for($i = 0;$i < 10;$i++)
