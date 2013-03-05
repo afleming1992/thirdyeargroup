@@ -3,13 +3,23 @@
 	<div class="span12">
 		<div id='latestResult' class='span4 contentbox'>
 			<h4>Latest results</h4>
-				<a href='#'>
-					<div class="alert alert-info">
-						<div style='font-weight:bold;text-align:center;text-decoration:underline'>Wattball</div>
-						<div style='font-weight:bold;text-align:center;'>Team A vs Team B</div>
-						<p style='text-align:center'>1 - 0</p>
-					</div>
-				</a>
+				
+                                    <div class="alert alert-info">
+                                        <div style='font-weight:bold;text-align:center;text-decoration:underline'><a href="?page=wattBall">Wattball</a></div>
+                                            <?php 
+                                            if($data != FALSE)
+                                            {
+                                                echo "<a href='?result=".$matchResult->getResultID()."'>";
+                                                echo "<div style='font-weight:bold;text-align:center;'>".$matchResult->getTeam1()->getTeamName()." VS ".$matchResult->getTeam2()->getTeamName()."</div>";
+                                                echo "<p style='text-align:center'>".$matchResult->getTeam1Score()." - ".$matchResult->getTeam2Score()."</p>";
+                                                echo "</a>";
+                                            }
+                                            else
+                                                echo "No results !";
+
+                                            ?>
+                                    </div>
+				
 		</div>
 		
 		<div id='content' class='span8'>

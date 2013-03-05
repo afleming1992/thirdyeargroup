@@ -44,6 +44,8 @@ if(isset($_GET['id']))
             }
 
         }
+        shuffle($matches);
+        shuffle($matches);
         //var_dump($matches);
 
         //give a date and an umpire to the matches

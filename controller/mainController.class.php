@@ -9,7 +9,7 @@ class MainController
 {
 	/**
 	 * Object PDO for database connection, query ...
-	 * @var PDO
+	 * @var Database
 	 */
 	private $db;
 	
@@ -32,11 +32,24 @@ class MainController
 	 */
 	public function loadHomePage()
 	{
-		$_SESSION['section'] = "home";
-		$this->addBasicView();
-		require_once 'view/login.php';
-		require_once 'view/home.php';
-		$this->addFooterFile();
+            
+            $result = $this->db->query("SELECT * FROM wattball_results r
+                                        JOIN wattball_matches m ON r.matchID = m.matchID
+                                        ORDER BY matchDate DESC LIMIT 1");
+            
+            $data = $result->fetch();
+            if($data != FALSE)
+            {
+                $matchResult = new Result($data['resultID'], new Team($this->db , $data['team1']) , new Team($this->db , $data['team2']) , $data['team1Score'] , $data['team2Score'] , $this->db);
+                $matchResult->getTeamsInfo();
+                $matchResult->getGoals();
+            }            
+            
+            $_SESSION['section'] = "home";
+            $this->addBasicView();
+            require_once 'view/login.php';
+            require_once 'view/home.php';
+            $this->addFooterFile();
 	}
 	
 	/**
@@ -267,10 +280,10 @@ class MainController
                         
                     }
                 }
-                else if($pageName == "wattBall" || $pageName == "wattBallScheduling" || $pageName == "wattBallRegistrationSuccess")
+                else if($pageName == "wattBall" || $pageName == "wattBallScheduling" || $pageName == "wattBallRegistrationSuccess" || $pageName == "teams" || $pageName == "ranking" || $pageName == "players")
                 {
                     $_SESSION['section'] = "wattball";
-                    if($pageName == "wattBallScheduling");
+                    if($pageName == "wattBallScheduling")
                     {
                         $this->getWattBallTournament();
                         $allTournament = $this->tournament;
@@ -293,7 +306,90 @@ class MainController
                            $i++;
                         }
                     }
-                     $this->addBasicView();
+                    else if($pageName == "wattBall")
+                    {
+                        $result = $this->db->query("SELECT *,DATE_FORMAT(m.matchDate,'%D %M %Y') AS date FROM wattball_results r
+                                                    JOIN wattball_matches m ON r.matchID = m.matchID
+                                                    ORDER BY m.matchDate DESC");
+            
+                        $data = $result->fetchAll();
+                        $matchesResults = array();
+                        $i = 0;
+                        if($data != FALSE)
+                        {
+                            foreach ($data as $d) 
+                            {
+                                $matchesResults[$i] = new Result($d['resultID'], new Team($this->db , $d['team1']) , new Team($this->db , $d['team2']) , $d['team1Score'] , $d['team2Score'] , $this->db);
+                                $matchesResults[$i]->getTeamsInfo();
+                                $matchesResults[$i]->getGoals();
+                                $matchesResults[$i]->setMatchDate($d['date']);
+                                $i++;
+                            }
+                        }
+                    }
+                    else if($pageName == "teams")
+                    {
+                        $result = $this->db->query("SELECT * FROM wattball_team");
+                        $data = $result->fetchAll();
+                        $teams = array();
+                        $i = 0;
+                        if($data != false)
+                        {
+                            foreach ($data as $d)
+                            {
+                                $teams[$i] = new Team($this->db, $d['teamID']);
+                                $teams[$i]->setContactName($d['contactName']);
+                                $teams[$i]->setTeamName($d['teamName']);
+                                $teams[$i]->setNwaNumber($d['NWANumber']);
+                                $i++;
+                            }
+                        }
+                    }          
+                    else if($pageName == "ranking")
+                    {
+                        $_SESSION['section'] = "wattball";
+                        $ranking = new Ranking($this->db);
+                        $ranking->ranking();
+                        $teams = $ranking->getTeams();
+                        
+                        $request = $this->db->query("SELECT p.playerName, p.teamID, p.playerID, t.teamName, p.numberOfGoals FROM wattball_players p
+                                                    JOIN wattball_team t ON t.teamID = p.teamID 
+                                                    ORDER BY 5 DESC");
+                        $players = array();
+                        $teamsName = array();
+                        $i=0;
+                        while($data = $request->fetch())
+                        {
+                            $players[$i] = new Player(null);
+                            $players[$i]->setPlayerID($data['playerID']);
+                            $players[$i]->setPlayerName($data['playerName']);
+                            $players[$i]->setTeamID($data['teamID']);
+                            $players[$i]->setGoal($data['numberOfGoals']);
+                            $teamsName[$i] = $data['teamName'];
+                            $i++;
+                        }
+                    }
+                    else if($pageName == "players")
+                    {
+                        $_SESSION['section'] = "wattball";
+                        $players = array();
+                        $teamsName = array();
+                        $i = 0;
+                        $request = $this->db->query("SELECT p.playerName, p.teamID, p.playerID, t.teamName FROM wattball_players p
+                                                    JOIN wattball_team t ON t.teamID = p.teamID 
+                                                    ORDER BY playerName");
+                        while($data = $request->fetch())
+                        {
+                            $players[$i] = new Player(null);
+                            $players[$i]->setPlayerID($data['playerID']);
+                            $players[$i]->setPlayerName($data['playerName']);
+                            $players[$i]->setTeamID($data['teamID']);
+                            $teamsName[$i] = $data['teamName'];
+                            $i++;
+                        }
+                    }
+                    
+                    $this->addBasicView();
                     require_once 'view/wattBallNav.php';
                     require_once 'view/'.$pageName.'.php';
                     require_once 'view/login.php';
@@ -365,16 +461,74 @@ class MainController
             else if($pageName == "tickets")
             {
                     $_SESSION['section'] = "tickets";
-            }
-              
-               
-               
-              
-		$this->addBasicView();
-		require_once 'view/'.$pageName.'.php';
-                require_once 'view/login.php';
-		$this->addFooterFile();
+            }            
+                       
+            $this->addBasicView();
+            require_once 'view/'.$pageName.'.php';
+            require_once 'view/login.php';
+            $this->addFooterFile();
 	}
+        
+        public function loadResultPage($id)
+        {
+            $_SESSION['section'] = "wattball";
+            $result = $this->db->query("SELECT *,DATE_FORMAT(m.matchDate,'%D %M %Y') AS date FROM wattball_results r
+                                        JOIN wattball_matches m ON r.matchID = m.matchID
+                                        JOIN umpire u ON m.umpire = u.umpireID
+                                        WHERE resultID = $id");            
+            $data = $result->fetch();
+            $matchResults = new Result($data['resultID'], new Team($this->db , $data['team1']) , new Team($this->db , $data['team2']) , $data['team1Score'] , $data['team2Score'] , $this->db);
+            $umpire = new Umpire($data['umpireID'], $data['umpireName'], $data['umpireEmail'], null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            $time = $data['matchTime'];
+            $pitch = $data['pitch'];
+            $matchResults->getTeamsInfo();
+            $matchResults->getGoals();
+            $matchResults->setMatchDate($data['date']);
+            
+            $pageName = 'wattBall';
+            $this->addBasicView();
+            require_once 'view/wattBallNav.php';
+            require_once 'view/result.php';
+            require_once 'view/login.php';
+            $this->addFooterFile();
+        }
+        
+        public function loadTeamPage($teamID)
+        {
+            $_SESSION['section'] = "wattball";
+            $pageName = "teams";
+            $team = new Team($this->db, $teamID);
+            $team->getTeamInfo();
+            $team->getEvent();
+            $players = $team->getPlayersInfo();            
+            $isRanking = $team->getRanking();
+            
+            $this->addBasicView();
+            require_once 'view/wattBallNav.php';
+            require_once 'view/teamDetails.php';
+            require_once 'view/login.php';
+            $this->addFooterFile();
+        }
+        
+        public function loadPlayersPage($playerID)
+        {
+             $_SESSION['section'] = "wattball";
+             $pageName = "players";
+             
+             $player = new Player($this->db);
+             $player->setPlayerID($playerID);
+             $player->getPlayerInfo();
+             $request = $this->db->query("SELECT teamName FROM wattball_team WHERE teamID = ".$player->getTeamID());
+             $data = $request->fetch();
+             $teamName = $data['teamName'];
+             
+            $this->addBasicView();
+            require_once 'view/wattBallNav.php';
+            require_once 'view/playerDetails.php';
+            require_once 'view/login.php';
+            $this->addFooterFile();
+             
+        }
 	
 	/**
 	 * search in the database all tournament and put in an array
@@ -602,7 +756,7 @@ class MainController
             }
             catch(PDOException $ex)
             {
-                    print("<b>An Database Error has occured. Please inform an Adminstrator immediately and try again later</b>");
+                    print("<b>A Database Error has occured. Please inform an Adminstrator immediately and try again later</b>");
             }
             $players = explode("\n", $players);
             $number = count($players);

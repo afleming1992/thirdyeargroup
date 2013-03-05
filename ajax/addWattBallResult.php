@@ -1,7 +1,7 @@
 <?php
 include_once '../include/autoload.php';
 include_once '../config/config.php';
-if(isset($_GET['date']) && isset($_GET['tournamentID']))
+if(isset($_GET['date']) && isset($_GET['tournamentID'])) //search a match
 {
     $tournamentID = htmlspecialchars($_GET['tournamentID']);
     $date = htmlspecialchars($_GET['date']);
@@ -46,7 +46,7 @@ if(isset($_GET['date']) && isset($_GET['tournamentID']))
 
     
 }
-else if(isset($_GET['matchID']) && isset($_GET['playerTeam1']) && isset($_GET['playerTeam2']) && isset($_GET['minuteTeam1']) && isset($_GET['minuteTeam2']) )
+else if(isset($_GET['matchID']) && isset($_GET['playerTeam1']) && isset($_GET['playerTeam2']) && isset($_GET['minuteTeam1']) && isset($_GET['minuteTeam2']) ) //save results
 {
     $playerTeam1;
     $minuteTeam1;
@@ -78,10 +78,12 @@ else if(isset($_GET['matchID']) && isset($_GET['playerTeam1']) && isset($_GET['p
     
     try 
     {
+        //save result
         $db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
         $match = new Match($matchID, null, null, null, null, null, null, $db);
         $match->saveResult($goalsTeam1, $goalsTeam2);
         
+        //save goals
         if($goalsTeam1 > 0)
         {
             for($i=0;$i<count($playerTeam1);$i++)
@@ -102,7 +104,11 @@ else if(isset($_GET['matchID']) && isset($_GET['playerTeam1']) && isset($_GET['p
             } 
         }
         
+        //save team ranking
+        $match->saveRanking($goalsTeam1, $goalsTeam2);
         
+        echo "<p class='text-success center'>Results saved</p>";
+        echo "<a href='?adminPage=addWattBallResults' role='button' class='btn btn-small btn-info'>Add more results</a>";
         
     }
     catch (Exception $exc)
@@ -110,7 +116,7 @@ else if(isset($_GET['matchID']) && isset($_GET['playerTeam1']) && isset($_GET['p
         echo $exc->getTraceAsString();
     }
 }
-else if(isset($_GET['matchID']))
+else if(isset($_GET['matchID'])) // change match
 {
     $matchID = htmlspecialchars($_GET['matchID']);
     try 

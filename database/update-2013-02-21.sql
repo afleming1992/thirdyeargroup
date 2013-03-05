@@ -1,0 +1,1 @@
+ALTER table wattball_ranking add matchPoint int(11);

@@ -6,6 +6,7 @@
 		private $teamID;
 		private $playerName;
 		private $db;
+                private $numberOfGoal;
 		
 		/** --- CONSTRUCTORS --- **/
 		
@@ -18,7 +19,7 @@
 		
 		public function addPlayerInfo()
 		{
-			$result = $this->db->exec("INSERT INTO wattball_players (teamID,playerName) VALUES ('".$this->teamID."','".$this->playerName."')");
+			$result = $this->db->exec("INSERT INTO wattball_players (teamID,playerName,numberOfGoals) VALUES ('".$this->teamID."','".$this->playerName."',0)");
 			if($result != false)
 			{
 				return true;
@@ -31,13 +32,14 @@
 		
 		public function getPlayerInfo()
 		{
-			$result=$this->db->query("SELECT * FROM wattball_players WHERE playerID='".$this->playerID."'");
+			$result=$this->db->query("SELECT *  FROM wattball_players WHERE playerID='".$this->playerID."'");
 			if ($result!=false)
 			{
 				while($data = $result->fetch())
 				{
 					$this->setTeamID($data['teamID']);
 					$this->setPlayerName($data['playerName']);
+                                        $this->numberOfGoal = $data['numberOfGoals'];
 				}
 				return true;
 			}
@@ -58,12 +60,37 @@
 			}
 		}
                 
+                public function getNumberOfGoal()
+                {
+                    $result = $this->db->query("SELECT COUNT(*) AS nb FROM wattball_goals WHERE playerID =".$this->playerID);
+                    $data = $result->fetch();
+                    $this->numberOfGoal = $data['nb'];
+                }
+
+
                 public function saveGoals($matchID,$minute)
                 {
                     $this->db->exec("INSERT INTO wattball_goals(matchID,minute,playerID) VALUES($matchID,$minute,".$this->playerID.")");
+                    $request = $this->db->query("SELECT numberOfGoals FROM wattball_players WHERE playerID = ".$this->playerID);
+                    $data = $request->fetch();
+                    $nb = $data['numberOfGoals'];
+                    $nb++;
+                    $this->db->exec("UPDATE wattball_players SET numberOfGoals = ".$nb." WHERE playerID=".$this->playerID);                 
                 }
                 
 		/** --- GETTERS AND SETTERS --- **/
+                
+                
+                
+                public function getGoal()
+		{
+			return $this->numberOfGoal;
+		}
+		
+		public function setGoal($number)
+		{
+			$this->numberOfGoal = $number;
+		}
 		
 		public function getPlayerID()
 		{

@@ -39,13 +39,25 @@ else if(isset($_POST['tournamentId']) && isset($_POST['teamName']) && isset($_PO
 }
 else if(isset ($_GET['adminPage']))
 {
-	$section = "";
+    $section = "";
     $app->loadAdminPage(htmlspecialchars($_GET['adminPage']));
 }
 else if(isset($_GET['page']))
 {
 	$section = "";
 	$app->loadPage(htmlspecialchars($_GET['page']));
+}
+else if(isset($_GET['result']))
+{
+    $app->loadResultPage(htmlspecialchars($_GET['result']));
+}
+else if(isset($_GET['team']))
+{
+    $app->loadTeamPage(htmlspecialchars($_GET['team']));
+}
+else if(isset($_GET['player']))
+{
+    $app->loadPlayersPage(htmlspecialchars($_GET['player']));
 }
 else
 	$app->loadHomePage();
