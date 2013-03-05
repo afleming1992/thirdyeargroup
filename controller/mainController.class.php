@@ -601,6 +601,27 @@ class MainController
                     }
             }
         }
+        
+        public function processHurdleRegistration($firstname,$lastname,$gender,$dob,$houseno,$streetname,$city,$postcode,$emailcheck,$emcontact,$performancetime)
+        {
+        	$hurdleObject = new hurdles($this->db,null);
+        	$hurdleObject-> setFirstName($firstname);
+        	$hurdleObject-> setLastName($lastname);
+        	$hurdleObject-> setGender($gender);
+        	$hurdleObject-> setDob($dob);
+        	$hurdleObject-> setHouseNo($houseno);
+        	$hurdleObject-> setStreetName($streetname);
+        	$hurdleObject-> setCity($city);
+        	$hurdleObject-> setPostCode($postcode);
+        	$hurdleObject-> setEmail($emailcheck);
+        	$hurdleObject-> setEmergencyContact($emcontact);
+        	$hurdleObject-> setPerformanceTime($performancetime);
+        	if($hurdleObject-> addTeamInfo())
+       			return true;
+       		else
+       			return false;
+        
+        }
 
         /*-------- GETTERS & SETTERS --------*/
         

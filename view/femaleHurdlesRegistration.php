@@ -1,9 +1,9 @@
 
 <div class='span9 contentbox'>
 
-<form id="frmContact" name="frmContact" method="post" action="successTest.php">
+<form id="frmContact" name="frmContact" method="post" action="index.php">
         <fieldset id="personalInfo">
-            <legend><strong>Personal Information</strong></legend>
+            <legend><strong>Female Hurdles: Personal Information</strong></legend>
         	<p>
               <label for="firstname">*First Name: </label>
               <input name="firstname" type="text" class="text" id="firstname" tabindex="100" />
@@ -47,13 +47,16 @@
               <p><font color="red"><span id="emailerror"</span></font></p>
             </p>
             <p>
-              <label for="phone">*Emergency Contact Number: </label>
+              <label for="emcontact">*Emergency Contact Number: </label>
               <input name="emcontact" type="text" class="text" id="emcontact" tabindex="130" />
               <p><font color="red"><span id="emcontacterror"</span></font></p>
             </p>
             <p>
-              <label for="phone">Performance Time: </label>
-              <input name="phone" type="text" class="text" id="phone" tabindex="130" />
+              <label for="performancetime">Performance Time: </label>
+              <input name="performancetime" type="text" class="text" id="performancetime" tabindex="130" />
+            </p>
+            <p>
+              <input name="gender" type="hidden" id="gender" tabindex="130" value="F" />
             </p>
             <p> (* Required Fields) </p>
             <p>
