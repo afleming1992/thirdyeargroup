@@ -38,6 +38,14 @@ table
     text-align: center;
 }
 
+.modal-body {
+    max-height: 1000px;
+}
+
+.modal {
+    position: absolute; 
+}
+
 .bordered
 {
     border: 1px #E5E5E5 solid;

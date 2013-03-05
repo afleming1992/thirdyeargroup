@@ -19,6 +19,7 @@ class MainController
 	 */
 	private $tournament = array();
 	private $umpire = array();
+	private $staff = array();
 	
 	
 	public function __construct($db)
@@ -196,7 +197,9 @@ class MainController
                 $numberOfTeam = $allTournament[0]->getNumberOfTeam();
                 $numberOfUmpire = $allTournament[0]->getNumberOfUmpire();                
                 $is_scheduled = $allTournament[0]->is_scheduled();
-            }            
+            }
+            else if($pageName == 'staffManagement')
+				$this->getAllStaff();
             
             $this->addBasicView();
             require_once 'adminView/menu.php';
@@ -572,6 +575,20 @@ class MainController
 			$i++;                                 
 		}
 	}
+	
+	/**
+	 * search in the database all staff and put in an array
+	 */
+	public function getAllStaff()
+	{
+		$result = $this->db->query("SELECT `username`, `name`, `email`, `manager` FROM staff");
+		$i = 0;
+		while($data = $result->fetch())
+		{
+			$this->staff[$i] = new RealStaff($data['username'],$data['name'],$data['manager'],$data['email'], $this->db);
+			$i++;                                 
+		}
+	}
         
         /**
          * Find if there is a tournament now
@@ -776,7 +793,11 @@ class MainController
 	{
 	    $this->umpire = $umpire;
 	}
-
+	
+	public function getStaff()
+	{
+	    return $this->staff;
+	}
 	
 	public function getDb()
 	{
