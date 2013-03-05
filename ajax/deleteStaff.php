@@ -18,7 +18,7 @@ if(isset($_GET['username']))
 			$app->getAllStaff();
 			$allStaff = $app->getStaff();
 			require_once("../include/allStaff.php"); 
-			echo "<b>No deletion occured.<br></b>";
+			echo "<div class='alert'>Nothing was deleted.</div>";
 			return;
 		}
 		
@@ -27,7 +27,7 @@ if(isset($_GET['username']))
 		$allStaff = $app->getStaff();
 		
 		require_once("../include/allStaff.php"); 
-		echo "<b>User \"".$username."\" Deleted.</b><br/><br/>";
+		echo "<div class='alert alert-success'>User \"".$username."\" Deleted.</div>";
 	} 
 	catch (Exception $e) 
 	{

@@ -23,7 +23,7 @@ if(isset($_GET['name']) && isset($_GET['username']) && isset($_GET['email']) && 
 			$app->getAllStaff();
 			$allStaff = $app->getStaff();
 			require_once("../include/allStaff.php"); 
-			echo "<b>No Change was made.<br></b>";
+			echo "<div class='alert'>No change was made.</div>";
 			return;
 		}
 		
@@ -32,7 +32,7 @@ if(isset($_GET['name']) && isset($_GET['username']) && isset($_GET['email']) && 
 		$allStaff = $app->getStaff();
 		
 		require_once("../include/allStaff.php"); 
-		echo "<b>User \"".$username."\" Edited.</b><br/><br/>";
+		echo "<div class='alert alert-success'>User \"".$username."\" Edited.</div>";
 	} 
 	catch (Exception $e) 
 	{

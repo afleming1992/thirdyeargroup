@@ -25,7 +25,7 @@ if(isset($_GET['name']) && isset($_GET['username']) && isset($_GET['email']) && 
 			$app->getAllStaff();
 			$allStaff = $app->getStaff();
 			require_once("../include/allStaff.php"); 
-			echo "<b>Nothing was added.<br></b>";
+			echo "<div class='alert'>Nothing was added.</div>";
 			return;
 		}
 		
@@ -42,7 +42,7 @@ if(isset($_GET['name']) && isset($_GET['username']) && isset($_GET['email']) && 
 			
 		require_once("../include/email/sendEmail.php");
 		require_once("../include/allStaff.php"); 
-		echo "<b>User \"".$username."\" Added. Login credentials sent to \"".$email."\".</b><br/><br/>";
+		echo "<div class='alert alert-success'>User \"".$username."\" Added. Login credentials sent to \"".$email."\".</div>";
 	} 
 	catch (Exception $e) 
 	{
