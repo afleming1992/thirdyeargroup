@@ -20,6 +20,7 @@ function validateForm()
 		return false;
 	}	
 }
+
 function addressValidation()
 {
 	var getAddress = document.getElementById("address1").value;

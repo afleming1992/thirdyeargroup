@@ -120,7 +120,7 @@
 		<input type='hidden' name='continunity' value='1' >
 		
 	<div id='formerror'></div>
-    <center><input type="submit" class="btn btn-success btn-large"></button></center>
+    <center><button type="submit" class="btn btn-success btn-large">Proceed to Confirmation and Payment</button></center>
   </fieldset>
 </form>
 <script src="javascript/ticketingForm.js"></script>
