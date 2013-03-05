@@ -1,0 +1,1 @@
+ALTER TABLE `staff` ADD `email` VARCHAR( 30 ) NOT NULL;

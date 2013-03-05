@@ -26,7 +26,7 @@ if(isset($_SESSION['email']))
 		$mail->Subject = $_SESSION['subject'];
 		$mail->AltBody = 'To view the message, please use an HTML compatible email viewer!'; // optional - MsgHTML will create an alternate automatically
 		$mail->Body = ($_SESSION['body']);
-		//$mail->Send();
+		$mail->Send();
 		//echo "Message Sent OK</p>\n";
 	} 
 	catch (phpmailerException $e) {
