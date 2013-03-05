@@ -9,6 +9,7 @@
   		<?php 	  			
   			for($i=0;$i<sizeof($allUmpires);$i++)
   			{
+				echo "<tr>";
   				echo "<td class='umpireName'>".$allUmpires[$i]->getName()."</td>";
   				echo "<td class='umpireEmail'>".$allUmpires[$i]->getEmail()."</td>";
   				echo "<td class='slot0' hidden='true'>".$allUmpires[$i]->getMonMorning()."</td>";

@@ -38,9 +38,12 @@ table
     text-align: center;
 }
 
-#deleteUmpire {
-	width: 600px; 
-	margin: -250px 0 0 -300px;
+.modal-body {
+    max-height: 1000px;
+}
+
+.modal {
+    position: absolute; 
 }
 
 .bordered

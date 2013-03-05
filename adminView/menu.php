@@ -37,7 +37,7 @@
                 <li class="nav-header">Management</li>
                 <li class="divider"></li>
                 <li <?php if($pageName == "tournamentManagement") echo "class='active'"; ?>><a href='index.php?adminPage=tournamentManagement'>Tournaments Managment</a></li>
-                <li>Staff Manager</li>
+                <li <?php if($pageName == "staffManagement") echo "class='active'"; ?>><a href='index.php?adminPage=staffManagement'>Staff Management</a></li>
                 <?php
             }
             ?>
