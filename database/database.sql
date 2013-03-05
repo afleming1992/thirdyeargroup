@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 08, 2013 at 01:03 AM
+-- Generation Time: Mar 05, 2013 at 11:57 PM
 -- Server version: 5.5.16
 -- PHP Version: 5.3.8
 
@@ -35,6 +35,11 @@ CREATE TABLE IF NOT EXISTS `hurdles_competitors` (
   `contactNumber` varchar(11) DEFAULT NULL,
   `email` varchar(200) DEFAULT NULL,
   `dateOfBirth` date DEFAULT NULL,
+  `hurdlerLastName` varchar(100) DEFAULT NULL,
+  `streetName` varchar(100) DEFAULT NULL,
+  `houseNumber` varchar(100) DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `postcode` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`hurdlerID`),
   UNIQUE KEY `hurdlerID` (`hurdlerID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -99,9 +104,17 @@ CREATE TABLE IF NOT EXISTS `properties` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `concessionPrice` double DEFAULT NULL,
   `adultPrice` double DEFAULT NULL,
+  `ticketLimit` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `properties`
+--
+
+INSERT INTO `properties` (`id`, `concessionPrice`, `adultPrice`, `ticketLimit`) VALUES
+(1, 3, 5, 1000);
 
 -- --------------------------------------------------------
 
@@ -114,6 +127,7 @@ CREATE TABLE IF NOT EXISTS `staff` (
   `password` varchar(200) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
   `manager` tinyint(1) NOT NULL,
+  `email` varchar(30) NOT NULL,
   PRIMARY KEY (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -121,8 +135,8 @@ CREATE TABLE IF NOT EXISTS `staff` (
 -- Dumping data for table `staff`
 --
 
-INSERT INTO `staff` (`username`, `password`, `name`, `manager`) VALUES
-('admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'Administrator', 1);
+INSERT INTO `staff` (`username`, `password`, `name`, `manager`, `email`) VALUES
+('admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'Administrator', 1, '');
 
 -- --------------------------------------------------------
 
@@ -134,15 +148,21 @@ CREATE TABLE IF NOT EXISTS `ticket` (
   `ticketID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `bookingID` bigint(20) unsigned NOT NULL,
   `methodOfSale` varchar(100) DEFAULT NULL,
-  `concessionNo` double DEFAULT NULL,
-  `adultNo` double DEFAULT NULL,
-  `cost` double DEFAULT NULL,
   `dateOfTicket` date DEFAULT NULL,
   `status` varchar(100) DEFAULT NULL,
+  `type` varchar(30) NOT NULL,
   PRIMARY KEY (`ticketID`),
   UNIQUE KEY `ticketID` (`ticketID`),
   KEY `fk_ticket_ticketsale` (`bookingID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `ticket`
+--
+
+INSERT INTO `ticket` (`ticketID`, `bookingID`, `methodOfSale`, `dateOfTicket`, `status`, `type`) VALUES
+(1, 0, 'postal', '2013-03-02', 'Collected', 'adult'),
+(2, 0, 'postal', '2013-03-02', 'Collected', 'concession');
 
 -- --------------------------------------------------------
 
@@ -153,7 +173,8 @@ CREATE TABLE IF NOT EXISTS `ticket` (
 CREATE TABLE IF NOT EXISTS `ticket_sales` (
   `bookingID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `transactionID` bigint(20) unsigned NOT NULL,
-  `name` varchar(100) DEFAULT NULL,
+  `firstName` varchar(30) DEFAULT NULL,
+  `surname` varchar(30) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
   `address1` varchar(100) DEFAULT NULL,
   `address2` varchar(100) DEFAULT NULL,
@@ -182,6 +203,13 @@ CREATE TABLE IF NOT EXISTS `tournament` (
   UNIQUE KEY `tournamentID` (`tournamentID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
+--
+-- Dumping data for table `tournament`
+--
+
+INSERT INTO `tournament` (`tournamentID`, `name`, `startDate`, `endDate`, `registrationOpen`, `registrationClose`) VALUES
+(1, 'Annual Tournament', '2013-04-01', '2013-04-07', '2013-01-01', '2013-04-01');
+
 -- --------------------------------------------------------
 
 --
@@ -190,6 +218,7 @@ CREATE TABLE IF NOT EXISTS `tournament` (
 
 CREATE TABLE IF NOT EXISTS `transaction` (
   `transactionID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `nameOnCard` varchar(60) NOT NULL,
   `cardNumber` varchar(20) DEFAULT NULL,
   `cscNumber` int(11) DEFAULT NULL,
   `issueNo` double DEFAULT NULL,
@@ -225,7 +254,16 @@ CREATE TABLE IF NOT EXISTS `umpire` (
   `sunAfternoon` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`umpireID`),
   UNIQUE KEY `umpireID` (`umpireID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `umpire`
+--
+
+INSERT INTO `umpire` (`umpireID`, `umpireName`, `umpireEmail`, `monMorning`, `monAfternoon`, `tuesMorning`, `tuesAfternoon`, `wedMorning`, `wedAfternoon`, `thursMorning`, `thursAfternoon`, `friMorning`, `friAfternoon`, `satMorning`, `satAfternoon`, `sunMorning`, `sunAfternoon`) VALUES
+(1, 'Brian Jackson', 'b.jackson@gmail.com', 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1),
+(3, 'Susie Costello', 's.costello@hw.ac.uk', 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+(4, 'Andrew Fleming', 'ajf9@hw.ac.uk', 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -265,7 +303,16 @@ CREATE TABLE IF NOT EXISTS `wattball_matches` (
   KEY `fk_wattballmatches_team1` (`team1`),
   KEY `fk_wattballmatches_team2` (`team2`),
   KEY `fk_wattballmatches_umpire` (`umpire`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `wattball_matches`
+--
+
+INSERT INTO `wattball_matches` (`matchID`, `tournamentID`, `matchDate`, `matchTime`, `pitch`, `team1`, `team2`, `umpire`) VALUES
+(1, 1, '2013-02-28', '10am', 1, 41, 42, 3),
+(2, 1, '2013-03-01', '10am', 1, 41, 43, 1),
+(3, 1, '2013-03-02', '10am', 1, 42, 43, 3);
 
 -- --------------------------------------------------------
 
@@ -277,10 +324,61 @@ CREATE TABLE IF NOT EXISTS `wattball_players` (
   `playerID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `teamID` bigint(20) unsigned NOT NULL,
   `playerName` varchar(200) DEFAULT NULL,
+  `numberOfGoals` int(11) DEFAULT NULL,
   PRIMARY KEY (`playerID`),
   UNIQUE KEY `playerID` (`playerID`),
   KEY `fk_wattballplayers_wattballteam` (`teamID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=156 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=200 ;
+
+--
+-- Dumping data for table `wattball_players`
+--
+
+INSERT INTO `wattball_players` (`playerID`, `teamID`, `playerName`, `numberOfGoals`) VALUES
+(156, 41, '1\r', 0),
+(157, 41, '2\r', 0),
+(158, 41, '3\r', 0),
+(159, 41, '4\r', 0),
+(160, 41, '5\r', 0),
+(161, 41, '6\r', 0),
+(162, 41, '7\r', 0),
+(163, 41, '8\r', 0),
+(164, 41, '9\r', 0),
+(165, 41, '10\r', 0),
+(166, 41, '11', 0),
+(167, 42, '1\r', 0),
+(168, 42, '2\r', 0),
+(169, 42, '3\r', 0),
+(170, 42, '4\r', 0),
+(171, 42, '5\r', 0),
+(172, 42, '6\r', 0),
+(173, 42, '7\r', 0),
+(174, 42, '8\r', 0),
+(175, 42, '9\r', 0),
+(176, 42, '10\r', 0),
+(177, 42, '11', 0),
+(178, 43, 'fred\r', 0),
+(179, 43, 'fred\r', 0),
+(180, 43, 'fred\r', 0),
+(181, 43, 'fred\r', 0),
+(182, 43, 'fred\r', 0),
+(183, 43, 'fred\r', 0),
+(184, 43, 'fred\r', 0),
+(185, 43, 'fred\r', 0),
+(186, 43, 'fred\r', 0),
+(187, 43, 'fred\r', 0),
+(188, 43, 'fred', 0),
+(189, 44, '1\r', 0),
+(190, 44, '2\r', 0),
+(191, 44, '3\r', 0),
+(192, 44, '4\r', 0),
+(193, 44, '5\r', 0),
+(194, 44, '6\r', 0),
+(195, 44, '7\r', 0),
+(196, 44, '8\r', 0),
+(197, 44, '9\r', 0),
+(198, 44, '10\r', 0),
+(199, 44, '11', 0);
 
 -- --------------------------------------------------------
 
@@ -335,7 +433,17 @@ CREATE TABLE IF NOT EXISTS `wattball_team` (
   `email` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`teamID`),
   UNIQUE KEY `teamID` (`teamID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
+
+--
+-- Dumping data for table `wattball_team`
+--
+
+INSERT INTO `wattball_team` (`teamID`, `tournamentID`, `teamName`, `contactName`, `contactNumber`, `NWANumber`, `email`) VALUES
+(41, 1, 'Green Giants', 'Andrew Fleming', '07981473282', '521521A', 'ajf9@hw.ac.uk'),
+(42, 1, 'Brian Warriors', 'Yohann Haution', '01315262422', '521521A', 'n.kennedy@gmail.com'),
+(43, 1, 'heriot watt', 'chris cronin', '01315262422', '111111A', 'cjc23@hw.ac.uk'),
+(44, 1, 'Potter Boys', 'Andrew Fleming', '07981473282', '521521A', 'zechtech@hotmail.co.uk');
 
 --
 -- Constraints for dumped tables
@@ -360,12 +468,6 @@ ALTER TABLE `hurdle_laneallocation`
 ALTER TABLE `hurdle_results`
   ADD CONSTRAINT `fk_hurdleresult_hurdleheat` FOREIGN KEY (`heatID`) REFERENCES `hurdle_heats` (`heatID`),
   ADD CONSTRAINT `fk_hurdlerrsult_hurdlecompetitor` FOREIGN KEY (`hurdlerID`) REFERENCES `hurdles_competitors` (`hurdlerID`);
-
---
--- Constraints for table `ticket`
---
-ALTER TABLE `ticket`
-  ADD CONSTRAINT `fk_ticket_ticketsale` FOREIGN KEY (`bookingID`) REFERENCES `ticket_sales` (`bookingID`);
 
 --
 -- Constraints for table `ticket_sales`
