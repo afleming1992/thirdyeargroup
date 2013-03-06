@@ -3,20 +3,23 @@ Class Booking
 {
 	private $bookingId;
 	private $transactionId;
-	private $name;
+	private $firstName;
+	private $surname;
 	private $email;
 	private $address1;
 	private $address2;
 	private $city;
 	private $county;
 	private $postcode;
-	private $tickets; //Array to store all ticket objects under this booking
+	private $totalCost;
 	private $db;
 	
 	public function __construct($bookingId , $db)
     {
         $this->bookingId = $bookingId;     
         $this->db = $db;
+		$this->tickets = array();
+		$this->lastArrayPos = 0;
     }
     
     public function createBooking();
@@ -46,6 +49,15 @@ Class Booking
 	}
 	
 	//Getters and Setters
+	public function setBookingId($input)
+	{
+		$this->bookingId = $input;
+	}
+	
+	public function getBookingId($input)
+	{
+		return $this->bookingId;
+	}
 	
 	public function getTransactionId();
 	{
@@ -57,14 +69,24 @@ Class Booking
 		$this->transactionId = $tras;
 	}
 	
-	public function getName()
+	public function getSurname()
 	{
 		return $this->name;
 	}
     
-    public function setName($name)
+    public function setSurname($name)
 	{
-		$this->name = $name;
+		$this->surname = $name;
+	}
+	
+	public function getFirstName()
+	{
+		return $this->firstName;
+	}
+    
+    public function setFirstName($name)
+	{$_POST
+		$this->firstNme = $name;
 	}
 	
 	public function getAddress1()
@@ -97,6 +119,16 @@ Class Booking
 		$this->city = $input;
 	}
 	
+	public function getCounty()
+	{
+		return $this->county;
+	}
+   
+	public function setCounty($input)
+	{
+		$this->county = $input;
+	}
+	
 	public function getPostcode()
 	{
 		return $this->postcode;
@@ -106,6 +138,23 @@ Class Booking
 	{
 		$this->postcode = $input;
 	}
+	
+	public function getTotalCost()
+	{
+		return $this->totalCost;
+	}
+	
+	public function setTotalCost($input)
+	{
+		$this->totalCost = $input;
+	}
+	
+	public function getDb();
+	{
+		return $this->db;
+	}
+	
+	
 }
 ?>
 	
