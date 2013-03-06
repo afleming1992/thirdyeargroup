@@ -417,7 +417,90 @@ class MainController
                     $_SESSION['section'] = "tickets";
 					if(strcmp($pageName,"ticketingConfirmation") == 0)
 					{
-						
+						if(!isset($_POST['continunity']))
+						{
+							$pageName = "tickets";
+						}
+						else
+						{
+							$ticketsRequired = $_POST['adult'] + $_POST['concession'];
+							if($this->ticketCheck($_POST['ticketDate'],$ticketsRequired))
+							{
+								$transaction = new Transaction('0',$this->db);
+								$transaction->setNameOnCard(htmlspecialchars($_POST['nameOnCard']));
+								$transaction->setCardNumber(htmlspecialchars($_POST['cardNumber']));
+								$transaction->setCSCNumber(htmlspecialchars($_POST['csc']));
+								$transaction->setCardType(htmlspecialchars($_POST['cardType']));
+								$validuntil = htmlspecialchars($_POST['year'])."-".htmlspecialchars($_POST['month'])."-01";
+								$transaction->setValidUntil($validuntil);
+								$transaction->createTransaction();
+								$transaction->setTransactionID($transaction->getDB()->lastInsertId());
+								
+								$booking = new Booking('0',$this->db);
+								$booking->setTransactionId($transaction->getTransactionID());
+								$booking->setFirstName(htmlspecialchars($_POST['firstName']));
+								$booking->setSurname(htmlspecialchars($_POST['surname']));
+								$booking->setAddress1(htmlspecialchars($_POST['address1']));
+								$booking->setAddress2(htmlspecialchars($_POST['address2']));
+								$booking->setCity(htmlspecialchars($_POST['city']));
+								$booking->setCounty(htmlspecialchars($_POST['county']));
+								$booking->setPostcode(htmlspecialchars($_POST['postcode']));
+								$booking->setTotalCost($this->ticketPrice($_POST['adult'],$_POST['concession']));
+								$booking->createBooking();
+								$booking->setBookingId($booking->getDb()->lastInsertId());
+								for($i = 0;$i < $_POST['adult'];$i++)
+								{
+									$ticket = new Ticket('0',$this->db);
+									$ticket->setBookingID($booking->getBookingId($input));
+									$ticket->setDate($_POST['ticketDate']);
+									$ticket->setType("adult");
+									if(strcmp($_POST['collection'],"postal") == 0)
+									{
+										$ticket->setMethodOfSale("postal");
+										$ticket->setStatus("NOT POSTED");
+									}
+									else
+									{
+										$ticket->setMethodOfSale("pickup");
+										$ticket->setStatus("NOT COLLECTED");
+									}
+									$ticket->createTicket();
+								}
+								
+								for($i = 0;$i < $_POST['concession'];$i++)
+								{
+									$ticket = new Ticket('0',$this->db);
+									$ticket->setBookingID($booking->getBookingId($input));
+									$ticket->setDate($_POST['ticketDate']);
+									$ticket->setType("adult");
+									if(strcmp($_POST['collection'],"postal") == 0)
+									{
+										$ticket->setMethodOfSale("postal");
+										$ticket->setStatus("NOT POSTED");
+									}
+									else
+									{
+										$ticket->setMethodOfSale("pickup");
+										$ticket->setStatus("NOT COLLECTED");
+									}
+									$ticket->createTicket();
+								}
+								
+								$this->addBasicView();
+								require_once 'view/ticketConfirmation.php';
+								require_once 'view/login.php';
+								$tis->addFooterFile();
+								exit();
+								
+							}
+							else
+							{
+								$this->addBasicView();
+								require_once 'view/ticket_capacityCardDetails.php';
+								require_once 'view/login.php';
+								$this->addFooterFile();
+								exit();
+							}
 					}
                     if(strcmp($pageName,"ticketCardDetails") == 0)
 					{
@@ -493,10 +576,11 @@ class MainController
 								die();
 							}
 							$data = $result->fetch();
-							$this->tournament[0] = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose'], $this->db);
+							$tournament = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose'], $this->db);
 							$days = array();
-							$days = $this->tournament[0]->GetDays();
-							$tournamentName = $this->tournament[0]->getName();
+							$days = $tournament->GetDays();
+							$tournamentName = $tournaments->tournament[0]->getName();
+							
 							
 							$capacityResult = $this->db->query("SELECT * FROM properties");
 							$capacityResult = $capacityResult->fetch();
@@ -516,6 +600,7 @@ class MainController
             require_once 'view/'.$pageName.'.php';
             require_once 'view/login.php';
             $this->addFooterFile();
+		}
 	}
         
         public function loadResultPage($id)

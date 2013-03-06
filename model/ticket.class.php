@@ -62,24 +62,48 @@ Class Ticket
 		return $this->id;
 	}
 	
+	public function setTicketId($input)
+	{
+		$this->id = $input;
+	}
+	
 	public function getBookingId()
 	{
 		return $this->bookingId;
 	}
 	
+	public function setBookingID($input);
+	{
+		$this->bookingId = $input;
+	}
+	
 	public function getMethodOfSale()
 	{
-		return $this->getMethodOfSale;
+		return $this->methodOfSale;
+	}
+	
+	public function setMethodOfSale($input)
+	{
+		$this->methodOfSale = $input;
 	}
 	
 	public function getDate()
 	{
-		return $this->getDate;
+		return $this->dateOfTicket;
 	}
+	
+	public function setDate($input)
+	{
+		$this->dateOfTicket = $input;
 	
 	public function getStatus()
 	{
 		return $this->status;
+	}
+	
+	public function setStatus($input)
+	{
+		$this->status = $input;
 	}
 	
 	public function getType()
