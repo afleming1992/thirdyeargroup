@@ -8,7 +8,7 @@
 		private $cscNumber;
 		private $cardType;
 		private $validUntil;
-		private $db;
+		public $db;
 		
 		public function __construct($transactionId , $db)
 		{
@@ -18,15 +18,18 @@
 		
 		public function createTransaction()
 		{
-			$result = $this-db->query("INSERT INTO transaction (nameOnCard,cardNumber,cscNumber,cardType,validUntil) VALUES ('".$this->nameOnCard."','".$this->nameOnCard."','".$this->cardNumber."','".$this->cscNumber."','".$this->cardType."','".$this->validUntil."')");
+			$result = $this->db->query("INSERT INTO transaction (nameOnCard,cardNumber,cscNumber,cardType,validUntil) VALUES ('".$this->nameOnCard."','".$this->cardNumber."','".$this->cscNumber."','".$this->cardType."','".$this->validUntil."')");
 			if($result == true)
 			{
-				return true;
+				$result = $this->db->query("select last_insert_id() as lastId");
+				$lastId = $result->fetch();
+				return $lastId['lastId'];
 			}
 			else
 			{
 				return false;
 			}
+			
 		}
 		
 		public function updateTransaction()
@@ -49,7 +52,7 @@
 			return $this->transactionID;
 		}
 		
-		public function setTransactionID($transactionID);
+		public function setTransactionID($transactionID)
 		{
 			$this->transactionID = $transactionID;
 		}
@@ -76,7 +79,7 @@
 		
 		public function getCSCNumber()
 		{
-			return $this->cscNumber
+			return $this->cscNumber;
 		}
 		
 		public function setCSCNumber($input)

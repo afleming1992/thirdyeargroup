@@ -88,6 +88,7 @@
 			<span id="errorValidity" class='help-inline'></span>
 		</div>
 	</div>
+	<input type='hidden' name='continunity' value='1' >
 	<input type='hidden' name='ticketDate' value='<?php echo $_POST['ticketDate'] ?>' >
 	<input type='hidden' name='firstname' value='<?php echo $_POST['firstname'] ?>'>
 	<input type='hidden' name='surname' value='<?php echo $_POST['surname'] ?>'>

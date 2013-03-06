@@ -17,7 +17,7 @@ Class Ticket
         $this->db = $db;
     }
     
-    public function getTicketDetails
+    public function getTicketDetails()
     {
 		$result = $this->db->query("SELECT * FROM ticket WHERE ticketID = '".$this->id."'");
 		if($data = $result->fetch())
@@ -32,7 +32,7 @@ Class Ticket
 	
 	public function createTicket()
 	{
-		$result = $this->db->query("INSERT INTO ticket (bookingID,methodOfSale,dateOfTicket,status,type) VALUES ('".$this->bookingId."','".$this->methodOfSale."','".$this->dateOfTicket."','".$this->status"','".$this->type."')");
+		$result = $this->db->query("INSERT INTO ticket (bookingID,methodOfSale,dateOfTicket,status,type) VALUES ('".$this->bookingId."','".$this->methodOfSale."','".$this->dateOfTicket."','".$this->status."','".$this->type."')");
 		if($result == true)
 		{
 			return true;
@@ -72,7 +72,7 @@ Class Ticket
 		return $this->bookingId;
 	}
 	
-	public function setBookingID($input);
+	public function setBookingID($input)
 	{
 		$this->bookingId = $input;
 	}
@@ -95,6 +95,7 @@ Class Ticket
 	public function setDate($input)
 	{
 		$this->dateOfTicket = $input;
+	}
 	
 	public function getStatus()
 	{
@@ -111,9 +112,9 @@ Class Ticket
 		return $this->type;
 	}
 	
-	public function setType()
+	public function setType($input)
 	{
-		$this->type = type;
+		$this->type = $input;
 	}
 }
 

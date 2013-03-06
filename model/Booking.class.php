@@ -22,12 +22,14 @@ Class Booking
 		$this->lastArrayPos = 0;
     }
     
-    public function createBooking();
+    public function createBooking()
     {
-		$result = $this->db->query("INSERT INTO ticket_sales (transactionID,name,email,address1,address2,city,county,postcode) VALUES ('".$this->transactionId."','".$this->name."','".$this->email."','".$this->address1"','".$this->address2."','".$this->city."','".$this->county,"','".$this->postcode."')");
+		$result = $this->db->query("INSERT INTO ticket_sales (transactionID,firstName,surname,email,address1,address2,city,county,postcode) VALUES ('".$this->transactionId."','".$this->firstName."','".$this->surname."','".$this->email."','".$this->address1."','".$this->address2."','".$this->city."','".$this->county."','".$this->postcode."')");
 		if($result == true)
 		{
-			return true;
+			$result = $this->db->query("select last_insert_id() as lastId");
+			$lastId = $result->fetch();
+			return $lastId['lastId'];
 		}
 		else
 		{
@@ -35,7 +37,7 @@ Class Booking
 		}
 	}
 	
-	 public function updateBooking();
+	 public function updateBooking()
     {
 		$result = $this->db->query("UPDATE ticket_sales SET transactionID = '".$this->transactionId."',name = '".$this->name."',email = '".$this->email."',address1 = '".$this->address1."',address2 = '".$this->address2."',city = '".$this->city."',county = '".$this->county."',postcode = '".$this->postcode."' WHERE bookingId = '".$this->bookingId."')");
 		if($result == true)
@@ -54,19 +56,19 @@ Class Booking
 		$this->bookingId = $input;
 	}
 	
-	public function getBookingId($input)
+	public function getBookingId()
 	{
 		return $this->bookingId;
 	}
 	
-	public function getTransactionId();
+	public function getTransactionId()
 	{
 		return $this->transactionId;
 	}
 	
-	public function setTransactionId($trans);
+	public function setTransactionId($trans)
 	{
-		$this->transactionId = $tras;
+		$this->transactionId = $trans;
 	}
 	
 	public function getSurname()
@@ -85,8 +87,8 @@ Class Booking
 	}
     
     public function setFirstName($name)
-	{$_POST
-		$this->firstNme = $name;
+	{
+		$this->firstName = $name;
 	}
 	
 	public function getAddress1()
@@ -149,7 +151,17 @@ Class Booking
 		$this->totalCost = $input;
 	}
 	
-	public function getDb();
+	public function getEmail()
+	{
+		return $this->email;
+	}
+	
+	public function setEmail($input)
+	{
+		$this->email = $input;
+	}
+	
+	public function getDb()
 	{
 		return $this->db;
 	}

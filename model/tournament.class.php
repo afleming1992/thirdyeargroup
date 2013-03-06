@@ -14,7 +14,7 @@ class Tournament
 
 
 
-        public function __construct($tournamentID,$name,$startDate,$endDate,$registerOpen,$registerClose,$db)
+    public function __construct($tournamentID,$name,$startDate,$endDate,$registerOpen,$registerClose,$db)
 	{
 		$this->setTournamentID($tournamentID);
 		$this->setStartDate($startDate);
@@ -22,7 +22,7 @@ class Tournament
 		$this->setRegisterOpen($registerOpen);
 		$this->setRegisterClose($registerClose);
 		$this->setName($name);
-                $this->db = $db;
+		$this->db = $db;
 	}
         
         public function getTeams()
