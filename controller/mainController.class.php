@@ -458,16 +458,219 @@ class MainController
             {
                     $_SESSION['section'] = "femalehurdles";
             }
-            else if($pageName == "tickets")
+            else if($pageName == "tickets" || $pageName == "ticketPurchase" || $pageName == "ticketCardDetails" || $pageName == "ticketingConfirmation")
             {
                     $_SESSION['section'] = "tickets";
-            }            
-                       
+					if(strcmp($pageName,"ticketingConfirmation") == 0)
+					{
+						if(!isset($_POST['continunity']))
+						{
+							$pageName = "tickets";
+						}
+						else
+						{
+							if(!isset($_SESSION['booking']))
+							{
+								$ticketsRequired = $_POST['adult'] + $_POST['concession'];
+								if($this->ticketCheck($_POST['ticketDate'],$ticketsRequired))
+								{
+									$transaction = new Transaction('0',$this->db);
+									$transaction->setNameOnCard(htmlspecialchars($_POST['nameOnCard']));
+									$transaction->setCardNumber(htmlspecialchars($_POST['cardNo']));
+									$transaction->setCSCNumber(htmlspecialchars($_POST['csc']));
+									$transaction->setCardType(htmlspecialchars($_POST['cardType']));
+									$validuntil = htmlspecialchars($_POST['year'])."-".htmlspecialchars($_POST['month'])."-01";
+									$transaction->setValidUntil($validuntil);
+									$id = $transaction->createTransaction();
+									if($id == false)
+									{
+										print("Payment Failed");
+										exit();
+									}
+										$transaction->setTransactionID($id);
+										
+										$booking = new Booking('0',$this->db);
+										$booking->setTransactionId($transaction->getTransactionID());
+										$booking->setFirstName(htmlspecialchars($_POST['firstname']));
+										$booking->setSurname(htmlspecialchars($_POST['surname']));
+										$booking->setAddress1(htmlspecialchars($_POST['address1']));
+										$booking->setAddress2(htmlspecialchars($_POST['address2']));
+										$booking->setEmail(htmlspecialchars($_POST['email']));
+										$booking->setCity(htmlspecialchars($_POST['city']));
+										$booking->setCounty(htmlspecialchars($_POST['county']));
+										$booking->setPostcode(htmlspecialchars($_POST['postcode']));
+										$booking->setTotalCost($this->ticketPrice($_POST['adult'],$_POST['concession']));
+										$id = $booking->createBooking();
+										if($id == false)
+										{
+											print("Booking Failed");
+											exit();
+										}
+										$booking->setBookingId($id);
+										for($i = 0;$i < $_POST['adult'];$i++)
+										{
+											$ticket = new Ticket('0',$this->db);
+											$ticket->setBookingID($booking->getBookingId());
+											$ticket->setDate($_POST['ticketDate']);
+											$ticket->setType("adult");
+											if(strcmp($_POST['collection'],"postal") == 0)
+											{
+												$ticket->setMethodOfSale("postal");
+												$ticket->setStatus("NOT POSTED");
+											}
+											else
+											{
+												$ticket->setMethodOfSale("pickup");
+												$ticket->setStatus("NOT COLLECTED");
+											}
+											$ticket->createTicket();
+										}
+										
+										for($i = 0;$i < $_POST['concession'];$i++)
+										{
+											$ticket = new Ticket('0',$this->db);
+											$ticket->setBookingID($booking->getBookingId());
+											$ticket->setDate($_POST['ticketDate']);
+											$ticket->setType("concession");
+											if(strcmp($_POST['collection'],"postal") == 0)
+											{
+												$ticket->setMethodOfSale("postal");
+												$ticket->setStatus("NOT POSTED");
+											}
+											else
+											{
+												$ticket->setMethodOfSale("pickup");
+												$ticket->setStatus("NOT COLLECTED");
+											}
+											$ticket->createTicket();
+										}
+									$_SESSION['booking'] = 1;
+									$this->addBasicView();
+									require_once 'view/ticketConfirmation.php';
+									require_once 'view/login.php';
+									$this->addFooterFile();
+									exit();
+								}
+								else
+								{
+									$this->addBasicView();
+									require_once 'view/ticket_capacityCardDetails.php';
+									require_once 'view/login.php';
+									$this->addFooterFile();
+									exit();
+								}
+							}
+							else
+							{
+									$transactionCost = $this->ticketPrice($_POST['adult'],$_POST['concession']);
+									$this->addBasicView();
+									require_once 'view/ticketConfirmation.php';
+									require_once 'view/login.php';
+									$this->addFooterFile();
+									exit();
+							}
+								
+						}
+					}
+				}
+					
+			
+                    if(strcmp($pageName,"ticketCardDetails") == 0)
+					{
+						if(!isset($_POST['continunity']))
+						{
+							$pageName = "tickets";
+						}
+						else
+						{
+							$ticketsRequired = $_POST['adult'] + $_POST['concession'];
+							if($this->ticketCheck($_POST['ticketDate'],$ticketsRequired))
+							{
+								//Work out cost of tickets
+								$transactionCost = $this->ticketPrice($_POST['adult'],$_POST['concession']);
+								
+							}
+							else
+							{
+								$this->addBasicView();
+								require_once 'view/ticket_capacityCardDetails.php';
+								require_once 'view/login.php';
+								$this->addFooterFile();
+								exit();
+							}
+						}
+					}
+                    if($pageName == "ticketPurchase")
+                    {
+						if(isset($_GET['date']))
+						{
+							$result = $this->db->query("SELECT * FROM tournament WHERE startDate <= '".htmlspecialchars($_GET['date'])."' AND endDate >= '".htmlspecialchars($_GET['date'])."'");
+							$rowCount = $result->rowCount();
+							if($rowCount < 1)
+							{
+								$pageName = "tickets";
+							}
+							else
+							{
+								if($this->ticketCheck($_GET['date'],0))
+								{
+									//Grab Prices of Tickets
+									$result = $this->db->query("SELECT * FROM properties");
+									$result = $result->fetch();
+									$adult_price = $result['adultPrice'];
+									$concession_price = $result['concessionPrice'];
+									//Let the Customer know how many tickets are left
+									$ticketTotal = $this->ticketsRemaining($_GET['date']);
+								}
+								else
+								{
+									$this->addBasicView();
+									require_once 'view/ticket_capacityReached.php';
+									require_once 'view/login.php';
+									$this->addFooterFile();
+									exit();
+								}
+							}
+						}
+						else
+						{
+							$pageName = "tickets";
+						}
+					}
+                    if(strcmp($pageName,"tickets") == 0)
+                    {
+							unset($_SESSION['booking']);
+							$result = $this->db->query("SELECT * FROM tournament WHERE startDate > CURDATE() OR (startDate < CURDATE() AND endDate > CURDATE()) ORDER BY startDate ASC");
+							if($result == false)
+							{
+								$this->addBasicView();
+								require_once 'view/tickets_notournament.php';
+								require_once 'view/login.php';
+								$this->addFooterFile();
+								die();
+							}
+							$data = $result->fetch();
+							$tournament = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose'], $this->db);
+							$days = array();
+							$days = $tournament->GetDays();
+							$tournamentName = $tournament->getName();
+							
+							$capacityResult = $this->db->query("SELECT * FROM properties");
+							$capacityResult = $capacityResult->fetch();
+							$capacity = $capacityResult['ticketLimit'];
+							
+							$this->addBasicView();
+							require_once 'view/'.$pageName.'.php';
+							require_once 'view/login.php';
+							$this->addFooterFile();
+							die();
+					}
+				
             $this->addBasicView();
             require_once 'view/'.$pageName.'.php';
             require_once 'view/login.php';
             $this->addFooterFile();
-	}
+		}
         
         public function loadResultPage($id)
         {
@@ -782,6 +985,43 @@ class MainController
             }
         }
 
+
+		public function ticketCheck($date,$additional)
+        {
+			$result = $this->db->query("SELECT count(ticketID) AS total FROM ticket WHERE dateofTicket = '".htmlspecialchars($date)."'");
+			$array = $result->fetch();
+			$total = $array['total'] + $additional;
+			$result = $this->db->query("SELECT * FROM properties");
+			$result = $result->fetch();
+			$capacity = $result['ticketLimit'];
+			if($total < $capacity)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		public function ticketsRemaining($date)
+        {
+			$result = $this->db->query("SELECT count(ticketID) AS total FROM ticket WHERE dateofTicket = '".htmlspecialchars($_GET['date'])."'");
+			$array = $result->fetch();
+			$total = $array['total'];
+			$result = $this->db->query("SELECT * FROM properties");
+			$result = $result->fetch();
+			$capacity = $result['ticketLimit'];
+			return $capacity - $total;
+		}
+        
+        public function ticketPrice($adult,$concession)
+        {
+			$result = $this->db->query("SELECT * FROM properties");
+			$prices = $result->fetch();
+			$ticketPrice = ($adult * $prices['adultPrice']) + ($concession * $prices['concessionPrice']);
+			return $ticketPrice;
+		}
         /*-------- GETTERS & SETTERS --------*/
         
         public function getUmpire()

@@ -4,6 +4,10 @@
     <h3 class="text-info center"><?php echo $team->getTeamName(); ?></h3>
     <fieldset>
         <legend>Common informations</legend>
+<<<<<<< HEAD
+=======
+        <p class='text-info'>Contact Name: <?php echo $team->getContactName(); ?></p>
+>>>>>>> ticketing
         <p class='text-info'>NWA Number: <?php echo $team->getNWANumber(); ?></p>
         <p class='text-info'>Played Matches: <?php echo count($team->getMatchesDone()); ?></p>
         <p class='text-info'>Upcoming Matches: <?php echo count($team->getComingMatches()); ?></p>
@@ -54,6 +58,7 @@
     
     <fieldset>
         <legend>Players</legend>    
+
         <table class='table table-striped table-condensed'>
             <thead>
                 <tr>

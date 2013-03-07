@@ -14,7 +14,7 @@ class Tournament
 
 
 
-        public function __construct($tournamentID,$name,$startDate,$endDate,$registerOpen,$registerClose,$db)
+    public function __construct($tournamentID,$name,$startDate,$endDate,$registerOpen,$registerClose,$db)
 	{
 		$this->setTournamentID($tournamentID);
 		$this->setStartDate($startDate);
@@ -22,7 +22,7 @@ class Tournament
 		$this->setRegisterOpen($registerOpen);
 		$this->setRegisterClose($registerClose);
 		$this->setName($name);
-                $this->db = $db;
+		$this->db = $db;
 	}
         
         public function getTeams()
@@ -166,6 +166,23 @@ class Tournament
 		return "$year-$month-$day";
 		
 	}
+	
+	public function GetDays()
+	{  
+	  $day = 86400;
+	  $format = "Y-m-d";
+	  $startTime = strtotime($this->startDate);
+	  $endTime = strtotime($this->endDate);
+	  $numDays = round(($endTime - $startTime)/$day)+1;
+	  $days = array();
+	  
+	  for($i = 0;$i<$numDays;$i++)
+	  {
+		$days[] = date($format,($startTime +($i * $day)));
+	  }
+	  
+	  return $days;
+	}
         
         
 	
@@ -251,6 +268,7 @@ class Tournament
 	{
 	    $this->registerClose = $registerClose;
 	}
+	
 }
 
 
