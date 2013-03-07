@@ -19,7 +19,7 @@ if(isset($_SESSION['email']))
 		$mail->Host       = "smtp.gmail.com";      // sets GMAIL as the SMTP server
 		$mail->Port       = 465;                   // set the SMTP port for the GMAIL server
 		$mail->Username   = "technodevtest@gmail.com";  // GMAIL username
-		$mail->Password   = "17lY41te";            // GMAIL password
+		$mail->Password   = "1qaZXsw2";            // GMAIL password
 		$mail->AddAddress($_SESSION['email'], $_SESSION['name']);
 		$mail->SetFrom('technodevtest@gmail.com', 'Technological Developments Email Tester');
 		//$mail->AddReplyTo('name@yourdomain.com', 'First Last');
