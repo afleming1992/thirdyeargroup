@@ -15,7 +15,7 @@
             
             <li class="nav-header">Registration</li>
             <li class="divider"></li>
-            <li>View Wattball</li>
+            <li <?php if($pageName == "wattBall") echo "class='active'"; ?>><a href='index.php?adminPage=wattBall'>View Wattball</a></li>
             <li>View Male Hurdles</li>
             <li>View Female Hurdles</li>
             

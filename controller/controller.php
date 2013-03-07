@@ -8,7 +8,6 @@ require_once 'controller/mainController.class.php';
  */
 $app = new MainController($db);
 
-
 if(isset($_POST['submitButtonLogin']))
 {
 	$app->login(htmlspecialchars($_POST['username']), htmlspecialchars($_POST['password']));
@@ -37,6 +36,29 @@ else if(isset($_POST['tournamentId']) && isset($_POST['teamName']) && isset($_PO
     }
 	
 }
+else if(isset($_POST['teamID']) && isset($_POST['changeteamName']) && isset($_POST['changenwaNumber']) && isset($_POST['changecontactName']) && isset($_POST['changecontactNumber']) && isset($_POST['changeemail']))
+{
+    if($app->processChangeTeamDetails(htmlspecialchars($_POST['changeteamName']),htmlspecialchars($_POST['changecontactName']),htmlspecialchars($_POST['changecontactNumber']),htmlspecialchars($_POST['changenwaNumber']),htmlspecialchars($_POST['changeemail'])) == false)
+    {
+        // if there is some errors
+        if(isset($_SESSION['error']) && isset($_SESSION['teamNameAlreadyUsed']))
+            
+        $_SESSION['teamName'] = htmlspecialchars($_POST['changeteamName']);
+        $_SESSION['NWANumber'] = htmlspecialchars($_POST['changenwaNumber']);
+        $_SESSION['contactName'] = htmlspecialchars($_POST['changecontactName']);
+        $_SESSION['contactNumber'] = htmlspecialchars($_POST['changecontactNumber']);       
+        $_SESSION['emailValue'] = htmlspecialchars($_POST['changeemail']);       
+        $app->loadChangeTeamPage(htmlspecialchars($_POST['teamID']));
+	
+        
+    }
+    else
+    {
+        $app->saveTeamChange(htmlspecialchars($_POST['teamID']),htmlspecialchars($_POST['changeteamName']),htmlspecialchars($_POST['changecontactName']),htmlspecialchars($_POST['changecontactNumber']),htmlspecialchars($_POST['changenwaNumber']),htmlspecialchars($_POST['changeemail']));
+        $app->loadAdminPage('changeTeamDetailsSucess');
+    }
+	
+}
 else if(isset ($_GET['adminPage']))
 {
     $section = "";
@@ -57,6 +79,10 @@ else if(isset($_GET['team']))
 else if(isset($_GET['player']))
 {
     $app->loadPlayersPage(htmlspecialchars($_GET['player']));
+}
+else if(isset($_GET['changeTeam']))
+{
+    $app->loadChangeTeamPage(htmlspecialchars($_GET['changeTeam']));
 }
 else
 	$app->loadHomePage();

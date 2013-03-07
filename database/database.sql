@@ -324,7 +324,7 @@ CREATE TABLE IF NOT EXISTS `wattball_players` (
   `playerID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `teamID` bigint(20) unsigned NOT NULL,
   `playerName` varchar(200) DEFAULT NULL,
-  `numberOfGoals` int(11) DEFAULT NULL,
+  `numberOfGoals` int(11) DEFAULT 0,
   PRIMARY KEY (`playerID`),
   UNIQUE KEY `playerID` (`playerID`),
   KEY `fk_wattballplayers_wattballteam` (`teamID`)

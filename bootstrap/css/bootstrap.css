@@ -225,7 +225,7 @@ a:hover {
 .navbar-static-top .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
-  width: 940px;
+  width: 1030px;
 }
 
 .span12 {
@@ -988,7 +988,6 @@ input[type="tel"],
 input[type="color"],
 .uneditable-input {
   display: inline-block;
-  height: 20px;
   padding: 4px 6px;
   margin-bottom: 10px;
   font-size: 14px;

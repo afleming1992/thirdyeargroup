@@ -136,7 +136,7 @@ class MainController
                 $this->getAllTournament();
                 $allTournament = $this->tournament;
             }
-            else if($pageName == 'addWattBallResults' || $pageName == 'wattBallReScheduling')
+            else if($pageName == 'addWattBallResults' || $pageName == 'wattBallReScheduling' || $pageName == 'wattBall')
             {
                 $isTournament = $this->isCurrentTournament();     
                 if($this->tournament == null) // if there is no tournament
@@ -161,6 +161,26 @@ class MainController
                     {
                         $tournament = $this->tournament; 
                         $matches = $tournament[0]->getAllFinishedMatches();
+                    }
+                    else if($pageName == 'wattBall')
+                    {
+                        $result = $this->db->query("SELECT * FROM wattball_team ORDER BY teamName");
+                        $data = $result->fetchAll();
+                        $teams = array();
+                        $i = 0;
+                        if($data != false)
+                        {
+                            foreach ($data as $d)
+                            {
+                                $teams[$i] = new Team($this->db, $d['teamID']);
+                                $teams[$i]->setContactName($d['contactName']);
+                                $teams[$i]->setTeamName($d['teamName']);
+                                $teams[$i]->setNwaNumber($d['NWANumber']);
+                                $teams[$i]->setEmail($d['email']);
+                                $teams[$i]->setContactNumber($d['contactNumber']);
+                                $i++;
+                            }
+                        }
                     }
                     else 
                     {
@@ -732,6 +752,33 @@ class MainController
             $this->addFooterFile();
              
         }
+        
+        public function loadChangeTeamPage($teamID)
+        {
+            $_SESSION['section'] = "admin";
+            if(!isset($_SESSION['login']))
+            {
+                addLogin();
+                die();
+            }
+            else if(isset($_SESSION['login']) && $_SESSION['login']==FALSE)
+            {
+                addLogin();
+                die();
+            }           
+            $staff = new Staff($_SESSION['username'], null, $this->db);
+            $staff->getStaffInfo();
+            $pageName = "wattBall";    
+            
+            $team = new Team($this->db, $teamID);
+            $team->getTeamInfo();
+            $team->getPlayersInfo();
+            
+            $this->addBasicView();
+            require_once 'adminView/menu.php';
+            require_once 'adminView/changeTeam.php';
+            $this->addFooterFile();
+        }
 	
 	/**
 	 * search in the database all tournament and put in an array
@@ -802,8 +849,9 @@ class MainController
 			$result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
 				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose 
                                  FROM tournament WHERE registrationOpen < CURDATE() AND  endDate > CURDATE() ORDER BY startDate DESC");
-			if($result != false)
-			{
+		if($result != false)
+		{
+
                     $i = 0;
                     while($data = $result->fetch())
                     {
@@ -932,6 +980,65 @@ class MainController
 		
 	}
         
+        public function processChangeTeamDetails($teamName,$contactName,$contactNumber,$nwaNumber,$email)
+        {
+            $nwaLengthError = 0;
+		//This checks that the NWA Number is the correct Length
+		if(strlen($nwaNumber) != 7)
+		{
+			$nwaLengthError = 1;
+		}
+		
+		//Checks the Contact Number is 11 in Length
+		if(strlen($contactNumber) != 11)
+		{
+			$_SESSION['contactNumberError'] = 1;
+		}
+		
+		//This Checks that the first six digits are Numerical and the last is a Letter
+		if($nwaLengthError == 1)
+		{
+			//Checks if the first 6 digits are numeric
+			for($i = 0;$i < 6;$i++)
+			{
+				$thispart = substr($nwaNumber,$i,1);
+				$test = is_numeric($thispart);
+				if($test != 1)
+				{
+					$_SESSION['nwaValidationError'] = 1;
+				}
+			}
+			//Checks the last is a letter
+				$letter = substr($nwaNumber,6,1);
+				if (!(preg_match("/^[a-zA-Z]$/", $letter))) 
+				{
+					$_SESSION['nwaValidationError'] = 1;
+				}
+			
+		}
+                
+                if(strlen($teamName) == 0)
+                    $_SESSION['teamNameError'] = 1;
+                
+                if(strlen($contactName) == 0)
+                    $_SESSION['contactNameError'] = 1;
+                
+                if (!(preg_match("/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/", $email))) 
+                {
+                        $_SESSION['EmailError'] = 1;
+                }
+                
+                if(isset($_SESSION['nwaLengthError']) || isset($_SESSION['nwaValidationError']) || isset($_SESSION['NotEnoughPlayers']) || isset($_SESSION['contactNumberError']) || isset($_SESSION['teamNameError']) || isset($_SESSION['teamNameAlreadyUsed']) || isset($_SESSION['contactName']) || isset($_SESSION['EmailError']))
+		{
+			$_SESSION['error'] = 1;
+		}
+		
+		if(!isset($_SESSION['error']))
+                    return true;
+                else
+                    return  false;
+        }
+        
         public function checkTeamName($teamName)
         {
             $result = $this->db->query("SELECT * FROM wattball_team WHERE teamName = '$teamName'");
@@ -983,6 +1090,33 @@ class MainController
 
                     }
             }
+        }
+        
+        /**
+         * Save the change of a team
+         * @param int $teamID
+         * @param String $teamName
+         * @param String $contactName
+         * @param String $contactNumber
+         * @param String $nwaNumber
+         * @param String $email
+         * @param String $players
+         */
+        public function saveTeamChange($teamID,$teamName,$contactName,$contactNumber,$nwaNumber,$email)
+        {
+            $team = new Team($this->db, $teamID);
+            $team->setTeamName($teamName);
+            $team->setNwaNumber($nwaNumber);
+            $team->setContactName($contactName);
+            $team->setContactNumber($contactNumber);
+            $team->setEmail($email);
+            
+            $request = $this->db->query("SELECT tournamentID FROM wattball_team WHERE teamID = $teamID");
+            $data = $request->fetch();
+            $team->setTournamentID($data['tournamentID']);
+            $team->updateTeamInfo();
+            
+            
         }
 
 
