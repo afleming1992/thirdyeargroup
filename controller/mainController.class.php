@@ -516,6 +516,7 @@ class MainController
 							}
 							else
 							{
+									$transactionCost = $this->ticketPrice($_POST['adult'],$_POST['concession']);
 									$this->addBasicView();
 									require_once 'view/ticketConfirmation.php';
 									require_once 'view/login.php';

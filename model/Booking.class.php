@@ -24,7 +24,7 @@ Class Booking
     
     public function createBooking()
     {
-		$result = $this->db->query("INSERT INTO ticket_sales (transactionID,firstName,surname,email,address1,address2,city,county,postcode) VALUES ('".$this->transactionId."','".$this->firstName."','".$this->surname."','".$this->email."','".$this->address1."','".$this->address2."','".$this->city."','".$this->county."','".$this->postcode."')");
+		$result = $this->db->query("INSERT INTO ticket_sales (transactionID,firstName,surname,email,address1,address2,city,county,postcode,totalCost) VALUES ('".$this->transactionId."','".$this->firstName."','".$this->surname."','".$this->email."','".$this->address1."','".$this->address2."','".$this->city."','".$this->county."','".$this->postcode."','".$this->totalCost."')");
 		if($result == true)
 		{
 			$result = $this->db->query("select last_insert_id() as lastId");
@@ -39,7 +39,7 @@ Class Booking
 	
 	 public function updateBooking()
     {
-		$result = $this->db->query("UPDATE ticket_sales SET transactionID = '".$this->transactionId."',name = '".$this->name."',email = '".$this->email."',address1 = '".$this->address1."',address2 = '".$this->address2."',city = '".$this->city."',county = '".$this->county."',postcode = '".$this->postcode."' WHERE bookingId = '".$this->bookingId."')");
+		$result = $this->db->query("UPDATE ticket_sales SET transactionID = '".$this->transactionId."',name = '".$this->name."',email = '".$this->email."',address1 = '".$this->address1."',address2 = '".$this->address2."',city = '".$this->city."',county = '".$this->county."',postcode = '".$this->postcode."',totalCost = '".$this->totalCost."' WHERE bookingId = '".$this->bookingId."')");
 		if($result == true)
 		{
 			return true;
