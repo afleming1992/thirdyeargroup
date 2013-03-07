@@ -4,10 +4,6 @@
     <h3 class="text-info center"><?php echo $team->getTeamName(); ?></h3>
     <fieldset>
         <legend>Common informations</legend>
-<<<<<<< HEAD
-=======
-        <p class='text-info'>Contact Name: <?php echo $team->getContactName(); ?></p>
->>>>>>> ticketing
         <p class='text-info'>NWA Number: <?php echo $team->getNWANumber(); ?></p>
         <p class='text-info'>Played Matches: <?php echo count($team->getMatchesDone()); ?></p>
         <p class='text-info'>Upcoming Matches: <?php echo count($team->getComingMatches()); ?></p>
@@ -16,7 +12,7 @@
     </br>
     <fieldset>
         <legend>Ranking</legend>
-            <a class="pull-right" href="index.php?page=ranking">Go to Gloabal Ranking <i class="icon-arrow-right"></i> </a></br></br>
+            <a class="pull-right" href="index.php?page=ranking">Go to Global Ranking <i class="icon-arrow-right"></i> </a></br></br>
             <?php
             if(!$isRanking)
                 echo "<div class='alert alert-block'><p>No Ranking</p></br>";

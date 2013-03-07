@@ -138,7 +138,7 @@ class MainController
             }
             else if($pageName == 'addWattBallResults' || $pageName == 'wattBallReScheduling')
             {
-                $isTournament = $this->isCurrentTournament();              
+                $isTournament = $this->isCurrentTournament();     
                 if($this->tournament == null) // if there is no tournament
                 {
                     $this->addBasicView();
@@ -799,11 +799,11 @@ class MainController
         public function isCurrentTournament()
         {
             //* Check if there is a current tournament
-		$result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
+			$result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
 				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose 
-                                 FROM tournament WHERE startDate < CURDATE() AND  endDate > CURDATE() ORDER BY startDate DESC");
-		if($result != false)
-		{
+                                 FROM tournament ORDER BY startDate DESC");
+			if($result != false)
+			{
                     $i = 0;
                     while($data = $result->fetch())
                     {
@@ -811,7 +811,7 @@ class MainController
                             $i++;
                     }
                     return true;
-		}
+			}	
                 else
                 {
                     $this->tournament = null;
