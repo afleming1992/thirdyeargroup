@@ -12,7 +12,7 @@
     </br>
     <fieldset>
         <legend>Ranking</legend>
-            <a class="pull-right" href="index.php?page=ranking">Go to Gloabal Ranking <i class="icon-arrow-right"></i> </a></br></br>
+            <a class="pull-right" href="index.php?page=ranking">Go to Global Ranking <i class="icon-arrow-right"></i> </a></br></br>
             <?php
             if(!$isRanking)
                 echo "<div class='alert alert-block'><p>No Ranking</p></br>";
@@ -54,6 +54,7 @@
     
     <fieldset>
         <legend>Players</legend>    
+
         <table class='table table-striped table-condensed'>
             <thead>
                 <tr>

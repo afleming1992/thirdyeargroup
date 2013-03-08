@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div class='span9 contentbox'>
 
    <?php
