@@ -520,6 +520,7 @@ class MainController
 										$booking->setCounty(htmlspecialchars($_POST['county']));
 										$booking->setPostcode(htmlspecialchars($_POST['postcode']));
 										$booking->setTotalCost($this->ticketPrice($_POST['adult'],$_POST['concession']));
+										$transactionCost = $this->ticketPrice($_POST['adult'],$_POST['concession']);
 										$id = $booking->createBooking();
 										if($id == false)
 										{
