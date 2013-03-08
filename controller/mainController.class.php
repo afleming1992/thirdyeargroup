@@ -157,6 +157,7 @@ class MainController
                     else if($pageName == 'wattBall')
                     {
                         $isTournamentStarted = $this->isTournamentStarted();
+                        $isScheduled = $this->tournament[0]->is_scheduled(); 
                         $result = $this->db->query("SELECT * FROM wattball_team ORDER BY teamName");
                         $data = $result->fetchAll();
                         $teams = array();
