@@ -147,14 +147,6 @@ class MainController
                     $this->addFooterFile();
                     die();
                 }
-                else if($this->tournament != null && count($this->tournament[0]->getAllFinishedMatches()) == 0) // if there is a curent tournament but no matches
-                {
-                    $this->addBasicView();
-                    require_once 'adminView/menu.php';
-                    require_once 'adminView/wattBallNoTournament.php';
-                    $this->addFooterFile();
-                    die();
-                }
                 else //there are matches for the current tournament
                 {
                     if($pageName == 'addWattBallResults')
@@ -164,6 +156,7 @@ class MainController
                     }
                     else if($pageName == 'wattBall')
                     {
+                        $isTournamentStarted = $this->isTournamentStarted();
                         $result = $this->db->query("SELECT * FROM wattball_team ORDER BY teamName");
                         $data = $result->fetchAll();
                         $teams = array();
@@ -640,12 +633,20 @@ class MainController
         /**
          * Find if there is a tournament now
          */
-        public function isCurrentTournament()
+        public function isCurrentTournament($dateFormat = NULL)
         {
             //* Check if there is a current tournament
-		$result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
+            if($dateFormat == NULL)
+            {
+                $result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
 				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose 
                                  FROM tournament WHERE registrationOpen < CURDATE() AND  endDate > CURDATE() ORDER BY startDate DESC");
+            }
+            else
+            {
+                 $result = $this->db->query("SELECT * 
+                                 FROM tournament WHERE registrationOpen < CURDATE() AND  endDate > CURDATE() ORDER BY startDate DESC");
+            }
 		if($result != false)
 		{
                     $i = 0;
@@ -664,12 +665,33 @@ class MainController
         }
         
         
+        public function isTournamentStarted()
+        {            
+            if($this->isCurrentTournament(true))
+            {
+                $today = new DateTime(date("Y-m-d"));
+                list($Y,$m,$d)=explode('-',  $this->tournament[0]->getStartDate());
+                $startDate = new DateTime(Date("Y-m-d", mktime(0,0,0,$m,$d,$Y)));
+                
+                $today->format('Ymd');
+                $startDate->format('Ymd');
+                
+                if($today < $startDate)
+                    return false;
+                else
+                    return true;
+            }
+            
+            return false;
+        }
+        
+        
         public function findClosestTournament()
 	{
 		//* Check if there is a current tournament
 		$result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
 				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose 
-                                 FROM tournament WHERE startDate < CURDATE() AND  endDate > CURDATE() ORDER BY startDate DESC");
+                                 FROM tournament WHERE registrationOpen < CURDATE() AND  endDate > CURDATE() ORDER BY startDate DESC");
 		if($data == $result->fetch())
 		{
                     $i = 0;

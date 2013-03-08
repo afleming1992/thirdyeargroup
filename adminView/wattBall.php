@@ -15,7 +15,8 @@
                     <th>Contact Number</th>
                     <th>Contact Email</th>
                     <th>NWA Number</th>
-                    <th>Change Team</th>
+                    <th>Change Team Details</th>
+                    <?php if($isTournamentStarted == false) echo "<th>Delete Team</th>" ?>
                   </tr>
                 </thead>
                 <tbody>
@@ -28,7 +29,9 @@
                 echo "<td>".$teams[$i]->getContactNumber()."</td>";
                 echo "<td>".$teams[$i]->getEmail()."</td>";
                 echo "<td>".$teams[$i]->getNWANumber()."</td>";
-                echo "<td><a href='index.php?changeTeam=".$teams[$i]->getTeamID()."' role='button' class='btn btn-small btn-info'>Change Team details</a></td>";
+                echo "<td><a href='index.php?changeTeam=".$teams[$i]->getTeamID()."' role='button' class='btn btn-small btn-warning'><i class='icon-white  icon-wrench'</i></a></td>";
+                if($isTournamentStarted == false) 
+                    echo "<td><a class='btn btn-danger btn-mini'><i class='icon-white icon-remove-sign'</i></a></td>";
                 echo "</tr>";
             }
             echo "</tbody>";
