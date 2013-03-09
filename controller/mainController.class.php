@@ -774,6 +774,41 @@ class MainController
             require_once 'adminView/changeTeam.php';
             $this->addFooterFile();
         }
+        
+        
+        public function loadChangeTeamPlayersPage($teamID)
+        {
+            $_SESSION['section'] = "admin";
+            $pageName = "wattBall"; 
+            if(!isset($_SESSION['login']))
+            {
+                addLogin();
+                die();
+            }
+            else if(isset($_SESSION['login']) && $_SESSION['login']==FALSE)
+            {
+                addLogin();
+                die();
+            }
+            $staff = new Staff($_SESSION['username'], null, $this->db);
+            $staff->getStaffInfo();
+            
+            $request = $this->db->query("SELECT * FROM wattball_players WHERE teamID = $teamID ORDER BY playerName");
+            $players = array();
+            $i = 0;
+            while ($data = $request->fetch())
+            {
+                $players[$i] = new Player($this->db);
+                $players[$i]->setPlayerID($data['playerID']);
+                $players[$i]->setPlayerName($data['playerName']);
+                $i++;
+            }
+            
+            $this->addBasicView();
+            require_once 'adminView/menu.php';
+            require_once 'adminView/changeTeamPlayers.php';
+            $this->addFooterFile();
+        }
 	
 	/**
 	 * search in the database all tournament and put in an array

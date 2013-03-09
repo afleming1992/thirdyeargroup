@@ -153,7 +153,7 @@ $(document).ready(function()
 				username: $('#fixedUsername').text(),
 				email: $('#emailChange').val(),			
 				manager: isManager,
-				id: $(this).attr('umpireID'),
+				id: $(this).attr('umpireID')
 				}, 
 				success: function(data, textStatus, jqXHR) {
 				$('#editStaff').modal('hide');

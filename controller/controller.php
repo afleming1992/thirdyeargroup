@@ -84,6 +84,10 @@ else if(isset($_GET['changeTeam']))
 {
     $app->loadChangeTeamPage(htmlspecialchars($_GET['changeTeam']));
 }
+else if(isset($_GET['changeTeamPlayers']))
+{
+    $app->loadChangeTeamPlayersPage(htmlspecialchars($_GET['changeTeamPlayers']));
+}
 else
 	$app->loadHomePage();
 
