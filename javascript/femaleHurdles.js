@@ -1,5 +1,16 @@
 $(document).ready(function(){
 
+$("#performancetime").hide();
+$(":radio[name='yesno']").change(function(){
+  var newVal = $(":radio[name='yesno']:checked").val();
+  if (newVal == "Yes") {
+    $("#performancetime").show();
+  } else {
+    $("#performancetime").hide();
+  }
+});
+
+
 // handle the form submit event
 function emailCheck() {
 	
@@ -146,6 +157,18 @@ function calculateAge() {
 		}
 }
 
+function radioCheck() {
+
+	var x=document.getElementsByName("yesno");
+		for(var i = 0; i < x.length; i++) {
+			if(x[0].checked || x[1].checked) {
+				return true;
+			} else {
+				document.getElementById("performancetimeerror").innerHTML = "Please select an option for a performance time";
+			}
+	}
+}
+    
 $('#frmContact').submit(function(){
 	var age = calculateAge();
 	var email = emailCheck();
@@ -156,8 +179,10 @@ $('#frmContact').submit(function(){
 	var street = streetNameCheck();
 	var city = cityCheck();
 	var postCode = postCodeCheck();
+	var radio = radioCheck();
 	
-	if(age == true && email == true && firstName == true && lastName == true && contactNo == true && houseNo == true && street == true && city == true && postCode == true) 
+	
+	if(age == true && email == true && firstName == true && lastName == true && contactNo == true && houseNo == true && street == true && city == true && radio == true) 
 	{
 		
 		return true;

@@ -51,10 +51,23 @@
               <input name="emcontact" type="text" class="text" id="emcontact" tabindex="130" />
               <p><font color="red"><span id="emcontacterror"</span></font></p>
             </p>
+            <p>Do you have a performance time? </p>
+            <label for="s1">Yes</label>
+            <input type="radio" id="radio1" name="yesno" value="Yes"/>
+            <br/>
+            <label for="s2">No</label>
+            <input type="radio" id="radio2" name="yesno" value="No"/>
+			<p><font color="red"><span id="performancetimeerror"</span></font></p>
+			<div id = "performancetime">
             <p>
-              <label for="performancetime">Performance Time: </label>
-              <input name="performancetime" type="text" class="text" id="performancetime" tabindex="130" />
+              <label for="minutes">Minutes:</label>
+              <input name="minutes" class = "time" type="text" class="text" id="minutes" maxlength = "2" tabindex="130"/>
+              <label for="seconds">Seconds:</label>
+              <input name="seconds" class = "time" type="text" class="text" id="seconds" maxlength = "2" tabindex="130"/>
+              <label for="milliseconds">Milliseconds:</label>
+              <input name="milliseconds" class = "time" type="text" class="text" id="milliseconds" maxlength = "2" tabindex="130"/>
             </p>
+            </div>
             <p>
               <input name="gender" type="hidden" id="gender" tabindex="130" value="F" />
             </p>
@@ -65,5 +78,10 @@
             <script src="javascript/femaleHurdles.js"></script>
           </fieldset>
         </form>
+<style type="text/css">
+  .time {
+    width: 50px
+}
+  </style>
         
         

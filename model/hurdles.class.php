@@ -13,6 +13,9 @@ class Hurdles
 	private $postCode;
 	private $email;
 	private $emContact;
+	private $minutes;
+	private $seconds;
+	private $milliseconds;
 	private $performanceTime;
 	private $db;
 
@@ -142,6 +145,36 @@ class Hurdles
 	public function setEmergencyContact($emContact)
 	{
 		$this->emContact = $emContact;
+	}
+	
+	public function getMinutes()
+	{
+			return $this->minutes;
+	}
+
+	public function setMinutes($minutes)
+	{
+		$this->minutes = $minutes;
+	}
+	
+	public function getSeconds()
+	{
+			return $this->seconds;
+	}
+
+	public function setSeconds($seconds)
+	{
+		$this->seconds = $seconds;
+	}
+	
+	public function getMilliSeconds()
+	{
+			return $this->milliseconds;
+	}
+
+	public function setMilliSeconds($milliseconds)
+	{
+		$this->milliseconds = $milliseconds;
 	}
 	
 	public function getPerformanceTime()
