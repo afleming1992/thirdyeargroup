@@ -36,6 +36,7 @@ else if(isset($_POST['tournamentId']) && isset($_POST['teamName']) && isset($_PO
     }
 	
 }
+
 else if(isset($_POST['teamID']) && isset($_POST['changeteamName']) && isset($_POST['changenwaNumber']) && isset($_POST['changecontactName']) && isset($_POST['changecontactNumber']) && isset($_POST['changeemail']))
 {
     if($app->processChangeTeamDetails(htmlspecialchars($_POST['changeteamName']),htmlspecialchars($_POST['changecontactName']),htmlspecialchars($_POST['changecontactNumber']),htmlspecialchars($_POST['changenwaNumber']),htmlspecialchars($_POST['changeemail'])) == false)
@@ -57,7 +58,12 @@ else if(isset($_POST['teamID']) && isset($_POST['changeteamName']) && isset($_PO
         $app->saveTeamChange(htmlspecialchars($_POST['teamID']),htmlspecialchars($_POST['changeteamName']),htmlspecialchars($_POST['changecontactName']),htmlspecialchars($_POST['changecontactNumber']),htmlspecialchars($_POST['changenwaNumber']),htmlspecialchars($_POST['changeemail']));
         $app->loadAdminPage('changeTeamDetailsSucess');
     }
-	
+}
+else if(isset($_POST['firstname']) && isset($_POST['lastname']) && isset($_POST['gender']) && isset($_POST['dob']) && isset($_POST['housenumber']) && isset($_POST['streetname']) && isset($_POST['city']) && isset($_POST['postcode']) && isset($_POST['emailcheck']) && isset($_POST['emcontact']) && isset($_POST['minutes']) && isset($_POST['seconds']) && isset($_POST['milliseconds']))
+{
+	$save = $app->processHurdleRegistration(htmlspecialchars($_POST['firstname']),htmlspecialchars($_POST['lastname']),htmlspecialchars($_POST['gender']),htmlspecialchars($_POST['dob']),htmlspecialchars($_POST['housenumber']),htmlspecialchars($_POST['streetname']),htmlspecialchars($_POST['city']),htmlspecialchars($_POST['postcode']),htmlspecialchars($_POST['emailcheck']), htmlspecialchars($_POST['emcontact']),htmlspecialchars($_POST['minutes']),htmlspecialchars($_POST['seconds']),htmlspecialchars($_POST['milliseconds']));
+	if($save)
+		$app->loadPage('hurdleRegistrationSuccess');
 }
 else if(isset ($_GET['adminPage']))
 {
