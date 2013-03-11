@@ -420,9 +420,14 @@ class MainController
               {
 				  $_SESSION['section'] = "aboutus";
 			  }
-			  else if($pageName == "processHurdleRegistration")
+			  else if($pageName == "hurdleRegistrationSuccess")
 			  {
-			  		
+			  		$this->addBasicView();
+                    require_once 'view/femaleHurdleNav.php';
+                    require_once 'view/'.$pageName.'.php';
+                    require_once 'view/login.php';
+                    $this->addFooterFile();
+                    die();
 			  }			  
 			  else if($pageName == "menHurdles" || $pageName == "menHurdlesRegistration" || $pageName == "menHurdlesSchedule")
 			  {
@@ -1254,3 +1259,5 @@ class MainController
 }
 
 ?>
+
+               
