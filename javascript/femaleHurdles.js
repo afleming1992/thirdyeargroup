@@ -165,6 +165,7 @@ function radioCheck() {
 				return true;
 			} else {
 				document.getElementById("performancetimeerror").innerHTML = "Please select an option for a performance time";
+				return false;
 			}
 	}
 }

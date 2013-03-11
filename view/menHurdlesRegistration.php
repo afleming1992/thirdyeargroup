@@ -1,3 +1,4 @@
+
 <div class='span9 contentbox'>
 
 <form id="frmContact" name="frmContact" method="post" action="index.php">
@@ -50,10 +51,23 @@
               <input name="emcontact" type="text" class="text" id="emcontact" tabindex="130" />
               <p><font color="red"><span id="emcontacterror"</span></font></p>
             </p>
-            <p>
-              <label for="performancetime">Performance Time: </label>
-              <input name="performancetime" type="text" class="text" id="performancetime" tabindex="130" />
-            </p>
+            <p>Do you have a performance time? </p>
+            <label for="s1">Yes</label>
+            <input type="radio" id="radio1" name="yesno" value="Yes"/>
+            <br/>
+            <label for="s2">No</label>
+            <input type="radio" id="radio2" name="yesno" value="No"/>
+			<p><font color="red"><span id="performancetimeerror"</span></font></p>
+			<div id = "performancetime">
+            <tr>
+              <label for="minutes"></label>
+              <td><input name="minutes" class = "time" type="text" class="text" id="minutes" placeholder = "Minutes" maxlength = "2" tabindex="130"/></td>
+              <label for="seconds"></label>
+              <td><input name="seconds" class = "time" type="text" class="text" id="seconds" placeholder = "Seconds" maxlength = "2" tabindex="130"/></td>
+              <label for="milliseconds"></label>
+              <td><input name="milliseconds" class = "time" type="text" class="text" id="milliseconds" placeholder = "Milliseconds" maxlength = "4" tabindex="130"/></td>
+            </tr>
+            </div>
             <p>
               <input name="gender" type="hidden" id="gender" tabindex="130" value="M" />
             </p>
@@ -63,5 +77,11 @@
             </p>
             <script src="javascript/femaleHurdles.js"></script>
           </fieldset>
-</div>
-
+        </form>
+<style type="text/css">
+  .time {
+    width: 50px
+}
+  </style>
+        
+        

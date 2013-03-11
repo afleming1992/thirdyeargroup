@@ -16,7 +16,6 @@ class Hurdles
 	private $minutes;
 	private $seconds;
 	private $milliseconds;
-	private $performanceTime;
 	private $db;
 
 	public function __construct($db, $hurdlerId)
@@ -24,6 +23,7 @@ class Hurdles
 		$this->setDb($db);
             $this->sethurdlerId($hurdlerId);
 	}
+	
 	
 	public function addTeamInfo()
 	{
@@ -34,6 +34,7 @@ class Hurdles
 			return false;
 		}
 	}
+	
 	
 	/* ----- GETTERS AND SETTERS ----- */
 	
@@ -186,7 +187,8 @@ class Hurdles
 	{
 		$this->performanceTime = $performanceTime;
 	}
-
+	
+	
 	public function getDb()
 	{
 		   return $this->db;

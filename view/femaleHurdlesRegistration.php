@@ -65,7 +65,7 @@
               <label for="seconds">Seconds:</label>
               <input name="seconds" class = "time" type="text" class="text" id="seconds" maxlength = "2" tabindex="130"/>
               <label for="milliseconds">Milliseconds:</label>
-              <input name="milliseconds" class = "time" type="text" class="text" id="milliseconds" maxlength = "2" tabindex="130"/>
+              <input name="milliseconds" class = "time" type="text" class="text" id="milliseconds" maxlength = "4" tabindex="130"/>
             </p>
             </div>
             <p>
