@@ -602,7 +602,7 @@ class MainController
             }
         }
         
-        public function processHurdleRegistration($firstname,$lastname,$gender,$dob,$houseno,$streetname,$city,$postcode,$emailcheck,$emcontact,$performancetime)
+        public function processHurdleRegistration($firstname,$lastname,$gender,$dob,$houseno,$streetname,$city,$postcode,$emailcheck,$emcontact,$minutes,$seconds,$milliseconds)
         {
         	$hurdleObject = new hurdles($this->db,null);
         	$hurdleObject-> setFirstName($firstname);
@@ -615,14 +615,25 @@ class MainController
         	$hurdleObject-> setPostCode($postcode);
         	$hurdleObject-> setEmail($emailcheck);
         	$hurdleObject-> setEmergencyContact($emcontact);
-        	$hurdleObject-> setPerformanceTime($performancetime);
+        	$milliseconds = $this->toMilliSeconds($minutes,$seconds,$milliseconds);
+        	$hurdleObject-> setPerformanceTime($milliseconds);
+        	
         	if($hurdleObject-> addTeamInfo())
        			return true;
        		else
        			return false;
          
         }
-
+        
+        public function toMilliSeconds($minutes,$seconds,$milliseconds) {
+        $total = 0;
+        $total = $minutes * 60;
+        $total = $total + $seconds;
+        $total = $total * 1000;
+        $total = $total + $milliseconds;
+       	return $total;
+        
+    }
         /*-------- GETTERS & SETTERS --------*/
         
         public function getUmpire()

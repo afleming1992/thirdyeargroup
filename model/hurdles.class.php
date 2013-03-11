@@ -188,7 +188,6 @@ class Hurdles
 		$this->performanceTime = $performanceTime;
 	}
 	
-	
 	public function getDb()
 	{
 		   return $this->db;
