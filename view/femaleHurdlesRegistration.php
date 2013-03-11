@@ -5,6 +5,23 @@
         <fieldset id="personalInfo">
             <legend><strong>Female Hurdles: Personal Information</strong></legend>
         	<p>
+				<label class='control-label'>Choose which Tournament to Register to: </label>
+                <div class="controls">
+                        <select name="tournamentId" id='tournamentId'>
+                                <?php
+
+                                        if(isset($tournament))
+                                        {
+                                                for($i = 0;$i<count($tournament);$i++)
+                                                {
+                                                   echo "<option value='".$tournament[$i]['tournamentID']."'>".$tournament[$i]['name']." - FROM ".$tournament[$i]['startDate']." TO ".$tournament[$i]['endDate']."</option>"; 
+                                                }
+                                        }
+                                ?>
+                        </select>
+                </div>
+			</p>
+			<p>
               <label for="firstname">*First Name: </label>
               <input name="firstname" type="text" class="text" id="firstname" tabindex="100" />
               <p><font color="red"><span id="nameerror"</span></font></p>

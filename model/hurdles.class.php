@@ -3,6 +3,7 @@
 class Hurdles
 {
 	private $hurdlerId;
+	private $tournamentId;
 	private $firstName;
 	private $lastName;
 	private $gender;
@@ -27,7 +28,7 @@ class Hurdles
 	
 	public function addTeamInfo()
 	{
-		$result = $this->db->query("INSERT INTO hurdles_competitors (hurdlerName,hurdlerlastName,hurdlerGender,dateOfBirth,houseNumber,streetName,city,postcode,email,contactNumber,hurdlerPerformance) VALUES ('".$this->firstName."','".$this->lastName."','".$this->gender."','".$this->dob."','".$this->houseNo."','".$this->streetName."','".$this->city."','".$this->postCode."','".$this->email."','".$this->emContact."','".$this->performanceTime."')");
+		$result = $this->db->query("INSERT INTO hurdles_competitors (hurdlerName,hurdlerlastName,tournamentId,hurdlerGender,dateOfBirth,houseNumber,streetName,city,postcode,email,contactNumber,hurdlerPerformance) VALUES ('".$this->firstName."','".$this->lastName."','".$this->tournamentId."','".$this->gender."','".$this->dob."','".$this->houseNo."','".$this->streetName."','".$this->city."','".$this->postCode."','".$this->email."','".$this->emContact."','".$this->performanceTime."')");
 		if($result != false){
 			return true; 
 		} else {
@@ -46,6 +47,16 @@ class Hurdles
 	public function setHurdlerId($hurdlerId)
 	{
 		$this->hurdlerId = $hurdlerId;
+	}
+	
+	public function getTournamentId()
+	{
+			return $this->firstName;
+	}
+	
+	public function setTournamentId($input)
+	{
+		$this->tournamentId = $input;
 	}
 
 	public function setFirstName($firstName)

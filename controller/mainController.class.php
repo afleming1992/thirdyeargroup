@@ -432,7 +432,7 @@ class MainController
 			  else if($pageName == "menHurdles" || $pageName == "menHurdlesRegistration" || $pageName == "menHurdlesSchedule")
 			  {
 				  $_SESSION['section'] = "menhurdles";
-				  if($pageName == "menHurdleRegistration")
+				  if($pageName == "menHurdlesRegistration")
 				  {
                     $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
                     $numberOfRows = $result->fetchColumn();
@@ -440,23 +440,11 @@ class MainController
                     {
                         $this->addBasicView();		
                         require_once 'view/login.php';
-                        require_once 'view/menHurdlesNav.php';
+                        require_once 'view/menHurdleNav.php';
                         require_once 'view/menHurdlesRegistration_noTournament.php';
                         $this->addFooterFile();
                         die();
                     }
-                    else // tournament: Load the information about the tournament
-                    {
-                        $result = $this->db->query("SELECT `tournamentID`, `name`, `startDate`, `endDate` FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
-                        if($result != false)
-                        {
-                            $this->addBasicView();	
-                            require_once 'view/login.php';
-                            require_once 'view/menHurdlesNav.php';
-                            require_once 'view/menHurdlesRegistration_noTournament.php';
-                            $this->addFooterFile();
-                            die();
-                        }
                         else // tournament: Load the information about the tournament
                         {
                             $result = $this->db->query("SELECT `tournamentID`, `name`, `startDate`, `endDate` FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
@@ -474,7 +462,7 @@ class MainController
                                 }
                             }
                             $this->addBasicView();
-                            require_once 'view/menHurdlesNav.php';
+                            require_once 'view/menHurdleNav.php';
                             require_once 'view/'.$pageName.'.php';
                             require_once 'view/login.php';
                             $this->addFooterFile();
@@ -485,7 +473,6 @@ class MainController
                             die();
 
                            }
-                        }
 					}
                     //Processing of the Form in here
                     $this->addBasicView();
@@ -498,12 +485,54 @@ class MainController
             else if($pageName == "femaleHurdles" || $pageName == "femaleHurdlesRegistration")
             {
                     $_SESSION['section'] = "femalehurdles";
-					$this->addBasicView();
-					require_once 'view/femaleHurdleNav.php';
-					require_once 'view/'.$pageName.'.php';
-					require_once 'view/login.php';
-					$this->addFooterFile();
-					die();
+				if($pageName == "femaleHurdlesRegistration")
+				{
+                    $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
+                    $numberOfRows = $result->fetchColumn();
+                    if($numberOfRows < 1) //No tournament: Load a page said there are no tournament
+                    {
+                        $this->addBasicView();		
+                        require_once 'view/login.php';
+                        require_once 'view/femaleHurdleNav.php';
+                        require_once 'view/menHurdlesRegistration_noTournament.php';
+                        $this->addFooterFile();
+                        die();
+                    }
+                    else // tournament: Load the information about the tournament
+                    {
+                            $result = $this->db->query("SELECT `tournamentID`, `name`, `startDate`, `endDate` FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
+                            if($result != false)
+                            {
+                                $tournament = array();
+                                $i = 0;
+                                while($data = $result->fetch())
+                                {
+                                    $tournament[$i]['tournamentID'] = $data['tournamentID'];
+                                    $tournament[$i]['name'] = $data['name'];
+                                    $tournament[$i]['startDate'] = $data['startDate'];
+                                    $tournament[$i]['endDate'] = $data['endDate'];
+                                    $i++;                                   
+                                }
+                            }
+                            $this->addBasicView();
+                            require_once 'view/femaleHurdleNav.php';
+                            require_once 'view/'.$pageName.'.php';
+                            require_once 'view/login.php';
+                            $this->addFooterFile();
+                            if(isset($_SESSION['error']))
+                            {
+
+                            }
+                            die();
+
+                    }
+                }
+				$this->addBasicView();
+				require_once 'view/femaleHurdleNav.php';
+				require_once 'view/'.$pageName.'.php';
+				require_once 'view/login.php';
+				$this->addFooterFile();
+				die();
             }
             else if($pageName == "tickets" || $pageName == "ticketPurchase" || $pageName == "ticketCardDetails" || $pageName == "ticketingConfirmation")
             {
@@ -1185,11 +1214,12 @@ class MainController
 			return $ticketPrice;
 		}
 
-        public function processHurdleRegistration($firstname,$lastname,$gender,$dob,$houseno,$streetname,$city,$postcode,$emailcheck,$emcontact,$minutes,$seconds,$milliseconds)
+        public function processHurdleRegistration($tournamentId,$firstname,$lastname,$gender,$dob,$houseno,$streetname,$city,$postcode,$emailcheck,$emcontact,$minutes,$seconds,$milliseconds)
         {
         	$hurdleObject = new hurdles($this->db,null);
         	$hurdleObject-> setFirstName($firstname);
         	$hurdleObject-> setLastName($lastname);
+			$hurdleObject-> setTournamentId($tournamentId);
         	$hurdleObject-> setGender($gender);
         	$hurdleObject-> setDob($dob);
         	$hurdleObject-> setHouseNo($houseno);

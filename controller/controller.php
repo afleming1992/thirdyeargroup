@@ -59,9 +59,9 @@ else if(isset($_POST['teamID']) && isset($_POST['changeteamName']) && isset($_PO
         $app->loadAdminPage('changeTeamDetailsSucess');
     }
 }
-else if(isset($_POST['firstname']) && isset($_POST['lastname']) && isset($_POST['gender']) && isset($_POST['dob']) && isset($_POST['housenumber']) && isset($_POST['streetname']) && isset($_POST['city']) && isset($_POST['postcode']) && isset($_POST['emailcheck']) && isset($_POST['emcontact']) && isset($_POST['minutes']) && isset($_POST['seconds']) && isset($_POST['milliseconds']))
+else if(isset($_POST['tournamentId']) && isset($_POST['firstname']) && isset($_POST['lastname']) && isset($_POST['gender']) && isset($_POST['dob']) && isset($_POST['housenumber']) && isset($_POST['streetname']) && isset($_POST['city']) && isset($_POST['postcode']) && isset($_POST['emailcheck']) && isset($_POST['emcontact']) && isset($_POST['minutes']) && isset($_POST['seconds']) && isset($_POST['milliseconds']))
 {
-	$save = $app->processHurdleRegistration(htmlspecialchars($_POST['firstname']),htmlspecialchars($_POST['lastname']),htmlspecialchars($_POST['gender']),htmlspecialchars($_POST['dob']),htmlspecialchars($_POST['housenumber']),htmlspecialchars($_POST['streetname']),htmlspecialchars($_POST['city']),htmlspecialchars($_POST['postcode']),htmlspecialchars($_POST['emailcheck']), htmlspecialchars($_POST['emcontact']),htmlspecialchars($_POST['minutes']),htmlspecialchars($_POST['seconds']),htmlspecialchars($_POST['milliseconds']));
+	$save = $app->processHurdleRegistration(htmlspecialchars($_POST['tournamentId']),htmlspecialchars($_POST['firstname']),htmlspecialchars($_POST['lastname']),htmlspecialchars($_POST['gender']),htmlspecialchars($_POST['dob']),htmlspecialchars($_POST['housenumber']),htmlspecialchars($_POST['streetname']),htmlspecialchars($_POST['city']),htmlspecialchars($_POST['postcode']),htmlspecialchars($_POST['emailcheck']), htmlspecialchars($_POST['emcontact']),htmlspecialchars($_POST['minutes']),htmlspecialchars($_POST['seconds']),htmlspecialchars($_POST['milliseconds']));
 	if($save)
 		$app->loadPage('hurdleRegistrationSuccess');
 }

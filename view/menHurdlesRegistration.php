@@ -1,6 +1,22 @@
 <div class='span9 contentbox'>
 <form id="frmContact" name="frmContact" method="post" action="index.php">
         <fieldset id="personalInfo">
+			<legend><strong>Please Select your Tournament</strong></legend>
+			<label class='control-label'>Choose which Tournament to Register to: </label>
+                <div class="controls">
+                        <select name="tournamentId" id='tournamentId'>
+                                <?php
+
+                                        if(isset($tournament))
+                                        {
+                                                for($i = 0;$i<count($tournament);$i++)
+                                                {
+                                                   echo "<option value='".$tournament[$i]['tournamentID']."'>".$tournament[$i]['name']." - FROM ".$tournament[$i]['startDate']." TO ".$tournament[$i]['endDate']."</option>"; 
+                                                }
+                                        }
+                                ?>
+                        </select>
+                </div>
             <legend><strong>Mens Hurdles: Personal Information</strong></legend>
         	<p>
               <label for="firstname">*First Name: </label>
