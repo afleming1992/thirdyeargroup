@@ -218,6 +218,100 @@ class MainController
                 $numberOfUmpire = $allTournament[0]->getNumberOfUmpire();                
                 $is_scheduled = $allTournament[0]->is_scheduled();
             }
+			else if($pageName == 'ticketStatus')
+			{
+				$result = $this->db->query("SELECT * FROM tournament WHERE startDate > CURDATE() OR (startDate < CURDATE() AND endDate > CURDATE()) ORDER BY startDate ASC");
+				if($result == false)
+				{
+					$this->addBasicView();
+					require_once 'view/tickets_notournament.php';
+					require_once 'view/login.php';
+					$this->addFooterFile();
+					die();
+				}
+				$data = $result->fetch();
+				$tournament = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose'], $this->db);
+				$days = array();
+				$days = $tournament->GetDays();
+				$tournamentName = $tournament->getName();
+				if(isset($_GET['date']))
+				{
+					$result = $this->db->query("SELECT type,COUNT(ticketId) AS count FROM ticket WHERE dateOfTicket = '".htmlspecialchars($_GET['date'])."' GROUP BY type" );
+					if($result != false)
+					{
+						$adult = 0;
+						$concession = 0;
+						$complimentary = 0;
+						while($data = $result->fetch())
+						{
+							if(strcmp($data['type'],"adult") == 0)
+							{
+								$adult = $data['count'];
+							}
+							else if(strcmp($data['type'],"concession") == 0)
+							{
+								$concession = $data['count'];
+							}
+							else
+							{
+								$complimentary = $data['count'];
+							}
+						}
+					}
+					else
+					{
+						$this->addBasicView();
+						require_once 'adminView/menu.php';
+						require_once 'adminView/ticketStatus_error.php';
+						$this->addFooterFile();
+					}
+						
+						$result = $this->db->query("SELECT * FROM properties WHERE id = '1'");
+						if($result != false)
+						{
+							$data = $result->fetch();
+							$capacity = $data['ticketLimit'];
+						}
+						else
+						{
+							$this->addBasicView();
+							require_once 'adminView/menu.php';
+							require_once 'adminView/ticketStatus_error.php';
+							$this->addFooterFile();
+						}
+						
+						$result = $this->db->query("SELECT methodOfSale,COUNT(ticketID) AS count FROM ticket WHERE dateOfTicket= '".htmlspecialchars($_GET['date'])."' GROUP BY methodOfSale");
+						if($result != false)
+						{
+							$postal = 0;
+							$pickup = 0;
+							while($data = $result->fetch())
+							{
+								if(strcmp($data['methodOfSale'],"postal") == 0)
+								{
+									$postal = $data['count'];
+								}
+								else
+								{
+									$pickup = $data['count'];
+								}
+							}
+						}
+						else
+						{
+							$this->addBasicView();
+							require_once 'adminView/menu.php';
+							require_once 'adminView/ticketStatus_error.php';
+							$this->addFooterFile();
+						}
+						$totalTakings = $this->ticketPrice($adult,$concession);
+						
+					}
+					else
+					{
+						print("Database Error getting Ticket Information");
+					}
+			}
             else if($pageName == 'staffManagement')
 				$this->getAllStaff();
             
