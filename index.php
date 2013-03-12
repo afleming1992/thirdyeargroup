@@ -1,5 +1,5 @@
 <?php 
-error_reporting(E_ALL);
+error_reporting(E_ALL ^ E_NOTICE);
 session_start();
 /**
  * Autoloading classes from model folder when PHP instruction 'new MyClass'
