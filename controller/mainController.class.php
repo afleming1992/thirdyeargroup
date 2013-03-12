@@ -306,11 +306,7 @@ class MainController
 						}
 						$totalTakings = $this->ticketPrice($adult,$concession);
 						
-					}
-					else
-					{
-						print("Database Error getting Ticket Information");
-					}
+				}
 			}
             else if($pageName == 'staffManagement')
 				$this->getAllStaff();

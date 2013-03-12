@@ -5,7 +5,7 @@
 	<br />
 	
 	<div class='row-fluid'>
-	<?
+	<?php
 		print("<div class='alert alert-info' style='text-align:center'>Current Tournament = ".$tournamentName."</div>");
 		$row = 0;
 		for($i = 0;$i < count($days);$i++)
@@ -22,7 +22,6 @@
 				$row = 0;
 			}
 			?>
-			
 			<a href='?adminPage=ticketStatus&date=<?php echo $days[$i] ?>'>
 				<div class='span3 datebox'>
 					<center>
@@ -32,7 +31,7 @@
 					</center>
 				</div>
 			</a>
-			<?php
+		<?php
 		}
 		?>
 		</div>
