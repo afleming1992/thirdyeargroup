@@ -285,11 +285,16 @@ class MainController
 						{
 							$postal = 0;
 							$pickup = 0;
+							$ontheday = 0;
 							while($data = $result->fetch())
 							{
 								if(strcmp($data['methodOfSale'],"postal") == 0)
 								{
 									$postal = $data['count'];
+								}
+								else if(strcmp($data['methodOfSale'],"ontheday") == 0)
+								{
+									$ontheday = $data['count'];
 								}
 								else
 								{
@@ -307,6 +312,64 @@ class MainController
 						$totalTakings = $this->ticketPrice($adult,$concession);
 						
 				}
+			}
+			else if($pageName == 'processTicket')
+			{
+				if($_POST['processTicket'] == 1)
+				{
+					$adultTickets = $_POST['adult'];
+					$concessionTickets = $_POST['concession'];
+					
+					$check = $this->ticketCheck($_POST['date'],$adultTickets + $concessionTickets);
+					if($check)
+					{
+						for($i = 0;$i < $adultTickets;$i++)
+						{
+							$ticket = new Ticket('0',$this->db);
+							$ticket->setBookingID(null);
+							$ticket->setDate($_POST['date']);
+							$ticket->setType("adult");
+							$ticket->setMethodOfSale("ontheday");
+							$ticket->setStatus("COLLECTED");
+							$ticket->createTicket();
+						}
+						
+						for($i = 0;$i < $concessionTickets;$i++)
+						{
+							$ticket = new Ticket('0',$this->db);
+							$ticket->setBookingID(null);
+							$ticket->setDate($_POST['date']);
+							$ticket->setType("concession");
+							$ticket->setMethodOfSale("ontheday");
+							$ticket->setStatus("COLLECTED");
+							$ticket->createTicket();
+						}
+						
+						
+					}
+				}
+				$isTournament = $this->isCurrentTournament();   
+				if($this->tournament == null)
+				{
+					$this->addBasicView();
+					require_once 'adminView/menu.php';
+					require_once 'adminView/tickets_notournament.php.php';
+					$this->addFooterFile();
+				}
+				$result = $this->db->query("SELECT * FROM properties WHERE id = '1'");
+				if($result)
+				{
+					$data = $result->fetch();
+				}
+				$dates = array();
+				$dates = $this->tournament[0]->GetDays();
+				$capacity = array();
+				for($i = 0;$i < count($dates);$i++)
+				{
+					$capacity[$i] = $this->ticketsRemaining($dates[$i]);
+				}
+				$adultPrice = $data['adultPrice'];
+				$concessionPrice = $data['concessionPrice'];
 			}
             else if($pageName == 'staffManagement')
 				$this->getAllStaff();
@@ -1289,13 +1352,17 @@ class MainController
 		
 		public function ticketsRemaining($date)
         {
-			$result = $this->db->query("SELECT count(ticketID) AS total FROM ticket WHERE dateofTicket = '".htmlspecialchars($_GET['date'])."'");
-			$array = $result->fetch();
-			$total = $array['total'];
-			$result = $this->db->query("SELECT * FROM properties");
-			$result = $result->fetch();
-			$capacity = $result['ticketLimit'];
-			return $capacity - $total;
+			$result = $this->db->query("SELECT count(ticketID) AS total FROM ticket WHERE dateofTicket = '".$date."'");
+			if($result != false)
+			{
+				$array = $result->fetch();
+				$total = $array['total'];
+				$result = $this->db->query("SELECT * FROM properties");
+				$result = $result->fetch();
+				$capacity = $result['ticketLimit'];
+				$capacity = intval($result['ticketLimit']) - $total;
+				return $capacity;
+			}
 		}
         
         public function ticketPrice($adult,$concession)

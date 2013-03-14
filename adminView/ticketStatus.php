@@ -10,11 +10,12 @@
 		$row = 0;
 		for($i = 0;$i < count($days);$i++)
 		{
-			$result = $this->db->query("SELECT count(ticketID) AS total FROM ticket WHERE dateOfTicket = '".$days[$i]."'");
-			if($result != false)
-			{
-				$data = $result->fetch();
-			}
+				$result = $this->db->query("SELECT count(ticketID) AS total FROM ticket WHERE dateOfTicket = '".$days[$i]."'");
+				if($result != false)
+				{
+					$data = $result->fetch();
+				}
+			
 			
 			if($row >= 4)
 			{
@@ -51,6 +52,7 @@
 					<tr class="error"><td colspan='2'></td></tr>
 					<tr><th>Tickets to be Collected</th><td><?php echo $pickup; ?></td></tr>
 					<tr><th>Tickets to be Posted</th><td><?php echo $postal; ?></td></tr>
+					<tr><th>Tickets purchased on the Day</th><td><?php echo $ontheday ?></td></tr>
 					<tr class="error"><td colspan='2'></td></tr>
 					<tr><th>Total Takings for this Date</th><td>£<?php echo number_format($totalTakings, 2, '.', '') ?></td></tr>
 				</table>
