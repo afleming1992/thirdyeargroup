@@ -28,6 +28,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `hurdles_competitors` (
   `hurdlerID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `tournamentId` bigint(20) unsigned NOT NULL,
   `hurdlerName` varchar(200) DEFAULT NULL,
   `hurdlerGender` varchar(1) DEFAULT NULL,
   `hurdlerPerformance` double DEFAULT NULL,

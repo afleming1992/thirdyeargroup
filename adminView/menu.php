@@ -21,7 +21,7 @@
             
             <li class="nav-header">Ticketing</li>
             <li class="divider"></li>
-            <li>Ticket Status</li>
+            <li <?php if($pageName=="ticketStatus") echo "class-'active'"; ?>><a href='index.php?adminPage=ticketStatus'>Ticket Status</a></li>
             <li>Process Ticket Purchase</li>
             <li>Postal Ticket Sales List</li>
             <li>On Day Ticket Sales List</li>

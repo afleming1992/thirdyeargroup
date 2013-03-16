@@ -1,8 +1,11 @@
+
 <div class='span9 contentbox'>
+
 <form id="frmContact" name="frmContact" method="post" action="index.php">
         <fieldset id="personalInfo">
-			<legend><strong>Please Select your Tournament</strong></legend>
-			<label class='control-label'>Choose which Tournament to Register to: </label>
+            <legend><strong>Female Hurdles: Personal Information</strong></legend>
+        	<p>
+				<label class='control-label'>Choose which Tournament to Register to: </label>
                 <div class="controls">
                         <select name="tournamentId" id='tournamentId'>
                                 <?php
@@ -17,8 +20,8 @@
                                 ?>
                         </select>
                 </div>
-            <legend><strong>Mens Hurdles: Personal Information</strong></legend>
-        	<p>
+			</p>
+			<p>
               <label for="firstname">*First Name: </label>
               <input name="firstname" type="text" class="text" id="firstname" tabindex="100" />
               <p><font color="red"><span id="nameerror"</span></font></p>
@@ -73,17 +76,17 @@
             <input type="radio" id="radio2" name="yesno" value="No"/>
 			<p><font color="red"><span id="performancetimeerror"</span></font></p>
 			<div id = "performancetime">
-            <tr>
-              <label for="minutes"></label>
-              <td><input name="minutes" class = "time" type="text" class="text" id="minutes" placeholder = "Minutes" maxlength = "2" tabindex="130"/></td>
-              <label for="seconds"></label>
-              <td><input name="seconds" class = "time" type="text" class="text" id="seconds" placeholder = "Seconds" maxlength = "2" tabindex="130"/></td>
-              <label for="milliseconds"></label>
-              <td><input name="milliseconds" class = "time" type="text" class="text" id="milliseconds" placeholder = "Milliseconds" maxlength = "4" tabindex="130"/></td>
-            </tr>
+            <p>
+              <label for="minutes">Minutes:</label>
+              <input name="minutes" class = "time" type="text" class="text" id="minutes" maxlength = "2" tabindex="130"/>
+              <label for="seconds">Seconds:</label>
+              <input name="seconds" class = "time" type="text" class="text" id="seconds" maxlength = "2" tabindex="130"/>
+              <label for="milliseconds">Milliseconds:</label>
+              <input name="milliseconds" class = "time" type="text" class="text" id="milliseconds" maxlength = "4" tabindex="130"/>
+            </p>
             </div>
             <p>
-              <input name="gender" type="hidden" id="gender" tabindex="130" value="M" />
+              <input name="gender" type="hidden" id="gender" tabindex="130" value="F" />
             </p>
             <p> (* Required Fields) </p>
             <p>
