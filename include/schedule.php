@@ -23,6 +23,8 @@
         {
             
             echo "<tr>";
+            echo "<td id='team1' hidden='true'>".$teams1[$i]->getTeamId()."</td>";
+            echo "<td id='team2' hidden='true'>".$teams2[$i]->getTeamId()."</td>";
             echo "<td id='vs' class='text-info center'>".$teams1[$i]->getTeamName()." VS ".$teams2[$i]->getTeamName()."</td>";
             echo "<td id='date' dateSQL='".$matches[$i]->getDateSQLFormat()."'>".$matches[$i]->getDate()."</td>";
             echo "<td id='hour' >".$matches[$i]->getHour()."</td>";
