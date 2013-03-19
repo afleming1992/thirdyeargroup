@@ -22,7 +22,7 @@ $(document).ready(function()
             var regexNWA = /^([0-9]{6})+([A-Z]{1})$/;
             var regexPhoneNumber = /^([0-9]{11})$/;
             var regexEmail = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-            var regexPlayers = /^(([A-Za-z0-9])+([\-])){11}$/;
+            var regexPlayers = /^(([A-Za-z0-9\s])+([\-])){11}$/;
             
             players = players.replace(/[\n]/gi, "-" );
             players = players + "-";
