@@ -4,10 +4,10 @@
 class Umpire
 {
 	private $umpireID,$umpireName,$umpireEmail,$monMorning,$monAfternoon,$tueMorning,$tueAfternoon,$wedMorning,
-	$wedAfternoon,$thuMorning,$thuAfternoon,$friMorning,$friAfternoon,$satMorning,$satAfternoon,$sunMorning,$sunAfternoon;
+	$wedAfternoon,$thuMorning,$thuAfternoon,$friMorning,$friAfternoon,$satMorning,$satAfternoon,$sunMorning,$sunAfternoon,$db;
 	
 	
-	public function __construct($umpireID,$umpireName,$umpireEmail,$s0,$s1,$s2,$s3,$s4,$s5,$s6,$s7,$s8,$s9,$s10,$s11,$s12,$s13)
+	public function __construct($umpireID,$umpireName,$umpireEmail,$s0,$s1,$s2,$s3,$s4,$s5,$s6,$s7,$s8,$s9,$s10,$s11,$s12,$s13,$dbs)
 	{
 		$this->setID($umpireID);
 		$this->setName($umpireName);
@@ -26,6 +26,7 @@ class Umpire
 		$this->setSatAfternoon($s11);
 		$this->setSunMorning($s12);
 		$this->setSunAfternoon($s13);
+		$this->setDB($dbs);
 	}
         
         public function is_available($dayOfTheWeek, $morningOrAfternoon) 
@@ -75,6 +76,11 @@ class Umpire
 	    $this->umpireEmail = $umpireEmail;
 	}
 	
+	public function setDB($db)
+	{
+		$this->db = $db;
+	}
+	
 	public function getMonMorning(){return $this->monMorning;}
 	public function setMonMorning($monMorning){$this->monMorning = $monMorning;}
 	
@@ -117,7 +123,34 @@ class Umpire
 	public function getSunAfternoon(){return $this->sunAfternoon;}
 	public function setSunAfternoon($sunAfternoon){$this->sunAfternoon = $sunAfternoon;}
 	
+	public function getAllMatches()
+	{
+		$query = $this->db->query("SELECT * FROM wattball_matches WHERE umpire = '".$this->umpireID."' ORDER BY matchDate ASC");
+		$data = $query->fetchAll();
+		$count = $query->rowCount();
+		for($i=0;$i<$count;$i++)
+		{
+			$i5 = $data[$i][5];
+			$i6 = $data[$i][6];
+			$query2 = $this->db->query("SELECT teamName FROM wattball_team WHERE teamID = '$i5'");
+			$result = $query2->fetch();
+			$query3 = $this->db->query("SELECT teamName FROM wattball_team WHERE teamID = '$i6'");
+			$result2 = $query3->fetch();
+			$data[$i][5] = $result[0];
+			$data[$i][6] = $result2[0];
+		}
+		
+        return array($data,$query->rowCount());
+	}
+	
+	public function getNumberOfMatches()
+	{
+		$query = $this->db->query("SELECT COUNT(*) FROM wattball_matches WHERE umpire = '".$this->umpireID."'");
+		$data = $query->fetch();
+        return $data[0];
+	}
 }
+
 
 
 ?>

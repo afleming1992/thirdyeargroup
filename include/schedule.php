@@ -6,6 +6,7 @@
             <th>Date</th>
             <th>Hour</th>
             <th>Pitch</th>
+            <th>Umpire</th>
             <?php
             if($pageName != 'wattBallReScheduling'){
                 echo "<th>Buy Ticket</th>";
@@ -23,10 +24,13 @@
         {
             
             echo "<tr>";
+            echo "<td id='team1' hidden='true'>".$teams1[$i]->getTeamId()."</td>";
+            echo "<td id='team2' hidden='true'>".$teams2[$i]->getTeamId()."</td>";
             echo "<td id='vs' class='text-info center'>".$teams1[$i]->getTeamName()." VS ".$teams2[$i]->getTeamName()."</td>";
             echo "<td id='date' dateSQL='".$matches[$i]->getDateSQLFormat()."'>".$matches[$i]->getDate()."</td>";
             echo "<td id='hour' >".$matches[$i]->getHour()."</td>";
             echo "<td id='pitch' >".$matches[$i]->getPitch()."</td>";
+            echo "<td id='umpire' >".$matches[$i]->getUmpireName()."</td>";
             if($pageName != 'wattBallReScheduling'){
                 list($Y,$m,$d)=explode('-',  $matches[$i]->getDateSQLFormat());
                 $date = new DateTime(Date("Y-m-d", mktime(0,0,0,$m,$d,$Y)));

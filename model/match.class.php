@@ -240,6 +240,13 @@ Class Match
     {
         return $this->umpire;
     }
+    
+    public function getUmpireName()
+    {
+		$result = $this->db->query("SELECT umpireName FROM umpire WHERE umpireID = ".$this->umpire);
+		$data = $result->fetch();
+		return $data['umpireName'];
+	}
             
 }
 ?>

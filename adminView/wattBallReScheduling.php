@@ -45,8 +45,13 @@ if($pageName == 'wattBallReScheduling')
             
             <div id="changePitch">
                 <label for="pitch">Pitch: </label>
-                <input type="text" name="pitch" id="modalPitch"></br><span id="help-inline-tournamentName" class="help-inline"></span></br>
+                <input type="text" name="pitch" id="modalPitch"></br><span id="help-inline-tournamentName" class="help-inline"></span>
             </div>
+            
+            <div id="umpireChange">
+				<label for="umpire">Umpire: </label>
+				<span class="input-xmedium uneditable-input" id="umpire"></span>
+			</div>
         </div>
          <div class="modal-footer">
             <button id="closeModalReSchedule" class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
