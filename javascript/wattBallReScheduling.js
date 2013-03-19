@@ -5,7 +5,7 @@ $(document).ready(function()
     var vs;
     var team1;
     var team2;
-
+    
      $(".table").on('click',".btn-small", function()
      {
          
@@ -18,6 +18,7 @@ $(document).ready(function()
          $('#changeSchedule').modal('show');
          $('#myModalLabel').html("Re-Scheduling:</br> <em>" + vs + "</em>");
          $('#modalDate').val($(this).parent().parent().children('#date').attr('dateSQL'));
+         $('#changeSchedule #umpire').text($(this).parent().parent().children('#umpire').text());
          if(hour == "2pm")
              $('#modalHour option[value='+"2pm"+']').attr("selected" , "selected");
          else

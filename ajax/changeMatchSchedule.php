@@ -22,41 +22,54 @@ if(isset($_GET['id']) && isset($_GET['date']) && isset($_GET['hour']) && isset($
        $fetched = $query->fetch();
        $umpire = $fetched['umpire'];
        
-       $query2 = $db->query("SELECT * FROM wattball_matches WHERE umpire = '$umpire' AND matchDate = '$date' AND matchTime = '$hour' AND matchID = $id");
+       $nameQuery = $db->query("SELECT umpireName FROM umpire WHERE umpireID = $umpire");
+       $fetchedName = $nameQuery->fetch();
+       $umpireName = $fetchedName['umpireName'];
+       
+       $query2 = $db->query("SELECT * FROM wattball_matches WHERE umpire = '$umpire' AND pitch = '$pitch' AND matchDate = '$date' AND matchTime = '$hour' AND matchID = $id");
        $fetched2 = $query2->fetch();
             
-       $result = $db->query("SELECT * FROM wattball_matches WHERE matchID != '$id' AND matchDate = '$date' AND matchTime = '$hour' AND (pitch = $pitch OR team1 = '$team1' OR team1 = '$team2' OR team2 = '$team1' OR team2 = '$team2')");     
+       $result = $db->query("SELECT * FROM wattball_matches WHERE matchID != '$id' AND matchDate = '$date' AND matchTime = '$hour' AND (team1 = '$team1' OR team1 = '$team2' OR team2 = '$team1' OR team2 = '$team2')");     
        $data = $result->fetch();
+       
+       $pitchResult = $db->query("SELECT * FROM wattball_matches WHERE matchID != '$id' AND matchDate = '$date' AND matchTime = '$hour' AND pitch = $pitch");
+       $pitchData = $pitchResult->fetch();
        
        $result2 = $db->query("SELECT DATE_FORMAT('$date','%D %M %Y') AS date");
 		$data2 = $result2->fetch();
        if($data != null)
        {
-		   $message = "Another match with this pitch or at least one of these teams is already scheduled for this time:";
-           printMatch(true,$message,$vs,$date,$data2['date'],$hour,$pitch,$id);
+		   $message = "Another match with at least one of these teams is already scheduled for this time:";
+           printMatch(true,$message,$vs,$date,$data2['date'],$hour,$pitch,$id,$umpireName);
            return;
        }
-		
+       else if($pitchData != null)
+       {
+		   $message = "Another match with this pitch is already scheduled for this time:";
+           printMatch(true,$message,$vs,$date,$data2['date'],$hour,$pitch,$id,$umpireName);
+           return;
+	   }
+	   
 		if($fetched2 == null)
 		{
-			$umpire = findUmpire($date, $hour);
+			list ($umpire, $umpireName) = findUmpire($date, $hour, $id);
 			if($umpire == null)
 			{
 				$message = "No umpires available at this date and time:";
-				printMatch(true,$message,$vs,$date,$data2['date'],$hour,$pitch,$id);
+				printMatch(true,$message,$vs,$date,$data2['date'],$hour,$pitch,$id,$umpireName);
 				return;
 			}
 		}
 		else
 		{
 			$message = "No changes to be made, details same as before:";
-			printMatch(true,$message,$vs,$date,$data2['date'],$hour,$pitch,$id);
+			printMatch(true,$message,$vs,$date,$data2['date'],$hour,$pitch,$id,$umpireName);
 			return;
 		}
 	   
 		$db->exec("UPDATE wattball_matches SET matchDate = '$date' , matchTime = '$hour' , pitch = $pitch , umpire = '$umpire' WHERE matchID = $id");
 		$message = "Match updated, changes below:";
-		printMatch(false,$message,$vs,$date,$data2['date'],$hour,$pitch,$id);   
+		printMatch(false,$message,$vs,$date,$data2['date'],$hour,$pitch,$id,$umpireName);   
     }
     catch (Exception $exc)
     {
@@ -64,7 +77,7 @@ if(isset($_GET['id']) && isset($_GET['date']) && isset($_GET['hour']) && isset($
     }
 }
 
-function printMatch($error,$message,$vs,$date,$date2,$hour,$pitch,$id)
+function printMatch($error,$message,$vs,$date,$date2,$hour,$pitch,$id,$umpire)
 {
     if($error)
         echo "<p class='text-error'>".$message."</p>";
@@ -77,13 +90,16 @@ function printMatch($error,$message,$vs,$date,$date2,$hour,$pitch,$id)
     echo "<p id='hour' >$hour</p>";
     echo "<p class='text-info' >Pitch:</p>";
     echo "<p id='pitch' >$pitch</p>";
+    echo "<p class='text-info' >Umpire:</p>";
+    echo "<p id='umpire' >$umpire</p>";
     echo "<button id='$id' data-target='#changeSchedule' class='btn btn-small btn-primary' type='button'><i class='icon-wrench icon-white'></i> Re-Schedule</button>";
 }
 
-function findUmpire($date, $hour)
+function findUmpire($date, $hour, $matchID)
 {
 	global $db;
 	$umpireFound = false;
+	$umpireName = false;
 	
 	if($hour == "10am")
 	{
@@ -101,7 +117,7 @@ function findUmpire($date, $hour)
 	for($i=0;$i<sizeof($allUmpires);$i++)
 	{
 		$umpireID = $allUmpires[$i]->getID();
-		$query = $db->query("SELECT * FROM wattball_matches WHERE umpire = '$umpireID' AND matchDate = '$date' AND matchTime = '$hour'");
+		$query = $db->query("SELECT * FROM wattball_matches WHERE matchID != '$matchID' AND umpire = '$umpireID' AND matchDate = '$date' AND matchTime = '$hour'");
 		$fetched = $query->fetch();
 		if($fetched == null)
         {
@@ -109,11 +125,12 @@ function findUmpire($date, $hour)
 			if($allUmpires[$i]->is_available(Date("l", mktime(0,0,0,$m,$d,$Y)), $time))
 			{
 				$umpireFound = $umpireID;
+				$umpireName = $allUmpires[$i]->getName();
 				break;
 			}
 		}
 	}
-	return $umpireFound;
+	return array($umpireFound,$umpireName);
 }
 
 ?>
