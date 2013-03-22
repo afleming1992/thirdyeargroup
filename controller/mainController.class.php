@@ -473,9 +473,25 @@ class MainController
 				{
 					if(strcmp($_GET['collect'],"all") == 0)
 					{
-						
-						$result1 = $this->db->query("UPDATE tickets SET status = 'COLLECTED' WHERE bookingID = '".$_GET['id']."' AND methodOfSale = 'pickup'");
- 						$result2 = $this->db->query("UPDATE tickets SET status = 'POSTED' WHERE bookingID = '".$_GET['id']."' AND methodOfSale = 'postal'");
+						$result1 = $this->db->query("UPDATE ticket SET status = 'COLLECTED' WHERE bookingID = '".$_GET['id']."' AND methodOfSale = 'pickup'");
+ 						$result2 = $this->db->query("UPDATE ticket SET status = 'POSTED' WHERE bookingID = '".$_GET['id']."' AND methodOfSale = 'postal'");
+					}
+					else
+					{
+						$ticket = new Ticket($_GET['collect'],$this->db);
+						$check = $ticket->getTicketDetails();
+						if($check)
+						{
+							if(strcmp($ticket->getType(),"postal") == 0)
+							{
+								$ticket->setStatus("POSTED");
+							}
+							else
+							{
+								$ticket->setStatus("COLLECTED");
+							}
+						}
+						$ticket->saveTicketDetails();
 					}
 				}
 				$booking = new Booking(htmlspecialchars($_GET['id']),$this->db);

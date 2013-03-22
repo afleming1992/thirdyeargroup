@@ -52,7 +52,8 @@ Class Ticket
 	
 	public function saveTicketDetails()
 	{
-		$result = $this->db->query("UPDATE ticket SET bookingId = '".$this->bookingId."',methodOfSale = '".$this->methodOfSale."',dateOfTicket = '".$ticket->dateOfTicket."',status = '".$this->status."','type='".$this->type."' WHERE ticketID = '".$this->id."'");
+		$query = "UPDATE ticket SET bookingID = '".$this->bookingId."',methodOfSale = '".$this->methodOfSale."',dateOfTicket = '".$ticket->dateOfTicket."',status = '".$this->status."',type='".$this->type."' WHERE ticketID = '".$this->id."'";
+		$result = $this->db->query($query);
 		if($result == true)
 		{
 			return true;
