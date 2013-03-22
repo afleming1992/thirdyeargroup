@@ -50,6 +50,30 @@ Class Booking
 		}
 	}
 	
+	public function getBooking()
+	{
+		$result = $this->db->query("SELECT * FROM ticket_sales WHERE bookingId = ".$this->bookingId);
+		if($result != false)
+		{
+			$data = $result->fetch();
+			$this->transactionId = $data['transactionID'];
+			$this->firstName = $data['firstName'];
+			$this->surname = $data['surname'];
+			$this->email = $data['email'];
+			$this->address1 = $data['address1'];
+			$this->address2 = $data['address2'];
+			$this->city = $data['city'];
+			$this->county = $data['county'];
+			$this->postcode = $data['postcode'];
+			$this->totalCost = $data['totalCost'];
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
 	//Getters and Setters
 	public function setBookingId($input)
 	{
@@ -73,7 +97,7 @@ Class Booking
 	
 	public function getSurname()
 	{
-		return $this->name;
+		return $this->surname;
 	}
     
     public function setSurname($name)

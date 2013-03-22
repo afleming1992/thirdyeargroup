@@ -20,13 +20,19 @@ Class Ticket
     public function getTicketDetails()
     {
 		$result = $this->db->query("SELECT * FROM ticket WHERE ticketID = '".$this->id."'");
-		if($data = $result->fetch())
+		if($result != false)
 		{
-			$bookingId = $data['bookingID'];
-			$methodOfSale = $data['methodOfSale'];
-			$dateOfTicket = $data['dateOfTicket'];
-			$status = $data['status'];
-			$type = $data['type'];
+			$data = $result->fetch();
+			$this->bookingId = $data['bookingID'];
+			$this->methodOfSale = $data['methodOfSale'];
+			$this->dateOfTicket = $data['dateOfTicket'];
+			$this->status = $data['status'];
+			$this->type = $data['type'];
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 	

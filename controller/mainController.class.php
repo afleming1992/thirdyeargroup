@@ -353,8 +353,9 @@ class MainController
 				{
 					$this->addBasicView();
 					require_once 'adminView/menu.php';
-					require_once 'adminView/tickets_notournament.php.php';
+					require_once 'adminView/tickets_notournament.php';
 					$this->addFooterFile();
+					exit();
 				}
 				$result = $this->db->query("SELECT * FROM properties WHERE id = '1'");
 				if($result)
@@ -370,6 +371,155 @@ class MainController
 				}
 				$adultPrice = $data['adultPrice'];
 				$concessionPrice = $data['concessionPrice'];
+			}
+			else if($pageName == 'searchBooking')
+			{
+				//Check there is a tournament currently open for registration or running
+				$this->isCurrentTournament();
+				if($this->tournament == null)
+				{
+					$this->addBasicView();
+					require_once 'adminView/menu.php';
+					require_once 'adminView/tickets_notournament.php';
+					$this->addFooterFile();
+					exit();
+				}
+				$days = array();
+				$days = $this->tournament[0]->GetDays();
+			}
+			else if($pageName == 'bookingList')
+			{
+				if(isset($_POST['search']))
+				{
+					$query = "SELECT DISTINCT s.bookingId FROM ticket_sales s,ticket t WHERE s.bookingId = t.bookingId ";
+					if(strcmp($_POST['searchby'],"surname") == 0)
+					{
+						$query = $query."AND s.surname LIKE '".htmlspecialchars($_POST['searchinput'])."%' ";
+					}
+					else if(strcmp($_POST['searchby'],"postcode") == 0)
+					{
+						$query = $query."AND s.postcode LIKE '".htmlspecialchars($_POST['searchinput'])."%' ";
+					}
+					else if(strcmp($_POST['searchby'],"bookingId") == 0)
+					{
+						$query = $query."AND s.bookingId LIKE '".htmlspecialchars($_POST['searchinput'])."' ";
+					}
+					
+					if(strcmp($_POST['restrictions'],"postal") == 0)
+					{
+						$query = $query." AND t.methodOfSale = 'postal' ";
+					}
+					else if(strcmp($_POST['restrictions'],"pickup") == 0)
+					{
+						$query = $query." AND t.methodOfSale = 'pickup' ";
+					}
+					
+					if(strcmp($_POST['date'],"") != 0)
+					{
+						$query = $query." AND t.dateOfTicket = '".htmlspecialchars($_POST['date'])."' ";
+					}
+					
+					if(isset($_POST['uncollectedOnly']))
+					{
+						$query = $query." AND t.status <> 'COLLECTED' AND t.status <> 'POSTED' ";
+					}
+					$_SESSION['search_query'] = $query;
+				}
+				else
+				{
+					if(isset($_SESSION['search_query']))
+					{
+						$query = $_SESSION['search_query'];
+					}
+					else
+					{
+						$this->addBasicView();
+						require_once 'adminView/menu.php';
+						require_once 'adminView/searchBooking.php';
+						$this->addFooterFile();
+						exit();
+					}	
+				}
+					$result = $this->db->query($query);
+					if($result != false)
+					{
+						$bookings = array();
+						$i = 0;
+						while($data = $result->fetch())
+						{
+							$book = new Booking($data['bookingId'],$this->db);
+							$done = $book->getBooking();
+							$bookings[$i] = $book;
+							$i++;
+						}
+						if($i == 0)
+						{
+							$this->addBasicView();
+							require_once 'adminView/menu.php';
+							require_once 'adminView/noBookings.php';
+							$this->addFooterFile();
+							exit();
+						}
+						$this->addBasicView();
+						require_once 'adminView/menu.php';
+						require_once 'adminView/bookingList.php';
+						$this->addFooterFile();
+						exit();
+					}
+			}
+			else if($pageName == 'viewBooking')
+			{
+				if(isset($_GET['collect']))
+				{
+					if(strcmp($_GET['collect'],"all") == 0)
+					{
+						
+						$result1 = $this->db->query("UPDATE tickets SET status = 'COLLECTED' WHERE bookingID = '".$_GET['id']."' AND methodOfSale = 'pickup'");
+ 						$result2 = $this->db->query("UPDATE tickets SET status = 'POSTED' WHERE bookingID = '".$_GET['id']."' AND methodOfSale = 'postal'");
+					}
+				}
+				$booking = new Booking(htmlspecialchars($_GET['id']),$this->db);
+				$result = $booking->getBooking();
+				if($result)
+				{
+					$tickets = array();
+					$i = 0;
+					$adultTickets = 0;
+					$concessionTickets = 0;
+					$result = $this->db->query("SELECT ticketID FROM ticket WHERE bookingID = '".$booking->getBookingId()."'");
+					if($result != false)
+					{
+						while($data = $result->fetch())
+						{
+							$ticket = new Ticket($data['ticketID'],$this->db);
+							$check = $ticket->getTicketDetails();
+							if($check)
+							{
+								$tickets[$i] = $ticket;
+								if(strcmp($ticket->getType(),"adult") == 0)
+								{
+									$adultTickets++;
+								}
+								else
+								{
+									$concessionTickets++;
+								}
+								$i++;
+							}
+						}
+					}
+					$this->addBasicView();
+					require_once 'adminView/menu.php';
+					require_once 'adminView/viewBooking.php';
+					$this->addFooterFile();
+				}
+				else
+				{
+					$this->addBasicView();
+					require_once 'adminView/menu.php';
+					require_once 'adminView/noBookings.php';
+					$this->addFooterFile();
+				}
 			}
             else if($pageName == 'staffManagement')
 				$this->getAllStaff();
