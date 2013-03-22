@@ -209,6 +209,7 @@ $(document).ready(function()
          
         $(".btn-info").live("click", function()
         {
+			var i=0;
 			var count = $(this).parent().parent().children('.count').text();
 			if(count == 0)
 			{
@@ -220,7 +221,6 @@ $(document).ready(function()
 			}
 			else
 			{
-				var i=0;
 				for(i;i<count;i++)
 				{
 					$('#matches #row'+i+'1').html($(this).parent().parent().children('.row'+i+'1').text());
@@ -229,15 +229,16 @@ $(document).ready(function()
 					$('#matches #row'+i+'4').html($(this).parent().parent().children('.row'+i+'4').text());
 					$('#matches #row'+i+'5').html($(this).parent().parent().children('.row'+i+'5').text());
 				}
-				while(typeof $('#matches #row'+i+'1').val() !== 'undefined')
-				{
-					$('#matches #row'+i+'1').html("");
-					$('#matches #row'+i+'2').html("");
-					$('#matches #row'+i+'3').html("");
-					$('#matches #row'+i+'4').html("");
-					$('#matches #row'+i+'5').html("");
-					i++;
-				}
+			}
+			i+=1;
+			while(typeof $('#matches #row'+i+'1').val() !== 'undefined')
+			{
+				$('#matches #row'+i+'1').html("");
+				$('#matches #row'+i+'2').html("");
+				$('#matches #row'+i+'3').html("");
+				$('#matches #row'+i+'4').html("");
+				$('#matches #row'+i+'5').html("");
+				i++;
 			}
 		});
         
