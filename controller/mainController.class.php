@@ -482,7 +482,8 @@ class MainController
 						$check = $ticket->getTicketDetails();
 						if($check)
 						{
-							if(strcmp($ticket->getType(),"postal") == 0)
+							echo $ticket->getMethodOfSale();
+							if(strcmp($ticket->getMethodOfSale(),"postal") == 0)
 							{
 								$ticket->setStatus("POSTED");
 							}
