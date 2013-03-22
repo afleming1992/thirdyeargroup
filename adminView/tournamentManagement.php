@@ -36,11 +36,11 @@ if ($staff->getManager()== 1)
                     </div>
                     <div id="addTournamentregistrationStartDate">
 			<label for="registrationStartDate">Registration Start Date: </label>
-			<input type="text" id="registrationStartDate" class='from' name="registrationStartDate"></br><span id="help-inline-registrationStartDate" class="help-inline"></span>
+			<input type="text" id="registrationStartDate" class='fromReg' name="registrationStartDate"></br><span id="help-inline-registrationStartDate" class="help-inline"></span>
                     </div>
                     <div id="addTournamentregistrationEndDate">
                         <label for="registrationEndDate">Registration End Date: </label>
-			<input type="text" id="registrationEndDate" class='to' name="registrationEndDate"></br><span id="help-inline-registrationEndDate" class="help-inline"></span></br>
+			<input type="text" id="registrationEndDate" class='toReg' name="registrationEndDate"></br><span id="help-inline-registrationEndDate" class="help-inline"></span></br>
                     </div>
 		</div>
 		 <div class="modal-footer">
@@ -73,9 +73,9 @@ if ($staff->getManager()== 1)
 			<input type="text" id="endDateChange" class='toChange' name="endDateChange"></br>
 			
 			<label for="registrationStartDateChange">Registration Start Date: </label>
-			<input type="text" id="registrationStartDateChange" class='fromChange' name="registrationStartDateChange">
+			<input type="text" id="registrationStartDateChange" class='fromChangeReg' name="registrationStartDateChange">
 			<label for="registrationEndDateChange">Registration End Date: </label>
-			<input type="text" id="registrationEndDateChange" class='toChange' name="registrationEndDateChange"></br>			
+			<input type="text" id="registrationEndDateChange" class='toChangeReg' name="registrationEndDateChange"></br>			
 		</div>
 		 <div class="modal-footer">
 		    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>

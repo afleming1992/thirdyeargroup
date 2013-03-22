@@ -195,16 +195,50 @@ $(document).ready(function()
 		
         
         $(".btn-warning").live("click", function()
-            	{
-        			$('#editUmpire #umpireNameChange').val($(this).parent().parent().children('.umpireName').text());
-        			$('#editUmpire #umpireEmailChange').val($(this).parent().parent().children('.umpireEmail').text());
-        			$('#editUmpire .checkall').removeAttr("checked");
-        			for(var i=0;i<14;i++)
-        			{
-						if($(this).parent().parent().children('.slot'+i).text() ==1)$('#editUmpire #slott'+i).attr('checked',true);
-						else $('#editUmpire #slott'+i).attr('checked',false);
-					}
-        			$('#editUmpire #editUmpireValidation').attr('umpireID',$(this).attr('id'));
-            	});
+		{
+			$('#editUmpire #umpireNameChange').val($(this).parent().parent().children('.umpireName').text());
+			$('#editUmpire #umpireEmailChange').val($(this).parent().parent().children('.umpireEmail').text());
+			$('#editUmpire .checkall').removeAttr("checked");
+			for(var i=0;i<14;i++)
+			{
+				if($(this).parent().parent().children('.slot'+i).text() ==1)$('#editUmpire #slott'+i).attr('checked',true);
+				else $('#editUmpire #slott'+i).attr('checked',false);
+			}
+			$('#editUmpire #editUmpireValidation').attr('umpireID',$(this).attr('id'));
+         });
+         
+        $(".btn-info").live("click", function()
+        {
+			var count = $(this).parent().parent().children('.count').text();
+			if(count == 0)
+			{
+				$('#matches #row01').html("This umpire has no matches");
+				$('#matches #row02').html("");
+				$('#matches #row03').html("");
+				$('#matches #row04').html("");
+				$('#matches #row05').html("");
+			}
+			else
+			{
+				var i=0;
+				for(i;i<count;i++)
+				{
+					$('#matches #row'+i+'1').html($(this).parent().parent().children('.row'+i+'1').text());
+					$('#matches #row'+i+'2').html($(this).parent().parent().children('.row'+i+'2').text());
+					$('#matches #row'+i+'3').html($(this).parent().parent().children('.row'+i+'3').text());
+					$('#matches #row'+i+'4').html($(this).parent().parent().children('.row'+i+'4').text());
+					$('#matches #row'+i+'5').html($(this).parent().parent().children('.row'+i+'5').text());
+				}
+				while(typeof $('#matches #row'+i+'1').val() !== 'undefined')
+				{
+					$('#matches #row'+i+'1').html("");
+					$('#matches #row'+i+'2').html("");
+					$('#matches #row'+i+'3').html("");
+					$('#matches #row'+i+'4').html("");
+					$('#matches #row'+i+'5').html("");
+					i++;
+				}
+			}
+		});
         
 });

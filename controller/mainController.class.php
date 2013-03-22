@@ -147,14 +147,6 @@ class MainController
                     $this->addFooterFile();
                     die();
                 }
-                else if($this->tournament != null && count($this->tournament[0]->getAllFinishedMatches()) == 0) // if there is a curent tournament but no matches
-                {
-                    $this->addBasicView();
-                    require_once 'adminView/menu.php';
-                    require_once 'adminView/wattBallNoTournament.php';
-                    $this->addFooterFile();
-                    die();
-                }
                 else //there are matches for the current tournament
                 {
                     if($pageName == 'addWattBallResults')
@@ -164,6 +156,8 @@ class MainController
                     }
                     else if($pageName == 'wattBall')
                     {
+                        $isTournamentStarted = $this->isTournamentStarted();
+                        $isScheduled = $this->tournament[0]->is_scheduled(); 
                         $result = $this->db->query("SELECT * FROM wattball_team ORDER BY teamName");
                         $data = $result->fetchAll();
                         $teams = array();
@@ -547,8 +541,6 @@ class MainController
             $this->addFooterFile();
             
         }
-		
-		
 	
 	/**
          * Load a page
@@ -740,33 +732,24 @@ class MainController
                }
               else if($pageName == "aboutUs")
               {
-				  $_SESSION['section'] = "aboutus";
-			  }
-			  else if($pageName == "hurdleRegistrationSuccess")
-			  {
-			  		$this->addBasicView();
-                    require_once 'view/femaleHurdleNav.php';
-                    require_once 'view/'.$pageName.'.php';
-                    require_once 'view/login.php';
-                    $this->addFooterFile();
-                    die();
-			  }			  
-			  else if($pageName == "menHurdles" || $pageName == "menHurdlesRegistration" || $pageName == "menHurdlesSchedule")
-			  {
-				  $_SESSION['section'] = "menhurdles";
-				  if($pageName == "menHurdlesRegistration")
-				  {
-                    $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
-                    $numberOfRows = $result->fetchColumn();
-                    if($numberOfRows < 1) //No tournament: Load a page said there are no tournament
-                    {
-                        $this->addBasicView();		
-                        require_once 'view/login.php';
-                        require_once 'view/menHurdleNav.php';
-                        require_once 'view/menHurdlesRegistration_noTournament.php';
-                        $this->addFooterFile();
-                        die();
-                    }
+                    $_SESSION['section'] = "aboutus";
+              }
+             else if($pageName == "menHurdles" || $pageName == "menHurdlesRegistration" || $pageName == "menHurdlesSchedule")
+             {
+                     $_SESSION['section'] = "menhurdles";
+                     if($pageName == "menHurdleRegistration")
+                     {
+                        $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
+                        $numberOfRows = $result->fetchColumn();
+                        if($numberOfRows < 1) //No tournament: Load a page said there are no tournament
+                        {
+                            $this->addBasicView();	
+                            require_once 'view/login.php';
+                            require_once 'view/menHurdlesNav.php';
+                            require_once 'view/menHurdlesRegistration_noTournament.php';
+                            $this->addFooterFile();
+                            die();
+                        }
                         else // tournament: Load the information about the tournament
                         {
                             $result = $this->db->query("SELECT `tournamentID`, `name`, `startDate`, `endDate` FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
@@ -784,7 +767,7 @@ class MainController
                                 }
                             }
                             $this->addBasicView();
-                            require_once 'view/menHurdleNav.php';
+                            require_once 'view/menHurdlesNav.php';
                             require_once 'view/'.$pageName.'.php';
                             require_once 'view/login.php';
                             $this->addFooterFile();
@@ -795,7 +778,8 @@ class MainController
                             die();
 
                            }
-					}
+                        }
+				
                     //Processing of the Form in here
                     $this->addBasicView();
                     require_once 'view/menHurdleNav.php';
@@ -803,268 +787,218 @@ class MainController
                     require_once 'view/login.php';
                     $this->addFooterFile();
                     die();
-			}
-            else if($pageName == "femaleHurdles" || $pageName == "femaleHurdlesRegistration")
+            }
+            else if($pageName == "femaleHurdles")
             {
                     $_SESSION['section'] = "femalehurdles";
-				if($pageName == "femaleHurdlesRegistration")
-				{
-                    $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
-                    $numberOfRows = $result->fetchColumn();
-                    if($numberOfRows < 1) //No tournament: Load a page said there are no tournament
-                    {
-                        $this->addBasicView();		
-                        require_once 'view/login.php';
-                        require_once 'view/femaleHurdleNav.php';
-                        require_once 'view/menHurdlesRegistration_noTournament.php';
-                        $this->addFooterFile();
-                        die();
-                    }
-                    else // tournament: Load the information about the tournament
-                    {
-                            $result = $this->db->query("SELECT `tournamentID`, `name`, `startDate`, `endDate` FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
-                            if($result != false)
-                            {
-                                $tournament = array();
-                                $i = 0;
-                                while($data = $result->fetch())
-                                {
-                                    $tournament[$i]['tournamentID'] = $data['tournamentID'];
-                                    $tournament[$i]['name'] = $data['name'];
-                                    $tournament[$i]['startDate'] = $data['startDate'];
-                                    $tournament[$i]['endDate'] = $data['endDate'];
-                                    $i++;                                   
-                                }
-                            }
-                            $this->addBasicView();
-                            require_once 'view/femaleHurdleNav.php';
-                            require_once 'view/'.$pageName.'.php';
-                            require_once 'view/login.php';
-                            $this->addFooterFile();
-                            if(isset($_SESSION['error']))
-                            {
-
-                            }
-                            die();
-
-                    }
-                }
-				$this->addBasicView();
-				require_once 'view/femaleHurdleNav.php';
-				require_once 'view/'.$pageName.'.php';
-				require_once 'view/login.php';
-				$this->addFooterFile();
-				die();
             }
             else if($pageName == "tickets" || $pageName == "ticketPurchase" || $pageName == "ticketCardDetails" || $pageName == "ticketingConfirmation")
             {
                     $_SESSION['section'] = "tickets";
-					if(strcmp($pageName,"ticketingConfirmation") == 0)
-					{
-						if(!isset($_POST['continunity']))
-						{
-							$pageName = "tickets";
-						}
-						else
-						{
-							if(!isset($_SESSION['booking']))
-							{
-								$ticketsRequired = $_POST['adult'] + $_POST['concession'];
-								if($this->ticketCheck($_POST['ticketDate'],$ticketsRequired))
-								{
-									$transaction = new Transaction('0',$this->db);
-									$transaction->setNameOnCard(htmlspecialchars($_POST['nameOnCard']));
-									$transaction->setCardNumber(htmlspecialchars($_POST['cardNo']));
-									$transaction->setCSCNumber(htmlspecialchars($_POST['csc']));
-									$transaction->setCardType(htmlspecialchars($_POST['cardType']));
-									$validuntil = htmlspecialchars($_POST['year'])."-".htmlspecialchars($_POST['month'])."-01";
-									$transaction->setValidUntil($validuntil);
-									$id = $transaction->createTransaction();
-									if($id == false)
-									{
-										print("Payment Failed");
-										exit();
-									}
-										$transaction->setTransactionID($id);
-										
-										$booking = new Booking('0',$this->db);
-										$booking->setTransactionId($transaction->getTransactionID());
-										$booking->setFirstName(htmlspecialchars($_POST['firstname']));
-										$booking->setSurname(htmlspecialchars($_POST['surname']));
-										$booking->setAddress1(htmlspecialchars($_POST['address1']));
-										$booking->setAddress2(htmlspecialchars($_POST['address2']));
-										$booking->setEmail(htmlspecialchars($_POST['email']));
-										$booking->setCity(htmlspecialchars($_POST['city']));
-										$booking->setCounty(htmlspecialchars($_POST['county']));
-										$booking->setPostcode(htmlspecialchars($_POST['postcode']));
-										$booking->setTotalCost($this->ticketPrice($_POST['adult'],$_POST['concession']));
-										$transactionCost = $this->ticketPrice($_POST['adult'],$_POST['concession']);
-										$id = $booking->createBooking();
-										if($id == false)
-										{
-											print("Booking Failed");
-											exit();
-										}
-										$booking->setBookingId($id);
-										for($i = 0;$i < $_POST['adult'];$i++)
-										{
-											$ticket = new Ticket('0',$this->db);
-											$ticket->setBookingID($booking->getBookingId());
-											$ticket->setDate($_POST['ticketDate']);
-											$ticket->setType("adult");
-											if(strcmp($_POST['collection'],"postal") == 0)
-											{
-												$ticket->setMethodOfSale("postal");
-												$ticket->setStatus("NOT POSTED");
-											}
-											else
-											{
-												$ticket->setMethodOfSale("pickup");
-												$ticket->setStatus("NOT COLLECTED");
-											}
-											$ticket->createTicket();
-										}
-										
-										for($i = 0;$i < $_POST['concession'];$i++)
-										{
-											$ticket = new Ticket('0',$this->db);
-											$ticket->setBookingID($booking->getBookingId());
-											$ticket->setDate($_POST['ticketDate']);
-											$ticket->setType("concession");
-											if(strcmp($_POST['collection'],"postal") == 0)
-											{
-												$ticket->setMethodOfSale("postal");
-												$ticket->setStatus("NOT POSTED");
-											}
-											else
-											{
-												$ticket->setMethodOfSale("pickup");
-												$ticket->setStatus("NOT COLLECTED");
-											}
-											$ticket->createTicket();
-										}
-									$_SESSION['booking'] = 1;
-									$this->addBasicView();
-									require_once 'view/ticketConfirmation.php';
-									require_once 'view/login.php';
-									$this->addFooterFile();
-									exit();
-								}
-								else
-								{
-									$this->addBasicView();
-									require_once 'view/ticket_capacityCardDetails.php';
-									require_once 'view/login.php';
-									$this->addFooterFile();
-									exit();
-								}
-							}
-							else
-							{
-									$transactionCost = $this->ticketPrice($_POST['adult'],$_POST['concession']);
-									$this->addBasicView();
-									require_once 'view/ticketConfirmation.php';
-									require_once 'view/login.php';
-									$this->addFooterFile();
-									exit();
-							}
-								
-						}
-					}
-				}
-					
-			
-                    if(strcmp($pageName,"ticketCardDetails") == 0)
-					{
-						if(!isset($_POST['continunity']))
-						{
-							$pageName = "tickets";
-						}
-						else
-						{
-							$ticketsRequired = $_POST['adult'] + $_POST['concession'];
-							if($this->ticketCheck($_POST['ticketDate'],$ticketsRequired))
-							{
-								//Work out cost of tickets
-								$transactionCost = $this->ticketPrice($_POST['adult'],$_POST['concession']);
-								
-							}
-							else
-							{
-								$this->addBasicView();
-								require_once 'view/ticket_capacityCardDetails.php';
-								require_once 'view/login.php';
-								$this->addFooterFile();
-								exit();
-							}
-						}
-					}
-                    if($pageName == "ticketPurchase")
+                    if(strcmp($pageName,"ticketingConfirmation") == 0)
                     {
-						if(isset($_GET['date']))
-						{
-							$result = $this->db->query("SELECT * FROM tournament WHERE startDate <= '".htmlspecialchars($_GET['date'])."' AND endDate >= '".htmlspecialchars($_GET['date'])."'");
-							$rowCount = $result->rowCount();
-							if($rowCount < 1)
-							{
-								$pageName = "tickets";
-							}
-							else
-							{
-								if($this->ticketCheck($_GET['date'],0))
-								{
-									//Grab Prices of Tickets
-									$result = $this->db->query("SELECT * FROM properties");
-									$result = $result->fetch();
-									$adult_price = $result['adultPrice'];
-									$concession_price = $result['concessionPrice'];
-									//Let the Customer know how many tickets are left
-									$ticketTotal = $this->ticketsRemaining($_GET['date']);
-								}
-								else
-								{
-									$this->addBasicView();
-									require_once 'view/ticket_capacityReached.php';
-									require_once 'view/login.php';
-									$this->addFooterFile();
-									exit();
-								}
-							}
-						}
-						else
-						{
-							$pageName = "tickets";
-						}
-					}
-                    if(strcmp($pageName,"tickets") == 0)
+                            if(!isset($_POST['continunity']))
+                            {
+                                    $pageName = "tickets";
+                            }
+                            else
+                            {
+                                    if(!isset($_SESSION['booking']))
+                                    {
+                                            $ticketsRequired = $_POST['adult'] + $_POST['concession'];
+                                            if($this->ticketCheck($_POST['ticketDate'],$ticketsRequired))
+                                            {
+                                                    $transaction = new Transaction('0',$this->db);
+                                                    $transaction->setNameOnCard(htmlspecialchars($_POST['nameOnCard']));
+                                                    $transaction->setCardNumber(htmlspecialchars($_POST['cardNo']));
+                                                    $transaction->setCSCNumber(htmlspecialchars($_POST['csc']));
+                                                    $transaction->setCardType(htmlspecialchars($_POST['cardType']));
+                                                    $validuntil = htmlspecialchars($_POST['year'])."-".htmlspecialchars($_POST['month'])."-01";
+                                                    $transaction->setValidUntil($validuntil);
+                                                    $id = $transaction->createTransaction();
+                                                    if($id == false)
+                                                    {
+                                                            print("Payment Failed");
+                                                            exit();
+                                                    }
+                                                            $transaction->setTransactionID($id);
+
+                                                            $booking = new Booking('0',$this->db);
+                                                            $booking->setTransactionId($transaction->getTransactionID());
+                                                            $booking->setFirstName(htmlspecialchars($_POST['firstname']));
+                                                            $booking->setSurname(htmlspecialchars($_POST['surname']));
+                                                            $booking->setAddress1(htmlspecialchars($_POST['address1']));
+                                                            $booking->setAddress2(htmlspecialchars($_POST['address2']));
+                                                            $booking->setEmail(htmlspecialchars($_POST['email']));
+                                                            $booking->setCity(htmlspecialchars($_POST['city']));
+                                                            $booking->setCounty(htmlspecialchars($_POST['county']));
+                                                            $booking->setPostcode(htmlspecialchars($_POST['postcode']));
+                                                            $booking->setTotalCost($this->ticketPrice($_POST['adult'],$_POST['concession']));
+                                                            $transactionCost = $this->ticketPrice($_POST['adult'],$_POST['concession']);
+                                                            $id = $booking->createBooking();
+                                                            if($id == false)
+                                                            {
+                                                                    print("Booking Failed");
+                                                                    exit();
+                                                            }
+                                                            $booking->setBookingId($id);
+                                                            for($i = 0;$i < $_POST['adult'];$i++)
+                                                            {
+                                                                    $ticket = new Ticket('0',$this->db);
+                                                                    $ticket->setBookingID($booking->getBookingId());
+                                                                    $ticket->setDate($_POST['ticketDate']);
+                                                                    $ticket->setType("adult");
+                                                                    if(strcmp($_POST['collection'],"postal") == 0)
+                                                                    {
+                                                                            $ticket->setMethodOfSale("postal");
+                                                                            $ticket->setStatus("NOT POSTED");
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                            $ticket->setMethodOfSale("pickup");
+                                                                            $ticket->setStatus("NOT COLLECTED");
+                                                                    }
+                                                                    $ticket->createTicket();
+                                                            }
+
+                                                            for($i = 0;$i < $_POST['concession'];$i++)
+                                                            {
+                                                                    $ticket = new Ticket('0',$this->db);
+                                                                    $ticket->setBookingID($booking->getBookingId());
+                                                                    $ticket->setDate($_POST['ticketDate']);
+                                                                    $ticket->setType("concession");
+                                                                    if(strcmp($_POST['collection'],"postal") == 0)
+                                                                    {
+                                                                            $ticket->setMethodOfSale("postal");
+                                                                            $ticket->setStatus("NOT POSTED");
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                            $ticket->setMethodOfSale("pickup");
+                                                                            $ticket->setStatus("NOT COLLECTED");
+                                                                    }
+                                                                    $ticket->createTicket();
+                                                            }
+                                                    $_SESSION['booking'] = 1;
+                                                    $this->addBasicView();
+                                                    require_once 'view/ticketConfirmation.php';
+                                                    require_once 'view/login.php';
+                                                    $this->addFooterFile();
+                                                    exit();
+                                            }
+                                            else
+                                            {
+                                                    $this->addBasicView();
+                                                    require_once 'view/ticket_capacityCardDetails.php';
+                                                    require_once 'view/login.php';
+                                                    $this->addFooterFile();
+                                                    exit();
+                                            }
+                                    }
+                                    else
+                                    {
+                                                    $transactionCost = $this->ticketPrice($_POST['adult'],$_POST['concession']);
+                                                    $this->addBasicView();
+                                                    require_once 'view/ticketConfirmation.php';
+                                                    require_once 'view/login.php';
+                                                    $this->addFooterFile();
+                                                    exit();
+                                    }
+
+                            }
+                    }
+            }	
+            if(strcmp($pageName,"ticketCardDetails") == 0)
+            {
+                    if(!isset($_POST['continunity']))
                     {
-							unset($_SESSION['booking']);
-							$result = $this->db->query("SELECT * FROM tournament WHERE startDate > CURDATE() OR (startDate < CURDATE() AND endDate > CURDATE()) ORDER BY startDate ASC");
-							if($result == false)
-							{
-								$this->addBasicView();
-								require_once 'view/tickets_notournament.php';
-								require_once 'view/login.php';
-								$this->addFooterFile();
-								die();
-							}
-							$data = $result->fetch();
-							$tournament = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose'], $this->db);
-							$days = array();
-							$days = $tournament->GetDays();
-							$tournamentName = $tournament->getName();
-							
-							$capacityResult = $this->db->query("SELECT * FROM properties");
-							$capacityResult = $capacityResult->fetch();
-							$capacity = $capacityResult['ticketLimit'];
-							
-							$this->addBasicView();
-							require_once 'view/'.$pageName.'.php';
-							require_once 'view/login.php';
-							$this->addFooterFile();
-							die();
-					}
-				
+                            $pageName = "tickets";
+                    }
+                    else
+                    {
+                            $ticketsRequired = $_POST['adult'] + $_POST['concession'];
+                            if($this->ticketCheck($_POST['ticketDate'],$ticketsRequired))
+                            {
+                                    //Work out cost of tickets
+                                    $transactionCost = $this->ticketPrice($_POST['adult'],$_POST['concession']);
+
+                            }
+                            else
+                            {
+                                    $this->addBasicView();
+                                    require_once 'view/ticket_capacityCardDetails.php';
+                                    require_once 'view/login.php';
+                                    $this->addFooterFile();
+                                    exit();
+                            }
+                    }
+            }
+            if($pageName == "ticketPurchase")
+            {
+                        if(isset($_GET['date']))
+                        {
+                                $result = $this->db->query("SELECT * FROM tournament WHERE startDate <= '".htmlspecialchars($_GET['date'])."' AND endDate >= '".htmlspecialchars($_GET['date'])."'");
+                                $rowCount = $result->rowCount();
+                                if($rowCount < 1)
+                                {
+                                        $pageName = "tickets";
+                                }
+                                else
+                                {
+                                        if($this->ticketCheck($_GET['date'],0))
+                                        {
+                                                //Grab Prices of Tickets
+                                                $result = $this->db->query("SELECT * FROM properties");
+                                                $result = $result->fetch();
+                                                $adult_price = $result['adultPrice'];
+                                                $concession_price = $result['concessionPrice'];
+                                                //Let the Customer know how many tickets are left
+                                                $ticketTotal = $this->ticketsRemaining($_GET['date']);
+                                        }
+                                        else
+                                        {
+                                                $this->addBasicView();
+                                                require_once 'view/ticket_capacityReached.php';
+                                                require_once 'view/login.php';
+                                                $this->addFooterFile();
+                                                exit();
+                                        }
+                                }
+                        }
+                        else
+                        {
+                                $pageName = "tickets";
+                        }
+                }
+                if(strcmp($pageName,"tickets") == 0)
+                {
+                        unset($_SESSION['booking']);
+                        $result = $this->db->query("SELECT * FROM tournament WHERE startDate > CURDATE() OR (startDate < CURDATE() AND endDate > CURDATE()) ORDER BY startDate ASC");
+                        if($result == false)
+                        {
+                                $this->addBasicView();
+                                require_once 'view/tickets_notournament.php';
+                                require_once 'view/login.php';
+                                $this->addFooterFile();
+                                die();
+                        }
+                        $data = $result->fetch();
+                        $tournament = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose'], $this->db);
+                        $days = array();
+                        $days = $tournament->GetDays();
+                        $tournamentName = $tournament->getName();
+
+                        $capacityResult = $this->db->query("SELECT * FROM properties");
+                        $capacityResult = $capacityResult->fetch();
+                        $capacity = $capacityResult['ticketLimit'];
+
+                        $this->addBasicView();
+                        require_once 'view/'.$pageName.'.php';
+                        require_once 'view/login.php';
+                        $this->addFooterFile();
+                        die();
+                    }
+
             $this->addBasicView();
             require_once 'view/'.$pageName.'.php';
             require_once 'view/login.php';
@@ -1080,7 +1014,7 @@ class MainController
                                         WHERE resultID = $id");            
             $data = $result->fetch();
             $matchResults = new Result($data['resultID'], new Team($this->db , $data['team1']) , new Team($this->db , $data['team2']) , $data['team1Score'] , $data['team2Score'] , $this->db);
-            $umpire = new Umpire($data['umpireID'], $data['umpireName'], $data['umpireEmail'], null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+            $umpire = new Umpire($data['umpireID'], $data['umpireName'], $data['umpireEmail'], null, null, null, null, null, null, null, null, null, null, null, null, null, null, $this->db);
             $time = $data['matchTime'];
             $pitch = $data['pitch'];
             $matchResults->getTeamsInfo();
@@ -1158,6 +1092,41 @@ class MainController
             require_once 'adminView/changeTeam.php';
             $this->addFooterFile();
         }
+        
+        
+        public function loadChangeTeamPlayersPage($teamID)
+        {
+            $_SESSION['section'] = "admin";
+            $pageName = "wattBall"; 
+            if(!isset($_SESSION['login']))
+            {
+                addLogin();
+                die();
+            }
+            else if(isset($_SESSION['login']) && $_SESSION['login']==FALSE)
+            {
+                addLogin();
+                die();
+            }
+            $staff = new Staff($_SESSION['username'], null, $this->db);
+            $staff->getStaffInfo();
+            
+            $request = $this->db->query("SELECT * FROM wattball_players WHERE teamID = $teamID ORDER BY playerName");
+            $players = array();
+            $i = 0;
+            while ($data = $request->fetch())
+            {
+                $players[$i] = new Player($this->db);
+                $players[$i]->setPlayerID($data['playerID']);
+                $players[$i]->setPlayerName($data['playerName']);
+                $i++;
+            }
+            
+            $this->addBasicView();
+            require_once 'adminView/menu.php';
+            require_once 'adminView/changeTeamPlayers.php';
+            $this->addFooterFile();
+        }
 	
 	/**
 	 * search in the database all tournament and put in an array
@@ -1200,7 +1169,7 @@ class MainController
 		while($data = $result->fetch())
 		{
 			$this->umpire[$i] = new Umpire($data['umpireID'],$data['umpireName'],$data['umpireEmail'],$data['monMorning'],$data['monAfternoon'],$data['tuesMorning'],$data['tuesAfternoon'],$data['wedMorning'],$data['wedAfternoon'],
-			$data['thursMorning'],$data['thursAfternoon'],$data['friMorning'],$data['friAfternoon'],$data['satMorning'],$data['satAfternoon'],$data['sunMorning'],$data['sunAfternoon']);
+			$data['thursMorning'],$data['thursAfternoon'],$data['friMorning'],$data['friAfternoon'],$data['satMorning'],$data['satAfternoon'],$data['sunMorning'],$data['sunAfternoon'],$this->db);
 			$i++;                                 
 		}
 	}
@@ -1222,12 +1191,20 @@ class MainController
         /**
          * Find if there is a tournament now
          */
-        public function isCurrentTournament()
+        public function isCurrentTournament($dateFormat = NULL)
         {
             //* Check if there is a current tournament
-			$result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
+            if($dateFormat == NULL)
+            {
+                $result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
 				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose 
                                  FROM tournament WHERE registrationOpen < CURDATE() AND  endDate > CURDATE() ORDER BY startDate DESC");
+            }
+            else
+            {
+                 $result = $this->db->query("SELECT * 
+                                 FROM tournament WHERE registrationOpen < CURDATE() AND  endDate > CURDATE() ORDER BY startDate DESC");
+            }
 		if($result != false)
 		{
 
@@ -1247,12 +1224,33 @@ class MainController
         }
         
         
+        public function isTournamentStarted()
+        {            
+            if($this->isCurrentTournament(true))
+            {
+                $today = new DateTime(date("Y-m-d"));
+                list($Y,$m,$d)=explode('-',  $this->tournament[0]->getStartDate());
+                $startDate = new DateTime(Date("Y-m-d", mktime(0,0,0,$m,$d,$Y)));
+                
+                $today->format('Ymd');
+                $startDate->format('Ymd');
+                
+                if($today < $startDate)
+                    return false;
+                else
+                    return true;
+            }
+            
+            return false;
+        }
+        
+        
         public function findClosestTournament()
 	{
 		//* Check if there is a current tournament
 		$result = $this->db->query("SELECT tournamentID, name, DATE_FORMAT(startDate,'%D %M %Y') AS startDate, DATE_FORMAT(endDate,'%D %M %Y') AS endDate,
 				 DATE_FORMAT(registrationOpen,'%D %M %Y') AS registrationOpen, DATE_FORMAT(registrationClose,'%D %M %Y') AS registrationClose 
-                                 FROM tournament WHERE startDate < CURDATE() AND  endDate > CURDATE() ORDER BY startDate DESC");
+                                 FROM tournament WHERE registrationOpen < CURDATE() AND  endDate > CURDATE() ORDER BY startDate DESC");
 		if($data == $result->fetch())
 		{
                     $i = 0;
@@ -1539,72 +1537,6 @@ class MainController
 			$ticketPrice = ($adult * $prices['adultPrice']) + ($concession * $prices['concessionPrice']);
 			return $ticketPrice;
 		}
-
-        public function processHurdleRegistration($tournamentId,$firstname,$lastname,$gender,$dob,$houseno,$streetname,$city,$postcode,$emailcheck,$emcontact,$minutes,$seconds,$milliseconds)
-        {
-        	$hurdleObject = new hurdles($this->db,null);
-        	$hurdleObject-> setFirstName($firstname);
-        	$hurdleObject-> setLastName($lastname);
-			$hurdleObject-> setTournamentId($tournamentId);
-        	$hurdleObject-> setGender($gender);
-        	$hurdleObject-> setDob($dob);
-        	$hurdleObject-> setHouseNo($houseno);
-        	$hurdleObject-> setStreetName($streetname);
-        	$hurdleObject-> setCity($city);
-        	$hurdleObject-> setPostCode($postcode);
-        	$hurdleObject-> setEmail($emailcheck);
-        	$hurdleObject-> setEmergencyContact($emcontact);
-        	$milliseconds = $this->toMilliSeconds($minutes,$seconds,$milliseconds);
-        	$hurdleObject-> setPerformanceTime($milliseconds);
-        	
-        	if($hurdleObject-> addTeamInfo())
-       			return true;
-       		else
-       			return false;
-         
-        }
-        
-        public function toMilliSeconds($minutes,$seconds,$milliseconds) 
-		{
-			$total = 0;
-			$total = $minutes * 60;
-			$total = $total + $seconds;
-			$total = $total * 1000;
-			$total = $total + $milliseconds;
-			return $total;
-		}
-		
-		public function loadChangeTeamPlayersPage($teamID)
-       {
-			$_SESSION['section'] = "admin";
-            $pageName = "wattBall"; 
-			if(!isset($_SESSION['login']))
-            {
-               addLogin();
-			   die();
-			}
-			else if(isset($_SESSION['login']) && $_SESSION['login']==FALSE)
-			{
-              addLogin();
-				die();
-			}
-			$staff = new Staff($_SESSION['username'], null, $this->db);
-			$staff->getStaffInfo();          
-			$request = $this->db->query("SELECT * FROM wattball_players WHERE teamID = $teamID ORDER BY playerName");
-			$players = array();
-            $i = 0;
-			while ($data = $request->fetch())
-			{
-            $players[$i] = new Player($this->db);
-             $players[$i]->setPlayerID($data['playerID']);
-              $players[$i]->setPlayerName($data['playerName']);
-               $i++;
-			}           
-            $this->addBasicView();
-           require_once 'adminView/menu.php';
-            require_once 'adminView/changeTeamPlayers.php';
-            $this->addFooterFile();
-       }
         /*-------- GETTERS & SETTERS --------*/
         
         public function getUmpire()
@@ -1647,5 +1579,3 @@ class MainController
 }
 
 ?>
-
-               

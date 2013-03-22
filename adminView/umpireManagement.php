@@ -4,7 +4,16 @@
 	<div id="umpireList">
 		<?php 
 			$allUmpires = $this->umpire;
-			include("include/allUmpires.php"); 
+			include("include/allUmpires.php");
+			$count = 0;
+			for($i=0;$i<sizeof($allUmpires);$i++)
+			{
+				$temp = $allUmpires[$i]->getNumberOfMatches();
+				if($temp>$count)
+				{
+					$count = $temp;
+				}
+			}
 		?>	
 	</div>
 
@@ -183,6 +192,41 @@
 		<div class="modal-body center">
 			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 	<button type='button' id='buttonDeleteUmpire' class="btn btn-danger btn-medium"><i class="icon-white icon-remove-sign"></i> Delete</button>
+		</div>
+	</div>
+	
+	<!-- Div match list -->
+	
+	<div id="matches" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+		<div class="modal-header">
+    		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+   			 <h3 id="myModalLabel">Match list</h3>
+ 		</div>
+ 		<div class="modal-body">
+				<table class="table table-hover" id="myTable">
+					<tr>
+						<th>Date</th>
+						<th>Time</th>
+						<th>Pitch</th>
+						<th>Team1</th>
+						<th>Team2</th>
+					</tr>
+					<?php
+					for($i = 0;$i<$count;$i++)
+					{
+						echo "<tr>";
+						echo "<td id='row".$i."1' ></td>";
+						echo "<td id='row".$i."2' ></td>";
+						echo "<td id='row".$i."3' ></td>";
+						echo "<td id='row".$i."4' ></td>";
+						echo "<td id='row".$i."5' ></td>";
+						echo "</tr>";
+					}
+					?>
+				</table>                 
+		</div>
+		<div class="modal-footer">
+			<button class="btn" id='close' data-dismiss="modal" aria-hidden="true">Close</button>
 		</div>
 	</div>
 	

@@ -2,16 +2,21 @@ $(document).ready(function()
 {
 	// Datepicker
         $( ".from" ).datepicker({
-            defaultDate: "+1w",
+            minDate: -0,
             changeMonth: true,
             numberOfMonths: 3,
             dateFormat: "yy-mm-dd",
             onClose: function( selectedDate ) {
-                $( ".to" ).datepicker( "option", "minDate", selectedDate );
+                if(selectedDate == ""){
+                    $( ".to" ).datepicker( "option", "minDate", -0 );
+                }
+                else{
+                     $( ".to" ).datepicker( "option", "minDate", selectedDate );
+                }
             }
         });
         $( ".to" ).datepicker({
-            defaultDate: "+1w",
+            minDate: -0,
             changeMonth: true,
             numberOfMonths: 3,
             dateFormat: "yy-mm-dd",
@@ -20,17 +25,71 @@ $(document).ready(function()
             }
         });
         
-        $( ".fromChange" ).datepicker({
-            defaultDate: "+1w",
+        $( ".fromReg" ).datepicker({
+            minDate: -0,
             changeMonth: true,
             numberOfMonths: 3,
             dateFormat: "yy-mm-dd",
             onClose: function( selectedDate ) {
-                $( ".toChange" ).datepicker( "option", "minDate", selectedDate );
+                if(selectedDate == ""){
+                    $( ".toReg" ).datepicker( "option", "minDate", -0 );
+                }
+                else{
+                     $( ".toReg" ).datepicker( "option", "minDate", selectedDate );
+                }
+               
+            }
+        });
+        $( ".toReg" ).datepicker({
+            minDate: -0,
+            changeMonth: true,
+            numberOfMonths: 3,
+            dateFormat: "yy-mm-dd",
+            onClose: function( selectedDate ) {
+                $( ".fromReg" ).datepicker( "option", "maxDate", selectedDate );
+            }
+        });
+        
+        $( ".fromChange" ).datepicker({
+            minDate: -0,
+            changeMonth: true,
+            numberOfMonths: 3,
+            dateFormat: "yy-mm-dd",
+            onClose: function( selectedDate ) {
+                if(selectedDate == ""){
+                    $( ".toChange" ).datepicker( "option", "minDate", -0 );
+                }
+                else{
+                     $( ".toChange" ).datepicker( "option", "minDate", selectedDate );
+                }
             }
         });
         $( ".toChange" ).datepicker({
-            defaultDate: "+1w",
+            minDate: -0,
+            changeMonth: true,
+            numberOfMonths: 3,
+            dateFormat: "yy-mm-dd",
+            onClose: function( selectedDate ) {
+                $( ".fromChange" ).datepicker( "option", "maxDate", selectedDate );
+            }
+        });
+        
+        $( ".fromChangeReg" ).datepicker({
+            minDate: -0,
+            changeMonth: true,
+            numberOfMonths: 3,
+            dateFormat: "yy-mm-dd",
+            onClose: function( selectedDate ) {
+                if(selectedDate == ""){
+                    $( ".toChangeReg" ).datepicker( "option", "minDate", -0 );
+                }
+                else{
+                     $( ".toChangeReg" ).datepicker( "option", "minDate", selectedDate );
+                }
+            }
+        });
+        $( ".toChangeReg" ).datepicker({
+            minDate: -0,
             changeMonth: true,
             numberOfMonths: 3,
             dateFormat: "yy-mm-dd",
