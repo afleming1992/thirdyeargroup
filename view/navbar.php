@@ -3,7 +3,6 @@
     <div class="container">
       <ul class="nav">
             <li <?php if(strcmp($_SESSION['section'],"home") == 0){echo "class='active'";} ?>><a href="index.php">Home</a></li>
-            <li <?php if(strcmp($_SESSION['section'],"aboutus") == 0){ echo "class='active'";} ?>> <a href="index.php?page=aboutUs">About us</a> </li>
             <li <?php if(strcmp($_SESSION['section'],"wattball") == 0){ echo "class='active'";} ?>> <a href="index.php?page=wattBall">WattBall</a> </li>
             <li <?php if(strcmp($_SESSION['section'],"menhurdles") == 0){ echo "class='active'";} ?>> <a href="index.php?page=menHurdles">Men's Hurdles</a> </li>
             <li <?php if(strcmp($_SESSION['section'],"femalehurdles") == 0){ echo "class='active'";} ?>> <a href="index.php?page=femaleHurdles">Female's Hurdles</a> </li>

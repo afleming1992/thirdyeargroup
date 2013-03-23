@@ -28,10 +28,11 @@
 				  <!-- Carousel items -->
 				  <div class="carousel-inner">
 					<div class="active item">
-						<img src="images/caroseul/wattball.jpg" />
+						<img src="images/caroseul/centre.jpg" />
 						<div class='carousel-caption'><h4>Welcome to Riccarton Sports Centre</h4><p>We host many tournaments from WattBall to Hurdling</p></div>
 					</div>
-					<div class="item"><img src="images/caroseul/hurdles.jpg" /></div>
+					<div class="item"><a href='index.php?page=wattBall'><img src="images/caroseul/wattball.jpg" /><div class='carousel-caption'><h4>Wattball</h4><p>Find out more about our Wattball Tournament by Clicking Here</p></div></a></div>
+					<div class="item"><a href='index.php?page=tickets'><img src="images/caroseul/tickets.jpg" /><div class='carousel-caption'><h4>Tickets</h4><p>You can buy tickets for our Tournaments by clicking here</p></div></a></div>
 				  </div>
 				  <!-- Carousel nav -->
 				  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
