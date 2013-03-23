@@ -18,6 +18,7 @@
 		<div style='text-align:center'>
 			Number of Adult Tickets :- <span class='badge badge-info'><?php echo $adultTickets; ?></span><br />
 			Number of Concession Tickets :- <span class='badge badge-info'><?php echo $concessionTickets; ?></span><br />
+			Number of Complimentary Tickets :- <span class='badge badge-failure'><?php echo $complimentaryTickets; ?></span></br />
 		</div>
 		<table class='table'>
 		<tr><th>#</th><th>Date</th><th>Type</th><th>Method of Collection</th><th>Status</th><th style='text-align:center'><a class='btn btn-primary' href='index.php?adminPage=viewBooking&id=<?php echo $_GET['id'] ?>&collect=all'><i class='icon-white icon-tags'></i> Collect All Tickets</a></th></tr>

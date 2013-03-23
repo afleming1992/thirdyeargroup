@@ -43,8 +43,15 @@ Class Match
     }
     
     public function getTeam1Info()
-    {        
-        $result = $this->db->query("SELECT * FROM wattball_team WHERE teamID = ".$this->team1);
+    {      
+		if(is_object($team1))
+		{
+			$result = $this->db->query("SELECT * FROM wattball_team WHERE teamID = ".$this->team1->getTeamId());
+		}
+		else
+		{
+			$result = $this->db->query("SELECT * FROM wattball_team WHERE teamID = ".$this->team1);
+		}
         $data = $result->fetch();
         $team1 = new Team($this->db, $data['teamID']);
         $team1->getTeamInfo();
@@ -52,8 +59,15 @@ Class Match
     }
     
     public function getTeam2Info()
-    {        
-        $result = $this->db->query("SELECT * FROM wattball_team WHERE teamID = ".$this->team2);
+    {       
+		if(is_object($team2))
+		{
+			$result = $this->db->query("SELECT * FROM wattball_team WHERE teamID = ".$this->team2->getTeamId());
+		}
+		else
+		{
+			$result = $this->db->query("SELECT * FROM wattball_team WHERE teamID = ".$this->team2);
+		}
         $data = $result->fetch();
         $team2 = new Team($this->db, $data['teamID']);
         $team2->getTeamInfo();

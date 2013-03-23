@@ -7,11 +7,8 @@
             <li class="nav-header">Scheduling</li>
             <li class="divider"></li>
             <li <?php if($pageName == "wattBallScheduling") echo "class='active'"; ?>><a href="index.php?adminPage=wattBallScheduling">Initiate WattBall Scheduling</a></li>
-            <li>Initiate Hurdles Scheduling</li>
             <li <?php if($pageName == "wattBallReScheduling") echo "class='active'"; ?>><a href="index.php?adminPage=wattBallReScheduling">Edit WattBall Scheduling</a></li>
-            <li>Edit Hurdle Schedule</li>
             <li <?php if($pageName == "umpireManagement") echo "class='active'"; ?>><a href='index.php?adminPage=umpireManagement'>Umpire Management</a></li>
-            <li>Update Performance Time</li>
             
             <li class="nav-header">Registration</li>
             <li class="divider"></li>
@@ -28,7 +25,6 @@
             <li class="nav-header">Results</li>
             <li class="divider"></li>
             <li <?php if($pageName == "addWattBallResults") echo "class='active'"; ?>><a href='index.php?adminPage=addWattBallResults'>Add WattBall Results</a></li>
-            <li>Add Hurdle results</li>
             <?php 
             if($staff->getManager() == 1)
             {

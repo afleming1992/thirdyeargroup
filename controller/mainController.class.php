@@ -438,12 +438,16 @@ class MainController
 					if($result != false)
 					{
 						$bookings = array();
+						$bookingDates = array();
 						$i = 0;
 						while($data = $result->fetch())
 						{
 							$book = new Booking($data['bookingId'],$this->db);
 							$done = $book->getBooking();
 							$bookings[$i] = $book;
+							$dateResult = $this->db->query("SELECT DISTINCT dateOfTicket FROM ticket WHERE bookingID = '".$book->getBookingId()."'");
+							$dateResult = $dateResult->fetch();
+							$bookingDates[$i] = $dateResult['dateOfTicket'];
 							$i++;
 						}
 						if($i == 0)
@@ -497,6 +501,8 @@ class MainController
 					$i = 0;
 					$adultTickets = 0;
 					$concessionTickets = 0;
+					$complimentaryTickets = 0;
+					$dateOfTicket = 0;
 					$result = $this->db->query("SELECT ticketID FROM ticket WHERE bookingID = '".$booking->getBookingId()."'");
 					if($result != false)
 					{
@@ -511,13 +517,19 @@ class MainController
 								{
 									$adultTickets++;
 								}
+								else if(strcmp($ticket->getType(),"complimentary") == 0)
+								{
+									$complimentaryTickets++;
+								}
 								else
 								{
 									$concessionTickets++;
 								}
 								$i++;
 							}
+							
 						}
+						
 					}
 					$this->addBasicView();
 					require_once 'adminView/menu.php';
@@ -879,6 +891,21 @@ class MainController
                                                                     }
                                                                     $ticket->createTicket();
                                                             }
+													$_SESSION['name'] = $booking->getFirstName()." ".$booking->getSurname();
+													$_SESSION['email'] = $booking->getEmail();
+													$_SESSION['date'] = $_POST['ticketDate'];
+													$_SESSION['bookingId'] = $booking->getBookingId();
+													$_SESSION['subject'] = "Ticket Booking Confirmation";
+													$_SESSION['body'] = "Hi ".$_SESSION['name'].",<br /><br />This is to confirm that you have successfully booked for entry into the Riccarton Sports Centre on <span style='font-size:large'>".date('d-M-Y',strtotime($_SESSION['date']))."</span><br /><br />For your Information, your Booking ID is <span style='color:#FF0000'>".$booking->getBookingId()."</span><br /><br />";
+													if($ticket->getMethodOfSale() == 'postal')
+													{
+														$_SESSION['body'] = $_SESSION['body']."Your tickets will be posted out to you around 5 days before the tournament starts!";
+													}
+													else
+													{
+														$_SESSION['body'] = $_SESSION['body']."Your tickets will be available for collection from the Sports Centre. Please bring this email to confirm that you are the owner of the booking";
+													}
+													require_once("include/email/sendEmail.php");
                                                     $_SESSION['booking'] = 1;
                                                     $this->addBasicView();
                                                     require_once 'view/ticketConfirmation.php';

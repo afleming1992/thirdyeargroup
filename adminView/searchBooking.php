@@ -8,7 +8,7 @@
 			<div class='controls'>
 				<select name='searchby'>
 					<option value=''>-Select all-</option>
-					<option value='surname'>Surname</option>
+					<option value='surname'>Surname / Team Name</option>
 					<option value='bookingId'>Booking ID</option>
 					<option value='postcode'>Postcode</option>
 				</select>

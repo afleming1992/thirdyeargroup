@@ -16,7 +16,7 @@ Class Booking
 	
 	public function __construct($bookingId , $db)
     {
-        $this->bookingId = $bookingId;     
+        $this->bookingId = $bookingId; 		
         $this->db = $db;
 		$this->tickets = array();
 		$this->lastArrayPos = 0;
@@ -24,12 +24,13 @@ Class Booking
     
     public function createBooking()
     {
+		$query = "INSERT INTO ticket_sales (transactionID,firstName,surname,email,address1,address2,city,county,postcode,totalCost) VALUES ('".$this->transactionId."','".$this->firstName."','".$this->surname."','".$this->email."','".$this->address1."','".$this->address2."','".$this->city."','".$this->county."','".$this->postcode."','".$this->totalCost."')";
+		echo $query;
 		$result = $this->db->query("INSERT INTO ticket_sales (transactionID,firstName,surname,email,address1,address2,city,county,postcode,totalCost) VALUES ('".$this->transactionId."','".$this->firstName."','".$this->surname."','".$this->email."','".$this->address1."','".$this->address2."','".$this->city."','".$this->county."','".$this->postcode."','".$this->totalCost."')");
-		if($result == true)
+		if($result != false)
 		{
-			$result = $this->db->query("select last_insert_id() as lastId");
-			$lastId = $result->fetch();
-			return $lastId['lastId'];
+			$this->bookingId = $this->db->lastInsertId();
+			return $this->bookingId;
 		}
 		else
 		{
