@@ -1,5 +1,6 @@
 <div class='span9 contentbox'>
-        <?php 
+        <?php
+        $_SESSION['back'] = $_GET['page'];
             if(count($matchesResults) == 0)
             {
                 echo "No results";

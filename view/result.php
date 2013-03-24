@@ -1,5 +1,8 @@
 <div class='span9 contentbox'>
-    
+    <?php
+    unset($_SESSION['back']);
+    $_SESSION['backResult'] = $_GET['result'];
+    ?>
     <a href="index.php?page=wattBall"><i class="icon-arrow-left"></i> Back to the results</a>
     <h3 class='text-info center'><?php echo $matchResults->getTeam1()->getTeamName()." ".$matchResults->getTeam1Score()." - ".$matchResults->getTeam2Score()." ".$matchResults->getTeam2()->getTeamName();  ?></h3>
     <fieldset>

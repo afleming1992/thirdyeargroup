@@ -2,6 +2,8 @@
     
     <h3 class="center">WattBall Players</h3>
     <?php
+    unset($_SESSION['backTeamDetails']);
+    $_SESSION['back'] = $_GET['page'];
         if(count($players) > 0)
         {
     ?>

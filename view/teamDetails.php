@@ -1,6 +1,13 @@
 <div class='span9 contentbox'>
     
-    <a href="index.php?page=teams"><i class="icon-arrow-left"></i> Back to the Teams</a></br></br>
+    <?php
+    if(isset($_SESSION['back']) && $_SESSION['back'] == "players")
+        echo "<a href='index.php?page=".$_SESSION['back']."'><i class='icon-arrow-left'></i> Back to the Players</a>";
+    else if(isset($_SESSION['back']) && $_SESSION['back'] == "teams")
+        echo "<a href='index.php?page=".$_SESSION['back']."'><i class='icon-arrow-left'></i> Back to the Teams</a>";
+    unset($_SESSION['back']);
+    $_SESSION['backTeamDetails'] = $_GET['team'];
+    ?>
     <h3 class="text-info center"><?php echo $team->getTeamName(); ?></h3>
     <fieldset>
         <legend>Common informations</legend>

@@ -1,5 +1,6 @@
 <div class='span9 contentbox'>
     <?php
+    $_SESSION['back'] = $_GET['page'];
         if($data == false)
             echo "<p class='text-error'>No registered teams !</p>";
         else

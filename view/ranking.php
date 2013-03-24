@@ -1,4 +1,15 @@
 <div class='span9 contentbox'>
+    
+    <?php
+    if(isset($_SESSION['back']) && $_SESSION['back'] == "wattBall")
+        echo "<a href='index.php?page=".$_SESSION['back']."'><i class='icon-arrow-left'></i> Back to the Results</a>";
+    else if(isset($_SESSION['back']) && $_SESSION['back'] == "teams")
+        echo "<a href='index.php?page=".$_SESSION['back']."'><i class='icon-arrow-left'></i> Back to the Teams</a>";
+    else if(isset($_SESSION['backTeamDetails']))
+        echo "<a href='index.php?team=".$_SESSION['backTeamDetails']."'><i class='icon-arrow-left'></i> Back to the Team Details</a>";
+    unset($_SESSION['backTeamDetails']);
+    unset($_SESSION['back']);
+    ?>
     <h3 class="center">WattBall Ranking</h3>
     </br></br>
     

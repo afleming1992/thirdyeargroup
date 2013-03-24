@@ -1,6 +1,12 @@
 <div class='span9 contentbox'>
     
     <?php
+    if(isset($_SESSION['backTeamDetails']))
+        echo "<a href='index.php?team=".$_SESSION['back']."'><i class='icon-arrow-left'></i> Back to the Team Details</a>";
+    else if(isset($_SESSION['backResult']))
+        echo "<a href='index.php?result=".$_SESSION['backResult']."'><i class='icon-arrow-left'></i> Back to the Results Details</a>";
+    unset($_SESSION['backTeamDetails']);
+    unset($_SESSION['backResult']);
     echo "<h3 class='text-info center'>".$team->getTeamName()."</h3>";    
     if(count($comingMatches) > 0){
         ?>
