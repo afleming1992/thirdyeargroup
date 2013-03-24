@@ -1048,6 +1048,8 @@ class MainController
             $matchResults->getGoals();
             $matchResults->setMatchDate($data['date']);
             
+            $report = $data['matchReport'];
+            
             $pageName = 'wattBall';
             $this->addBasicView();
             require_once 'view/wattBallNav.php';
