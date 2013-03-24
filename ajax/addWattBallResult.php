@@ -24,16 +24,19 @@ if(isset($_GET['date']) && isset($_GET['tournamentID'])) //search a match
         $i = 0;
         while ($data = $result->fetch())
         {
-
-            $m = new Match($data['matchID'], $data['team1'], $data['team2'], $data['matchDate'], $data['matchTime'], $data['pitch'],null, $db);
-            $t1 = $m->getTeam1Info();
-            $t2 = $m->getTeam2Info();
-            $matches[$i]['match'] = $m;
-            $matches[$i]['team1'] = $t1;
-            $matches[$i]['team2'] = $t2;
-            $matches[$i]['playersTeam1'] = $t1->getPlayersInfo();
-            $matches[$i]['playersTeam2'] = $t2->getPlayersInfo();
-            $i++;
+            $result2 = $db->query("SELECT * FROM wattball_results WHERE matchID =".$data['matchID']);                
+            $numberOfRows = $result2->fetchColumn();
+            if($numberOfRows == 0){
+                $m = new Match($data['matchID'], $data['team1'], $data['team2'], $data['matchDate'], $data['matchTime'], $data['pitch'],null, $db);
+                $t1 = $m->getTeam1Info();
+                $t2 = $m->getTeam2Info();
+                $matches[$i]['match'] = $m;
+                $matches[$i]['team1'] = $t1;
+                $matches[$i]['team2'] = $t2;
+                $matches[$i]['playersTeam1'] = $t1->getPlayersInfo();
+                $matches[$i]['playersTeam2'] = $t2->getPlayersInfo();
+                $i++;
+            }
 
         }
         $tournament[0] = new Tournament($tournamentID, null, null, null, null, null, null);
