@@ -107,6 +107,15 @@
         }
         ?>
     </fieldset>
+    
+    <fieldset>
+        <legend>Match Report</legend>
+        <div class="span10">
+        <p id="count" class="text-info">0 / 200</p>
+        <textarea id="matchReport" cols="10" rows="10"></textarea>
+        </div>
+    </fieldset>
+    
    <button type="submit" id="save" class="btn btn-primary"><i class="icon-white icon-ok"></i> Save</button> 
 
     

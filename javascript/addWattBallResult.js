@@ -85,6 +85,26 @@ $(document).ready(function()
              
         });
         
+        var number;
+        $("#matchReport").keyup( function(){ 
+            number = $(this).val().length;
+            var msg = number+" / 200";
+            $("#count").text(msg);
+            if(number > 0){
+                $("#count").removeClass("text-error");
+                $("#count").removeClass("text-warning");
+                $("#count").addClass("text-info");
+            }
+            if(number > 180){
+                $("#count").removeClass("text-info");
+                $("#count").addClass("text-warning");
+            }
+            if(number > 200){
+                $("#count").removeClass("text-warning");
+                $("#count").addClass("text-error"); 
+            }            
+        });
+        
         $("#addWattBallResult").on( 'click',"#save", function()
         {
             var matchID = $('#matches option:selected').val();
@@ -97,7 +117,16 @@ $(document).ready(function()
                 minuteTeam1.push("0");
             if(minuteTeam2.length == 0)
                 minuteTeam2.push("0");
-            jQuery.ajax({
+            
+            var nb = $("#matchReport").val().length;
+            if(nb > 200){
+                $("#count").text("Match report is limited to 200 characters only !");
+                $("#count").removeClass("text-info");
+                $("#count").removeClass("text-warning");
+                $("#count").addClass("text-error");
+            } 
+            else{
+                jQuery.ajax({
         		  type: 'GET',
         		  url: 'ajax/addWattBallResult.php',
         		  data: {
@@ -105,7 +134,8 @@ $(document).ready(function()
                             playerTeam1: playerTeam1,
                             playerTeam2: playerTeam2,
                             minuteTeam1: minuteTeam1,
-                            minuteTeam2: minuteTeam2
+                            minuteTeam2: minuteTeam2,
+                            report: $("#matchReport").val()
         		  }, 
         		  success: function(data, textStatus, jqXHR) {        			  
         			  $('#addWattBallResult').html(data);
@@ -114,7 +144,8 @@ $(document).ready(function()
         			  alert("Error during form validation, try later !");
         		  }
         		}); 
-            
+            }
+
             
         });
 });

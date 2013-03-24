@@ -81,9 +81,9 @@ Class Match
         return $data['matchDate'];
     }
     
-    public function saveResult($team1Score , $team2Score)
+    public function saveResult($team1Score , $team2Score, $report)
     {
-        $this->db->exec("INSERT INTO wattball_results(matchID,team1Score,team2Score) VALUES(".$this->id.",$team1Score,$team2Score)");
+        $this->db->exec("INSERT INTO wattball_results(matchID,team1Score,team2Score,matchReport) VALUES(".$this->id.",$team1Score,$team2Score,'$report')");
     }
     
     public function saveRanking($team1Score , $team2Score)
