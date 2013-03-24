@@ -10,6 +10,21 @@
         <h5 class='text-info'><?php echo "Umpire: ".$umpire->getName();  ?></h5>
     </fieldset>
     </br>
+    
+    <?php
+    if(strlen($report)>0){
+        ?>
+        <fieldset>
+            <legend>Match Report</legend>
+            <p class="text-info"><?php echo $report; ?></p>
+        </fieldset>
+        <?php
+    }
+    
+    ?>
+    
+    
+    
     <fieldset>
         <legend>Results</legend>
         <div class="span5">

@@ -97,7 +97,8 @@ $(document).ready(function()
                 minuteTeam1.push("0");
             if(minuteTeam2.length == 0)
                 minuteTeam2.push("0");
-            jQuery.ajax({
+            
+                jQuery.ajax({
         		  type: 'GET',
         		  url: 'ajax/addWattBallResult.php',
         		  data: {
@@ -105,7 +106,8 @@ $(document).ready(function()
                             playerTeam1: playerTeam1,
                             playerTeam2: playerTeam2,
                             minuteTeam1: minuteTeam1,
-                            minuteTeam2: minuteTeam2
+                            minuteTeam2: minuteTeam2,
+                            report: $("#matchReport").val()
         		  }, 
         		  success: function(data, textStatus, jqXHR) {        			  
         			  $('#addWattBallResult').html(data);
@@ -115,6 +117,7 @@ $(document).ready(function()
         		  }
         		}); 
             
+
             
         });
 });
