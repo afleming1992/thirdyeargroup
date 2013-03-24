@@ -6,7 +6,6 @@
                 <div class="controls">
                         <select name="tournamentId" id='tournamentId'>
                                 <?php
-
                                         if(isset($tournament))
                                         {
                                                 for($i = 0;$i<count($tournament);$i++)

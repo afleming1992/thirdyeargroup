@@ -13,8 +13,8 @@
             <li class="nav-header">Registration</li>
             <li class="divider"></li>
             <li <?php if($pageName == "wattBall") echo "class='active'"; ?>><a href='index.php?adminPage=wattBall'>View Wattball</a></li>
-            <li>View Male Hurdles</li>
-            <li>View Female Hurdles</li>
+            <li <?php if($pageName == "menHurdleList") echo "class='active'"; ?>><a href='index.php?adminPage=menHurdleList'>View Male Hurdles</a></li>
+            <li <?php if($pageName == "femaleHurdleList") echo "class='active'"; ?>><a href='index.php?adminPage=femaleHurdleList'>View Female Hurdles</a></li>
             
             <li class="nav-header">Ticketing</li>
             <li class="divider"></li>

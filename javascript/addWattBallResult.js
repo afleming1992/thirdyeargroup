@@ -85,6 +85,26 @@ $(document).ready(function()
              
         });
         
+        var number;
+        $("#matchReport").keyup( function(){ 
+            number = $(this).val().length;
+            var msg = number+" / 600";
+            $("#count").text(msg);
+            if(number > 0){
+                $("#count").removeClass("text-error");
+                $("#count").removeClass("text-warning");
+                $("#count").addClass("text-info");
+            }
+            if(number > 500){
+                $("#count").removeClass("text-info");
+                $("#count").addClass("text-warning");
+            }
+            if(number > 600){
+                $("#count").removeClass("text-warning");
+                $("#count").addClass("text-error"); 
+            }            
+        });
+        
         $("#addWattBallResult").on( 'click',"#save", function()
         {
             var matchID = $('#matches option:selected').val();
@@ -98,6 +118,14 @@ $(document).ready(function()
             if(minuteTeam2.length == 0)
                 minuteTeam2.push("0");
             
+            var nb = $("#matchReport").val().length;
+            if(nb > 600){
+                $("#count").text("Match report is limited to 600 characters only !");
+                $("#count").removeClass("text-info");
+                $("#count").removeClass("text-warning");
+                $("#count").addClass("text-error");
+            } 
+            else{
                 jQuery.ajax({
         		  type: 'GET',
         		  url: 'ajax/addWattBallResult.php',
@@ -116,7 +144,7 @@ $(document).ready(function()
         			  alert("Error during form validation, try later !");
         		  }
         		}); 
-            
+            }
 
             
         });
