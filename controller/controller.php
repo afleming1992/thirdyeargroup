@@ -94,6 +94,9 @@ else if(isset($_GET['changeTeamPlayers']))
 {
     $app->loadChangeTeamPlayersPage(htmlspecialchars($_GET['changeTeamPlayers']));
 }
+else if(isset($_GET['nextmatches'])){
+    $app->loadNextMatchesPage(htmlspecialchars($_GET['nextmatches']));
+}
 else
 	$app->loadHomePage();
 

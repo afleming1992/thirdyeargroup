@@ -105,7 +105,7 @@ class Team
         
         public function getEvent()
         {
-            $request = $this->db->query("SELECT * FROM wattball_matches WHERE matchDate < CURDATE() AND (team1 =".$this->teamID." OR team2 =".$this->teamID.")");
+            $request = $this->db->query("SELECT *,DATE_FORMAT(matchDate,'%D %M %Y') as date FROM wattball_matches WHERE matchDate < CURDATE() AND (team1 =".$this->teamID." OR team2 =".$this->teamID.")");
             $data = $request->fetchAll();
             $this->matchesDone = array();
             $i = 0;
@@ -113,12 +113,16 @@ class Team
             {
                 foreach($data as $d)
                 {
-                    $this->matchesDone[$i] = new Match($d['matchID'], $d['team1'], $d['team2'], $d['matchDate'], $d['matchTime'], $d['pitch'], $d['umpire'], $this->db);
+                    $team1 = new Team($this->db, $d['team1']);
+                    $team1->getTeamInfo();
+                    $team2 = new Team($this->db, $d['team2']);
+                    $team2->getTeamInfo();
+                    $this->matchesDone[$i] = new Match($d['matchID'], $team1, $team2, $d['date'], $d['matchTime'], $d['pitch'], $d['umpire'], $this->db);
                     $i++;
                 }
             }
             
-            $request2 = $this->db->query("SELECT * FROM wattball_matches WHERE matchDate > CURDATE() AND (team1 =".$this->teamID." OR team2 =".$this->teamID.")");
+            $request2 = $this->db->query("SELECT *,DATE_FORMAT(matchDate,'%D %M %Y') as date FROM wattball_matches WHERE matchDate > CURDATE() AND (team1 =".$this->teamID." OR team2 =".$this->teamID.")");
             $data2 = $request2->fetchAll();
             $this->comingMatches = array();
             $j = 0;
@@ -126,7 +130,11 @@ class Team
             {
                 foreach($data2 as $d2)
                 {
-                    $this->comingMatches[$i] = new Match($d2['matchID'], $d2['team1'], $d2['team2'], $d2['matchDate'], $d2['matchTime'], $d2['pitch'], $d2['umpire'], $this->db);
+                    $team1 = new Team($this->db, $d2['team1']);
+                    $team1->getTeamInfo();
+                    $team2 = new Team($this->db, $d2['team2']);
+                    $team2->getTeamInfo();
+                    $this->comingMatches[$j] = new Match($d2['matchID'], $team1, $team2, $d2['date'], $d2['matchTime'], $d2['pitch'], $d2['umpire'], $this->db);
                     $j++;
                 }
             }
