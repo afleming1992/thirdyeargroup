@@ -212,7 +212,14 @@
 						<th>Team2</th>
 					</tr>
 					<?php
-					for($i = 0;$i<$count;$i++)
+					echo "<tr>";
+					echo "<td id='row01' ></td>";
+					echo "<td id='row02' ></td>";
+					echo "<td id='row03' ></td>";
+					echo "<td id='row04' ></td>";
+					echo "<td id='row05' ></td>";
+					echo "</tr>";
+					for($i = 1;$i<$count;$i++)
 					{
 						echo "<tr>";
 						echo "<td id='row".$i."1' ></td>";
