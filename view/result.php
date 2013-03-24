@@ -81,9 +81,9 @@
             }
             ?>
                 <div class="center">
-                    <a href='index.php?team=<?php echo $matchResults->getTeam1()->getTeamID(); ?>' role='button' class='btn btn-mini btn-info center'>Team Details</a>
+                    <a href='index.php?team=<?php echo $matchResults->getTeam2()->getTeamID(); ?>' role='button' class='btn btn-mini btn-info center'>Team Details</a>
                     </br></br>
-                    <a href='index.php?nextmatches=<?php echo $matchResults->getTeam1()->getTeamID(); ?>' role='button' class='btn btn-mini btn-info center'>Next Matches</a>
+                    <a href='index.php?nextmatches=<?php echo $matchResults->getTeam2()->getTeamID(); ?>' role='button' class='btn btn-mini btn-info center'>Next Matches</a>
                 </div>
         </div>
         
