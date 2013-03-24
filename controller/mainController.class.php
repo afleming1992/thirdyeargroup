@@ -589,7 +589,11 @@ class MainController
                     $_SESSION['section'] = "wattball"; //Sets the Nav Bar to the Correct Location
                     $result = $this->db->query("SELECT COUNT(*) FROM tournament WHERE registrationOpen <= CURDATE() AND registrationClose >= CURDATE() ORDER BY tournamentID DESC");
                     $numberOfRows = $result->fetchColumn();
-                    if($numberOfRows < 1) //No tournament: Load a page said there are no tournament
+                    
+                    $result = $this->db->query("SELECT * FROM wattball_matches");
+                    $numberOfRows2 = $result->fetchColumn();
+                    
+                    if($numberOfRows < 1 || $numberOfRows2 > 0) //No tournament: Load a page said there are no tournament
                     {
                         $this->addBasicView();		
                         require_once 'view/login.php';

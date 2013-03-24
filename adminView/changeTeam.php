@@ -1,5 +1,6 @@
 <div class='span9 contentbox'>
     <?php
+    var_dump($_SESSION);
     if(isset($_SESSION['error']))
     {
         ?>
@@ -7,6 +8,8 @@
                     <b>Oh Dear!</b> An Error has occured in Validation, Please check where there is errors and try again!
             </div>
         <?php
+        unset($_SESSION['error']);
+        var_dump($_SESSION);
     }
     
 ?>
@@ -88,9 +91,18 @@
                     </div>
                 </div>    
             </fieldset>
-            <input type="hidden" name="teamID" value="<?php echo htmlspecialchars($_GET['changeTeam']); ?>"/>
+            <input id="hidden" type="hidden" name="teamID" value="<?php echo htmlspecialchars($_GET['changeTeam']); ?>"/>
             <button type="submit" class="btn btn-success"><i class="icon-white icon-ok"></i>Save Change</button>
         </form>        
     </div>
 </div>
 </div>
+<?php 
+unset($_SESSION['teamNameError']);
+unset($_SESSION['nwaValidationError']);
+unset($_SESSION['contactNameError']);
+unset($_SESSION['contactNumberError']);
+unset($_SESSION['EmailError']);
+
+
+?>

@@ -13,17 +13,22 @@ $(document).ready(function()
         var validPlayers = false;
         function formControl()
         {
+            var players = "";
             var teamName = $("#teamName").val();
             var NWA = $("#nwaNumber").val();
             var number = $("#contactNumber").val();
             var contactName = $("#contactName").val();
             var email = $("#email").val();
-            var players = $("#players").val();
+            players = $("#players").val();
             var regexNWA = /^([0-9]{6})+([A-Z]{1})$/;
             var regexPhoneNumber = /^([0-9]{11})$/;
             var regexEmail = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
             var regexPlayers = /^(([A-Za-z0-9\s])+([\n])){11}$/;
             
+            if(typeof players === 'undefined'){
+                validPlayers = true;
+            }
+                        
             players = players + "\n";
             if(teamName != "")
                 validTeamName = true;
@@ -37,17 +42,15 @@ $(document).ready(function()
                 validEmail = true;
             if(regexPlayers.test(players) == true)
                 validPlayers = true;
+             
             if(validTeamName == true && validNWA == true && validNumber == true && validContactName == true && validEmail == true && validPlayers == true)
                 validForm = true;
-            
-            
             
         }        
         
         
 	$("#form").submit(function() 
         {
-            
             validForm = false;
             validTeamName = false;
             validNWA = false;
@@ -60,6 +63,7 @@ $(document).ready(function()
                 return true;
             else
             {
+                //alert(validTeamName + "/"+ validNWA + "/"+ validNumber + "/"+ validContactName + "/"+ validEmail + "/"+ validPlayers + "/");
                 if(validTeamName == false)
                 {
                     $('#teamNameDiv').addClass('control-group error');
@@ -82,13 +86,13 @@ $(document).ready(function()
                 }
                 if(validNumber == false)
                 {
-                    $('#contactNumberDiv').addClass('control-group error');
-                    $('#contactNumberDiv .help-inline').html('Please Enter Full Number including Area code (11 Digits)');
+                    $('#contactNumberDiv').addClass('control-group error');                    
+                    $('#contactNumberDiv .help-inline').html('Contact number must be a valid phone number (11 digits including area code)!');
                 }
                 else
                 {
                     $('#contactNumberDiv').removeClass('control-group error');
-                    $('#contactNumberDiv .help-inline').html('Contact number must be a valid phone number (11 digits including area code)!');
+                    $('#contactNumberDiv .help-inline').html('Please Enter Full Number including Area code (11 Digits)');
                 }
                 if(validContactName == false)
                 {
