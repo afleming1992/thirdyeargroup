@@ -63,6 +63,7 @@
                     <tr>
                     <th>Name</th>
                     <th>Minute</th>
+                    <th>Remove</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -96,6 +97,7 @@
                     <tr>
                     <th>Name</th>
                     <th>Minute</th>
+                    <th>Remove</th>
                     </tr>
                 </thead>
                 <tbody>

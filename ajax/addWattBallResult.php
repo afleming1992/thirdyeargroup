@@ -59,11 +59,13 @@ else if(isset($_GET['matchID']) && isset($_GET['playerTeam1']) && isset($_GET['p
     for($i=0;$i<count($_GET['playerTeam1']);$i++)
     {
         $playerTeam1[$i] = htmlspecialchars($_GET['playerTeam1'][$i]);
+        $playerTeam1[$i] = str_replace(' ','',$playerTeam1[$i]);
         $minuteTeam1[$i] = htmlspecialchars($_GET['minuteTeam1'][$i]);
     }
     for($i=0;$i<count($_GET['playerTeam2']);$i++)
     {
         $playerTeam2[$i] = htmlspecialchars($_GET['playerTeam2'][$i]);
+        $playerTeam2[$i] = str_replace(' ','',$playerTeam2[$i]);
         $minuteTeam2[$i] = htmlspecialchars($_GET['minuteTeam2'][$i]);
     }
     
