@@ -5,7 +5,7 @@ include_once '../config/config.php';
 
 if(isset($_GET['name']) && isset($_GET['teamID']) && isset($_GET['id'])) //change
 {
-    $name = htmlspecialchars($_GET['name']);
+    $name = mysql_escape_string(htmlspecialchars($_GET['name']));
     $teamID = htmlspecialchars($_GET['teamID']);
     $id = htmlspecialchars($_GET['id']);
     try 
@@ -35,7 +35,7 @@ if(isset($_GET['name']) && isset($_GET['teamID']) && isset($_GET['id'])) //chang
 }
 else if(isset($_GET['name']) && isset($_GET['teamID'])) //add
 {
-    $name = htmlspecialchars($_GET['name']);
+    $name = mysql_escape_string(htmlspecialchars($_GET['name']));
     $teamID = htmlspecialchars($_GET['teamID']);
     
     try 
