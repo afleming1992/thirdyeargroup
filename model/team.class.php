@@ -94,7 +94,7 @@ class Team
             $players = array();
             $i = 0;
             $result =$this->db->query("SELECT * FROM wattball_players WHERE teamID = ".$this->teamID);
-            echo "SELECT * FROM wattball_players WHERE teamID = ".$this->teamID;
+            
             while($data = $result->fetch())
             {
                 $players[$i] = new Player($this->db);

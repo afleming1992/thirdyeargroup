@@ -10,6 +10,7 @@
   		<?php 	  			
   			for($i=0;$i<sizeof($allHurdlers);$i++)
   			{
+				list($minutes, $seconds, $milliseconds) = $allHurdlers[$i]->convertMilliseconds();
 				echo "<tr>";
   				echo "<td class='hurdlerName' hidden='true'>".$allHurdlers[$i]->getHurdlerId()."</td>";
   				echo "<td class='hurdlerFirstName'>".$allHurdlers[$i]->getFirstName()."</td>";
@@ -20,7 +21,7 @@
   				echo "<td class='hurdlerStreetName' hidden='true'>".$allHurdlers[$i]->getStreetName()."</td>";
   				echo "<td class='hurdlerPostCode' hidden='true'>".$allHurdlers[$i]->getPostCode()."</td>";
   				echo "<td class='hurdlerDob'>".$allHurdlers[$i]->getDob()."</td>";
-  				echo "<td class='hurdlerPerformanceTime'>".$allHurdlers[$i]->getPerformanceTime()."</td>";
+  				echo "<td class='hurdlerPerformanceTime'>".$minutes."m ".$seconds."s ".$milliseconds."ms</td>";
   				echo "<td class='hurdlerCity' hidden='true'>".$allHurdlers[$i]->getCity()."</td>";
   				
 			
