@@ -9,6 +9,7 @@ class Team
         private $contactNumber;
         private $nwaNumber;
         private $email;
+		private $ticketsAllocated;
         private $db;
         
         private $players;
@@ -30,7 +31,7 @@ class Team
 	public function __construct($db, $teamID)
 	{
 		$this->setDb($db);
-                $this->setTeamID($teamID);
+        $this->setTeamID($teamID);
 		$this->players = array();
 	}
 
@@ -38,9 +39,9 @@ class Team
         
 	public function addTeamInfo()
 	{
-            $this->teamName = mysql_escape_string($this->teamName);
-            $this->contactName = mysql_escape_string($this->contactName);
-		$result = $this->db->query("INSERT INTO wattball_team VALUES ('0','$this->tournamentID','$this->teamName','$this->contactName','$this->contactNumber','$this->nwaNumber','$this->email')");
+        $this->teamName = mysql_escape_string($this->teamName);
+        $this->contactName = mysql_escape_string($this->contactName);
+		$result = $this->db->query("INSERT INTO wattball_team VALUES ('0','$this->tournamentID','$this->teamName','$this->contactName','$this->contactNumber','$this->nwaNumber','$this->email','0')");
 		if($result != false)
 		{
 			return true;
@@ -53,7 +54,8 @@ class Team
 	// Update Team
 	public function updateTeamInfo()
 	{
-		$result = $this->db->query("UPDATE wattball_team SET tournamentID = '".$this->tournamentID."', contactName = '".mysql_escape_string($this->contactName)."', contactNumber = '".$this->contactNumber."', NWANumber = '".$this->nwaNumber."', email = '".$this->email."' WHERE teamID = '".$this->teamID."'");
+		$query = "UPDATE wattball_team SET tournamentID = '".$this->tournamentID."', contactName = '".mysql_escape_string($this->contactName)."', contactNumber = '".$this->contactNumber."', NWANumber = '".$this->nwaNumber."',ticketsAllocated = '".$this->ticketsAllocated."', email = '".$this->email."' WHERE teamID = '".$this->teamID."'";
+		$result = $this->db->query($query);
 		if($result != false)
 		{
 			return true;
@@ -68,7 +70,7 @@ class Team
 	public function getTeamInfo()
 	{
 		//$result =$this->db->query("SELECT * FROM wattball_team SET teamName='".$this->teamName."'"); OLD VERSION
-                $result =$this->db->query("SELECT * FROM wattball_team WHERE teamID = ".$this->teamID);
+		$result = $this->db->query("SELECT * FROM wattball_team WHERE teamID = ".$this->teamID);
 		if ($result!=false)
 		{
 			while($data = $result->fetch())
@@ -79,6 +81,7 @@ class Team
 				$this->setContactNumber($data['contactNumber']);
 				$this->setNwaNumber($data['NWANumber']);
 				$this->setEmail($data['email']);
+				$this->setTicketsAllocated($data['ticketsAllocated']);
 			}
 			return true;
 		}
@@ -327,6 +330,16 @@ class Team
 	public function setEmail($email)
 	{
 		$this->email = $email;
+	}
+	
+	public function getTicketsAllocated()
+	{
+		return $this->ticketsAllocated;
+	}
+	
+	public function setTicketsAllocated($input)
+	{
+		$this->ticketsAllocated = $input;
 	}
 
 	public function getDb()

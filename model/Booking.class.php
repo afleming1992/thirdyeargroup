@@ -29,7 +29,9 @@ Class Booking
 		$result = $this->db->query("INSERT INTO ticket_sales (transactionID,firstName,surname,email,address1,address2,city,county,postcode,totalCost) VALUES ('".mysql_escape_string($this->transactionId)."','".mysql_escape_string($this->firstName)."','".mysql_escape_string($this->surname)."','".mysql_escape_string($this->email)."','".mysql_escape_string($this->address1)."','".mysql_escape_string($this->address2)."','".mysql_escape_string($this->city)."','".mysql_escape_string($this->county)."','".$this->postcode."','".$this->totalCost."')");
 		if($result != false)
 		{
-			$this->bookingId = $this->db->lastInsertId();
+			$result = $this->db->query("SELECT LAST_INSERT_ID() AS id");
+			$data = $result->fetch();
+			$this->bookingId = $data['id'];
 			return $this->bookingId;
 		}
 		else

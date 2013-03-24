@@ -546,6 +546,109 @@ class MainController
 					$this->addFooterFile();
 				}
 			}
+			else if($pageName == 'teamTickets')
+			{
+				$this->isCurrentTournament();
+				if($this->tournament == null)
+				{
+					$this->addBasicView();
+                    require_once 'adminView/menu.php';
+                    require_once 'adminView/wattBallNoTournament.php';
+                    $this->addFooterFile();
+                    die();
+				}
+				if(isset($_POST['teamTickets']))
+				{
+					$team = new Team($this->db,$_POST['team']);
+					$check = $team->getTeamInfo();
+					if($check)
+					{
+						if($team->getTicketsAllocated() == 0)
+						{
+							$properties = $this->db->query("SELECT * FROM properties");
+							$properties = $properties->fetch();
+							$result = $this->db->query("SELECT DISTINCT matchDate FROM wattball_matches WHERE team1='".$team->getTeamId()."' OR team2='".$team->getTeamId()."' AND tournamentID = '".$this->tournament[0]->getTournamentId()."'");
+							if($result != false)
+							{
+								while($data = $result->fetch())
+								{
+									$booking = new Booking('0',$this->db);
+									$booking->setSurname($team->getTeamName());
+									$booking->setEmail($team->getEmail());
+									$booking->createBooking();
+									for($j = 0;$j < $properties['ticketsPerTeam'];$j++)
+									{
+										$ticket = new Ticket('0',$this->db);
+										$ticket->setBookingId($booking->getBookingId());
+										$ticket->setDate($data['matchDate']);
+										$ticket->setType("complimentary");
+										$ticket->setMethodOfSale("pickup");
+										$ticket->createTicket();
+									}
+								}
+								$team->setTicketsAllocated('1');
+								if($team->updateTeamInfo())
+								{
+									$ticketsAllocated = true;
+								}
+								else
+								{
+									$error = "Error, Team Update Failed";
+								}
+							}
+						}
+						else
+						{
+							$error = "This Teams Tickets have already been allocated";
+						}
+					}
+					else
+					{
+						$error = "Tickets have not been allocated as this Team does not Exist";
+					}
+				}
+				
+				$query = "SELECT teamId FROM wattball_team WHERE tournamentId = ".$this->tournament[0]->getTournamentId()." AND ticketsAllocated <> 1";
+				$result = $this->db->query($query);
+				if($result != false)
+				{
+					if($result->rowCount() > 0)
+					{
+						$teams = array();
+						$i = 0;
+						while($data = $result->fetch())
+						{
+							$team = new Team($this->db,$data['teamId']);
+							$team->getTeamInfo();
+							$teams[$i] = $team;
+							$i++;
+						}
+						$this->addBasicView();
+						require_once 'adminView/menu.php';
+						require_once 'adminView/teamTickets.php';
+						$this->addFooterFile();
+						die();
+					}
+					else
+					{
+						$this->addBasicView();
+						require_once 'adminView/menu.php';
+						require_once 'adminView/allTicketsAllocated.php';
+						$this->addFooterFile();
+						die();
+					}		
+				}
+				else
+				{
+					$this->addBasicView();
+                    require_once 'adminView/menu.php';
+                    require_once 'adminView/allTicketsAllocated.php';
+                    $this->addFooterFile();
+                    die();
+				}
+				
+					
+			}
             else if($pageName == 'staffManagement')
             {
 				$this->getAllStaff();

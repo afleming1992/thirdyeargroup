@@ -104,33 +104,6 @@ if(isset($_GET['id']))
         echo "All the matches are scheduled !<br />";
      
 		
-		//This Bit assigns the tickets for each team
-		
-		$properties = $db->query("SELECT * FROM properties");
-		$properties = $properties->fetch();
-		for($i = 0;$i<count($teams);$i++)
-		{
-			$result = $db->query("SELECT DISTINCT matchDate FROM wattball_matches WHERE team1='".$teams[$i]->getTeamId()."' OR team2='".$teams[$i]->getTeamId()."' AND tournamentID = '".$tournament->getTournamentId()."'");
-			if($result != false)
-			{
-				while($data = $result->fetch())
-				{
-					$booking = new Booking('0',$db);
-					$booking->setSurname($teams[$i]->getTeamName());
-					$booking->setEmail($teams[$i]->getEmail());
-					$booking->createBooking();
-					for($j = 0;$j < $properties['ticketsPerTeam'];$j++)
-					{
-						$ticket = new Ticket('0',$db);
-						$ticket->setBookingId($booking->getBookingId());
-						$ticket->setDate($data['matchDate']);
-						$ticket->setType("complimentary");
-						$ticket->setMethodOfSale("pickup");
-						$ticket->createTicket();
-					}
-				}
-			}
-		}
 
         
     } 
