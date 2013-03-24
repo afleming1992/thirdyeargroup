@@ -131,73 +131,7 @@ if(isset($_GET['id']))
 				}
 			}
 		}
-        //var_dump($matches);
-        /*do
-        {
-            $j = 0;
-            $scheduledMathes[$date] = array(); 
-            $scheduleUmpire = array();
-            $pitch = 1;
 
-            for($i = 0;$i<count($matches);$i++)
-            {   
-                if($pitch >8)
-                    break;
-                if($matches[$i]->getDate() == null)
-                {
-                    if(lookinkForTeam($scheduledMathes[$date], $matches[$i]) == true)
-                    {
-                        $matches[$i]->setDate($date);
-                        $time = "";
-                       
-                        if($j%2 == 0)
-                        {
-                            $time = "morning";
-                            $matches[$i]->setHour ($time);
-                            $matches[$i]->setPitch($pitch);
-                            $pitch++;
-                        }
-                        else
-                        {
-                            $time = "afternoon";
-                            $matches[$i]->setHour ($time);
-                            $matches[$i]->setPitch($pitch);
-                        }
-                       
-                        /*list($Y,$m,$d)=explode('-',date($date));
-                        for($k = 0;$i<count($umpire);$k++)
-                        {
-                            if(!in_array($umpire[$k], $scheduleUmpire))
-                            {
-                                if($umpire[$k]->is_available(Date("l", mktime(0,0,0,$m,$d,$Y)), $time))
-                                {
-                                    $matches[$i]->setUmpire($umpire[$k]);
-                                    $scheduledMathes[$date][$j] = $matches[$i];
-                                    $scheduleUmpire[$j] = $umpire[$k];
-                                    $j++;
-                                    break;
-                                }
-                            }
-                        }
-                        if($matches[$i]->getUmpire() == null)
-                        {
-                            $matches[$i]->setDate(null);
-                            $matches[$i]->setHour(null);
-                            $matches[$i]->setPitch(null);
-                        }
-                        
-                    }
-                }
-            }
-            $nb += count($scheduledMathes[$date]);
-            $date = $tournament->nextDate($date);
-        }
-        while ($nb < $numberOfMathes);*/
-        //var_dump($matches);
-        //for($i = 0;$i<count($matches);$i++)
-            //$matches[$i]->saveMatch ($id);
-            //var_dump($matches);
-        //echo "All the matches are scheduled !";
         
     } 
     catch (Exception $exc) 

@@ -1154,6 +1154,38 @@ class MainController
             require_once 'adminView/changeTeamPlayers.php';
             $this->addFooterFile();
         }
+        
+        /**
+         * Load the page with the next matches of a team
+         * @param int $teamID
+         */
+        public function loadNextMatchesPage($teamID){
+            
+            $_SESSION['section'] = "wattBall";
+            $pageName = "teams";
+            $team = new Team($this->db, $teamID);
+            $team->getTeamInfo();
+            $team->getEvent();
+            $matchesDone = $team->getMatchesDone();
+            $matchesResults = array();
+            $comingMatches = $team->getComingMatches();
+            
+            for($i=0;$i<count($matchesDone);$i++){
+                $result = $this->db->query("SELECT * FROM wattball_results WHERE matchID = ".$matchesDone[$i]->getID());
+                $data = $result->fetch();
+                if($data != FALSE)
+                {
+                   $matchesResults[$i] = new Result($data['resultID'], new Team($this->db , $data['team1']) , new Team($this->db , $data['team2']) , $data['team1Score'] , $data['team2Score'] , $this->db);
+                   $matchesResults[$i]->getGoals();
+                }
+            }
+            
+            $this->addBasicView();
+            require_once 'view/wattBallNav.php';
+            require_once 'view/nextMatches.php';
+            require_once 'view/login.php';
+            $this->addFooterFile();
+        }
 	
 	/**
 	 * search in the database all tournament and put in an array
