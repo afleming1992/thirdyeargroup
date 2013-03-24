@@ -1326,7 +1326,9 @@ class MainController
 		$i = 0;
 		while($data = $result->fetch())
 		{
-			$this->allHurdlers[$i] = new Hurdles($this->db, $data['hurdlerID'],$this->tournamentId, $data['hurdlerName'], $data['hurdlerLastName'], $data['dateOfBirth'], $data['houseNumber'], $data['streetName'], $data['city'], $data['postcode'], $data['email'], $data['contactNumber'], $data['hurdlerPerformance']);
+			$hurdler = new Hurdles($this->db, $data['hurdlerID']);
+			$hurdler->getHurdlerInfo();
+			$this->allHurdlers[$i] = $hurdler;
 			$i++;                                 
 		}
 	}
@@ -1681,6 +1683,40 @@ class MainController
 			$ticketPrice = ($adult * $prices['adultPrice']) + ($concession * $prices['concessionPrice']);
 			return $ticketPrice;
 		}
+		
+		 public function processHurdleRegistration($firstname,$lastname,$gender,$dob,$houseno,$streetname,$city,$postcode,$emailcheck,$emcontact,$minutes,$seconds,$milliseconds,$tournamentId)
+        {
+        	$hurdleObject = new hurdles($this->db,null);
+			$hurdleObject->setTournamentId($tournamentId);
+        	$hurdleObject-> setFirstName($firstname);
+        	$hurdleObject-> setLastName($lastname);
+        	$hurdleObject-> setGender($gender);
+        	$hurdleObject-> setDob($dob);
+        	$hurdleObject-> setHouseNo($houseno);
+        	$hurdleObject-> setStreetName($streetname);
+        	$hurdleObject-> setCity($city);
+        	$hurdleObject-> setPostCode($postcode);
+        	$hurdleObject-> setEmail($emailcheck);
+        	$hurdleObject-> setEmergencyContact($emcontact);
+        	$milliseconds = $this->toMilliSeconds($minutes,$seconds,$milliseconds);
+        	$hurdleObject-> setPerformanceTime($milliseconds);
+        	
+        	if($hurdleObject-> addTeamInfo())
+       			return true;
+       		else
+       			return false;
+         
+        }
+	
+		public function toMilliSeconds($minutes,$seconds,$milliseconds) 
+		{
+			$total = 0;
+			$total = $minutes * 60;
+			$total = $total + $seconds;
+			$total = $total * 1000;
+			$total = $total + $milliseconds;
+			return $total;
+		}	
         /*-------- GETTERS & SETTERS --------*/
         
         public function getUmpire()

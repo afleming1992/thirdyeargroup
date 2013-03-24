@@ -20,27 +20,16 @@ class Hurdles
 	private $performanceTime;
 	private $db;
 
-	public function __construct($db, $hurdlerId, $tournamentId, $firstName, $lastName, $dob, $houseNo, $streetName, $city, $postCode, $email, $emContact, $performanceTime)
+	public function __construct($db, $hurdlerId)
 	{
 		$this->setDb($db);
 		$this->sethurdlerId($hurdlerId);
-		$this->setTournamentId($tournamentId);
-		$this->setFirstName($firstName);
-		$this->setLastName($lastName);
-		$this->setDob($dob);
-		$this->setHouseNo($houseNo);
-		$this->setStreetName($streetName);
-		$this->setPostCode($postCode);
-		$this->setCity($city);
-		$this->setEmail($email);
-		$this->setEmergencyContact($emContact);
-		$this->setPerformanceTime($performanceTime);
 	}
 	
 	
 	public function addTeamInfo()
 	{
-		$result = $this->db->query("INSERT INTO hurdles_competitors (hurdlerName,hurdlerlastName,tournamentId,hurdlerGender,dateOfBirth,houseNumber,streetName,city,postcode,email,contactNumber,hurdlerPerformance) VALUES ('".mysql_escape_string($this->firstName)."','".mysql_escape_string($this->lastName)."','".$this->tournamentId."','".$this->gender."','".$this->dob."','".$this->houseNo."','".mysql_escape_string($this->streetName)."','".mysql_escape_string($this->city)."','".$this->postCode."','".mysql_escape_string($this->email)."','".$this->emContact."','".$this->performanceTime."')");
+		$result = $this->db->query("INSERT INTO hurdles_competitors (hurdlerName,hurdlerlastName,tournamentId,hurdlerGender,dateOfBirth,houseNumber,streetName,city,postcode,email,contactNumber,hurdlerPerformance) VALUES ('".$this->firstName."','".$this->lastName."','".$this->tournamentId."','".$this->gender."','".$this->dob."','".$this->houseNo."','".$this->streetName."','".$this->city."','".$this->postCode."','".$this->email."','".$this->emContact."','".$this->performanceTime."')");
 		if($result != false){
 			return true; 
 		} else {
@@ -48,6 +37,31 @@ class Hurdles
 		}
 	}
 	
+	public function getHurdlerInfo()
+	{
+		$result = $this->db->query("SELECT * FROM hurdles_competitors WHERE hurdlerId=".$this->hurdlerInfo."");
+		if($result != false)
+		{
+			$data = $result->fetch();
+			$this->tournamentId = $data['tournamentId'];
+			$this->firstName = $data['hurdlerName'];
+			$this->lastName = $data['hurdlerlastName'];
+			$this->gender = $data['hurdlerGender'];
+			$this->dob = $data['dateOfBirth'];
+			$this->houseNo = $data['houseNumber'];
+			$this->streetName = $data['streetName'];
+			$this->city = $data['city'];
+			$this->postCode = $data['postcode'];
+			$this->email = $data['email'];
+			$this->emContact = $data['contactNumber'];
+			$this->performanceTime = $data['hurdlerPerformance'];
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 	
 	/* ----- GETTERS AND SETTERS ----- */
 	
