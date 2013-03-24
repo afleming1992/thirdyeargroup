@@ -57,7 +57,7 @@ else if(isset($_GET['matchID']) && isset($_GET['playerTeam1']) && isset($_GET['p
     $minuteTeam2;
     $goalsTeam1;
     $goalsTeam2;
-    $report = mysql_escape_string(htmlspecialchars($_GET['report']));
+    $report = mysql_real_escape_string(htmlspecialchars($_GET['report']));
     $matchID = htmlspecialchars($_GET['matchID']);
     for($i=0;$i<count($_GET['playerTeam1']);$i++)
     {

@@ -39,8 +39,8 @@ class Team
         
 	public function addTeamInfo()
 	{
-        $this->teamName = mysql_escape_string($this->teamName);
-        $this->contactName = mysql_escape_string($this->contactName);
+        $this->teamName = mysql_real_escape_string($this->teamName);
+        $this->contactName = mysql_real_escape_string($this->contactName);
 		$result = $this->db->query("INSERT INTO wattball_team VALUES ('0','$this->tournamentID','$this->teamName','$this->contactName','$this->contactNumber','$this->nwaNumber','$this->email','0')");
 		if($result != false)
 		{
@@ -54,7 +54,7 @@ class Team
 	// Update Team
 	public function updateTeamInfo()
 	{
-		$query = "UPDATE wattball_team SET tournamentID = '".$this->tournamentID."', contactName = '".mysql_escape_string($this->contactName)."', contactNumber = '".$this->contactNumber."', NWANumber = '".$this->nwaNumber."',ticketsAllocated = '".$this->ticketsAllocated."', email = '".$this->email."' WHERE teamID = '".$this->teamID."'";
+		$query = "UPDATE wattball_team SET tournamentID = '".$this->tournamentID."', contactName = '".mysql_real_escape_string($this->contactName)."', contactNumber = '".$this->contactNumber."', NWANumber = '".$this->nwaNumber."',ticketsAllocated = '".$this->ticketsAllocated."', email = '".$this->email."' WHERE teamID = '".$this->teamID."'";
 		$result = $this->db->query($query);
 		if($result != false)
 		{

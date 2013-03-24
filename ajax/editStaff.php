@@ -8,8 +8,8 @@ if(isset($_GET['name']) && isset($_GET['username']) && isset($_GET['email']) && 
 	try 
 	{
 		$db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
-		$name = mysql_escape_string(htmlspecialchars($_GET['name']));
-		$username = mysql_escape_string(htmlspecialchars($_GET['username']));
+		$name = mysql_real_escape_string(htmlspecialchars($_GET['name']));
+		$username = mysql_real_escape_string(htmlspecialchars($_GET['username']));
 		$email = htmlspecialchars($_GET['email']);
 		$manager = $_GET['manager'];
 		

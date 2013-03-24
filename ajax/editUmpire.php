@@ -8,8 +8,8 @@ if(isset($_GET['umpireName']) && isset($_GET['umpireEmail']) && isset($_GET['id'
 	try 
 	{
 		$db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
-		$umpireName = mysql_escape_string(htmlspecialchars($_GET['umpireName']));
-		$umpireEmail = mysql_escape_string(htmlspecialchars($_GET['umpireEmail']));
+		$umpireName = mysql_real_escape_string(htmlspecialchars($_GET['umpireName']));
+		$umpireEmail = mysql_real_escape_string(htmlspecialchars($_GET['umpireEmail']));
 		$id = htmlspecialchars($_GET['id']);
 		$checklist = ($_GET['checklist']);
 		

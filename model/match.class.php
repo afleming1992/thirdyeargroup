@@ -83,7 +83,7 @@ Class Match
     
     public function saveResult($team1Score , $team2Score, $report)
     {
-        $report = mysql_escape_string($report);
+        $report = mysql_real_escape_string($report);
         $this->db->exec("INSERT INTO wattball_results(matchID,team1Score,team2Score,matchReport) VALUES(".$this->id.",$team1Score,$team2Score,'$report')");
     }
     

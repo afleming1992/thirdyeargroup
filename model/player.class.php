@@ -19,7 +19,7 @@
 		
 		public function addPlayerInfo()
 		{
-			$result = $this->db->exec("INSERT INTO wattball_players (teamID,playerName,numberOfGoals) VALUES ('".$this->teamID."','".mysql_escape_string($this->playerName)."',0)");
+			$result = $this->db->exec("INSERT INTO wattball_players (teamID,playerName,numberOfGoals) VALUES ('".$this->teamID."','".mysql_real_escape_string($this->playerName)."',0)");
 			if($result != false)
 			{
 				return true;
@@ -49,7 +49,7 @@
 		
 		public function updatePlayerInfo()
 		{
-			$result = $this->db->query("UPDATE wattball_players SET teamID = '".$this->teamID."', playerName = '".mysql_escape_string($this->playerName)."' WHERE playerID = '".$this->playerID."'");
+			$result = $this->db->query("UPDATE wattball_players SET teamID = '".$this->teamID."', playerName = '".mysql_real_escape_string($this->playerName)."' WHERE playerID = '".$this->playerID."'");
 			if($result != false)
 			{
 				return true;
