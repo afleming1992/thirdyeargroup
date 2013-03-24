@@ -800,9 +800,16 @@ class MainController
                     $this->addFooterFile();
                     die();
             }
-            else if($pageName == "femaleHurdles")
+            else if($pageName == "femaleHurdlesRegistration")
             {
-                    $_SESSION['section'] = "femalehurdles";
+                $_SESSION['section'] = "femalehurdles";
+				$this->addBasicView();
+                require_once 'view/femaleHurdleNav.php';
+                require_once 'view/'.$pageName.'.php';
+                require_once 'view/login.php';
+                $this->addFooterFile();
+                die();
+					
             }
             else if($pageName == "tickets" || $pageName == "ticketPurchase" || $pageName == "ticketCardDetails" || $pageName == "ticketingConfirmation")
             {

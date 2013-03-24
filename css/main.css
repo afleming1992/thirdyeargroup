@@ -72,3 +72,8 @@ table
     margin-top: 5px; 
     margin-bottom: 5px;
 }
+
+#latestResult
+{
+	height:380px;
+}
