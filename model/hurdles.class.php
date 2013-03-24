@@ -17,12 +17,24 @@ class Hurdles
 	private $minutes;
 	private $seconds;
 	private $milliseconds;
+	private $performanceTime;
 	private $db;
 
-	public function __construct($db, $hurdlerId)
+	public function __construct($db, $hurdlerId, $tournamentId, $firstName, $lastName, $dob, $houseNo, $streetName, $city, $postCode, $email, $emContact, $performanceTime)
 	{
 		$this->setDb($db);
-            $this->sethurdlerId($hurdlerId);
+		$this->sethurdlerId($hurdlerId);
+		$this->setTournamentId($tournamentId);
+		$this->setFirstName($firstName);
+		$this->setLastName($lastName);
+		$this->setDob($dob);
+		$this->setHouseNo($houseNo);
+		$this->setStreetName($streetName);
+		$this->setPostCode($postCode);
+		$this->setCity($city);
+		$this->setEmail($email);
+		$this->setEmergencyContact($emContact);
+		$this->setPerformanceTime($performanceTime);
 	}
 	
 	

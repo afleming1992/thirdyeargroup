@@ -20,6 +20,8 @@ class MainController
 	private $tournament = array();
 	private $umpire = array();
 	private $staff = array();
+	private $allHurdlers = array();
+	private $gender;
 	
 	
 	public function __construct($db)
@@ -545,7 +547,29 @@ class MainController
 				}
 			}
             else if($pageName == 'staffManagement')
+            {
 				$this->getAllStaff();
+			}
+			else if($pageName == 'maleHurdles')
+			{
+				$this->gender = "Male";
+				$this->getAllHurdlers("M");
+				$this->addBasicView();
+				require_once 'adminView/menu.php';
+				require_once 'adminView/hurdles.php';
+				$this->addFooterFile();
+				return;
+			}
+			else if($pageName == 'femaleHurdles')
+			{
+				$this->gender = "Female";
+				$this->getAllHurdlers("F");
+				$this->addBasicView();
+				require_once 'adminView/menu.php';
+				require_once 'adminView/hurdles.php';
+				$this->addFooterFile();
+				return;
+			}
             
             $this->addBasicView();
             require_once 'adminView/menu.php';
@@ -1243,6 +1267,17 @@ class MainController
 		while($data = $result->fetch())
 		{
 			$this->staff[$i] = new RealStaff($data['username'],$data['name'],$data['manager'],$data['email'], $this->db);
+			$i++;                                 
+		}
+	}
+	
+	public function getAllHurdlers($gender)
+	{
+		$result = $this->db->query("SELECT * FROM hurdles_competitors WHERE hurdlerGender='$gender'");
+		$i = 0;
+		while($data = $result->fetch())
+		{
+			$this->allHurdlers[$i] = new Hurdles($this->db, $data['hurdlerID'],$this->tournamentId, $data['hurdlerName'], $data['hurdlerLastName'], $data['dateOfBirth'], $data['houseNumber'], $data['streetName'], $data['city'], $data['postcode'], $data['email'], $data['contactNumber'], $data['hurdlerPerformance']);
 			$i++;                                 
 		}
 	}
