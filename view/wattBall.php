@@ -6,7 +6,7 @@
             }
             else
             {
-                echo "<a class='pull-right' href='index.php?page=generalranking'>Go to Ranking <i class='icon-arrow-right'></i></a></br></br>";
+                echo "<a class='pull-right' href='index.php?page=ranking'>Go to Ranking <i class='icon-arrow-right'></i></a></br></br>";
                 $date = $matchesResults[0]->getMatchDate();
                 echo "<h3 class='text-info'>$date</h3>";
                 echo "<table class='table table-hover'>";
