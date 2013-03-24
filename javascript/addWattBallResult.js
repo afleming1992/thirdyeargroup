@@ -8,6 +8,7 @@ $(document).ready(function()
     // Datepicker
         $("#addWattBallResult").on( 'focus',"#date", function(){
             $("#date").datepicker({
+            maxDate: +0,
             defaultDate: "+1w",
             changeMonth: true,
             numberOfMonths: 1,
@@ -86,7 +87,7 @@ $(document).ready(function()
         });
         
         var number;
-        $("#matchReport").keyup( function(){ 
+        $("#addWattBallResult").on( 'keyup',"#matchReport", function(){
             number = $(this).val().length;
             var msg = number+" / 600";
             $("#count").text(msg);
