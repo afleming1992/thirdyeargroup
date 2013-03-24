@@ -63,6 +63,35 @@ class Hurdles
 		}
 	}
 	
+	public function setHurdlerInfo($tournamentId, $firstName, $lastName, $dob, $houseNo, $streetName, $city, $postCode, $email, $emContact, $performanceTime)
+	{
+		$this->setTournamentId($tournamentId);
+		$this->setFirstName($firstName);
+		$this->setLastName($lastName);
+		$this->setDob($dob);
+		$this->setHouseNo($houseNo);
+		$this->setStreetName($streetName);
+		$this->setPostCode($postCode);
+		$this->setCity($city);
+		$this->setEmail($email);
+		$this->setEmergencyContact($emContact);
+		$this->setPerformanceTime($performanceTime);
+	}
+	
+	public function convertMilliseconds() 
+	{
+		$input = $this->performanceTime;
+		$milliseconds = $input % 1000;
+		$input = floor($input / 1000);
+		
+		$seconds = $input % 60;
+		$input = floor($input / 60);
+		
+		$minutes = $input % 60; 
+		return array($minutes, $seconds, $milliseconds);
+	}	
+
+	
 	/* ----- GETTERS AND SETTERS ----- */
 	
 	public function getHurdlerId()

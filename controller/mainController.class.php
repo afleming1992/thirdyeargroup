@@ -1331,7 +1331,7 @@ class MainController
 		while($data = $result->fetch())
 		{
 			$hurdler = new Hurdles($this->db, $data['hurdlerID']);
-			$hurdler->getHurdlerInfo();
+			$hurdler->setHurdlerInfo($this->tournamentId, $data['hurdlerName'], $data['hurdlerLastName'], $data['dateOfBirth'], $data['houseNumber'], $data['streetName'], $data['city'], $data['postcode'], $data['email'], $data['contactNumber'], $data['hurdlerPerformance']);
 			$this->allHurdlers[$i] = $hurdler;
 			$i++;                                 
 		}
