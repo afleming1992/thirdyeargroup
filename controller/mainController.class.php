@@ -1526,6 +1526,7 @@ class MainController
         
         public function checkTeamName($teamName)
         {
+            $teamName = mysql_escape_string($teamName);
             $result = $this->db->query("SELECT * FROM wattball_team WHERE teamName = '$teamName'");
             $data = $result->fetch();
             if(count($data) == 1)
