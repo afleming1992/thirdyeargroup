@@ -8,8 +8,8 @@ if(isset($_GET['umpireName']) && isset($_GET['umpireEmail'])&& isset($_GET['chec
 	try 
 	{
 		$db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
-		$umpireName = htmlspecialchars($_GET['umpireName']);
-		$umpireEmail = htmlspecialchars($_GET['umpireEmail']);
+		$umpireName = mysql_escape_string(htmlspecialchars($_GET['umpireName']));
+		$umpireEmail = mysql_escape_string(htmlspecialchars($_GET['umpireEmail']));
 		$checklist = ($_GET['checklist']);
 		$db->exec("INSERT INTO umpire(umpireName,umpireEmail,monMorning,monAfternoon,tuesMorning,tuesAfternoon,wedMorning,wedAfternoon,thursMorning,thursAfternoon,friMorning,friAfternoon,satMorning,
 		satAfternoon,sunMorning,sunAfternoon) VALUES('$umpireName','$umpireEmail','$checklist[0]','$checklist[1]','$checklist[2]','$checklist[3]','$checklist[4]','$checklist[5]','$checklist[6]',

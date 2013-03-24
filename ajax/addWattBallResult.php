@@ -46,7 +46,7 @@ if(isset($_GET['date']) && isset($_GET['tournamentID'])) //search a match
 
     
 }
-else if(isset($_GET['matchID']) && isset($_GET['playerTeam1']) && isset($_GET['playerTeam2']) && isset($_GET['minuteTeam1']) && isset($_GET['minuteTeam2']) ) //save results
+else if(isset($_GET['matchID']) && isset($_GET['playerTeam1']) && isset($_GET['playerTeam2']) && isset($_GET['minuteTeam1']) && isset($_GET['minuteTeam2']) && isset($_GET['report'])) //save results
 {
     $playerTeam1;
     $minuteTeam1;
@@ -54,6 +54,7 @@ else if(isset($_GET['matchID']) && isset($_GET['playerTeam1']) && isset($_GET['p
     $minuteTeam2;
     $goalsTeam1;
     $goalsTeam2;
+    $report = mysql_escape_string(htmlspecialchars($_GET['report']));
     $matchID = htmlspecialchars($_GET['matchID']);
     for($i=0;$i<count($_GET['playerTeam1']);$i++)
     {
@@ -81,7 +82,7 @@ else if(isset($_GET['matchID']) && isset($_GET['playerTeam1']) && isset($_GET['p
         //save result
         $db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
         $match = new Match($matchID, null, null, null, null, null, null, $db);
-        $match->saveResult($goalsTeam1, $goalsTeam2);
+        $match->saveResult($goalsTeam1, $goalsTeam2,$report);
         
         //save goals
         if($goalsTeam1 > 0)

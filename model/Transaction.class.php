@@ -18,7 +18,7 @@
 		
 		public function createTransaction()
 		{
-			$result = $this->db->query("INSERT INTO transaction (nameOnCard,cardNumber,cscNumber,cardType,validUntil) VALUES ('".$this->nameOnCard."','".$this->cardNumber."','".$this->cscNumber."','".$this->cardType."','".$this->validUntil."')");
+			$result = $this->db->query("INSERT INTO transaction (nameOnCard,cardNumber,cscNumber,cardType,validUntil) VALUES ('".mysql_escape_string($this->nameOnCard)."','".mysql_escape_string($this->cardNumber)."','".mysql_escape_string($this->cscNumber)."','".$this->cardType."','".$this->validUntil."')");
 			if($result == true)
 			{
 				$result = $this->db->query("select last_insert_id() as lastId");
@@ -34,7 +34,7 @@
 		
 		public function updateTransaction()
 		{
-			$result = $this->db->query("UPDATE transaction SET nameOnCard = '".$this->nameOnCard."',cardNumber = '".$this->cardNumber."',cscNumber = '".$this->cscNumber."',cardType = '".$this->cardType."',validUntil = '".$this->validUntil."' WHERE transactionID = '".$this->transactionID."'");
+			$result = $this->db->query("UPDATE transaction SET nameOnCard = '".mysql_escape_string($this->nameOnCard)."',cardNumber = '".$this->cardNumber."',cscNumber = '".$this->cscNumber."',cardType = '".$this->cardType."',validUntil = '".$this->validUntil."' WHERE transactionID = '".$this->transactionID."'");
 			if($result == true)
 			{
 				return true;

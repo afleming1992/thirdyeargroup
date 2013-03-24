@@ -24,9 +24,9 @@ Class Booking
     
     public function createBooking()
     {
-		$query = "INSERT INTO ticket_sales (transactionID,firstName,surname,email,address1,address2,city,county,postcode,totalCost) VALUES ('".$this->transactionId."','".$this->firstName."','".$this->surname."','".$this->email."','".$this->address1."','".$this->address2."','".$this->city."','".$this->county."','".$this->postcode."','".$this->totalCost."')";
+		$query = "INSERT INTO ticket_sales (transactionID,firstName,surname,email,address1,address2,city,county,postcode,totalCost) VALUES ('".$this->transactionId."','".mysql_escape_string($this->firstName)."','".mysql_escape_string($this->surname)."','".$this->email."','".mysql_escape_string($this->address1)."','".mysql_escape_string($this->address2)."','".mysql_escape_string($this->city)."','".mysql_escape_string($this->county)."','".$this->postcode."','".$this->totalCost."')";
 		
-		$result = $this->db->query("INSERT INTO ticket_sales (transactionID,firstName,surname,email,address1,address2,city,county,postcode,totalCost) VALUES ('".$this->transactionId."','".$this->firstName."','".$this->surname."','".$this->email."','".$this->address1."','".$this->address2."','".$this->city."','".$this->county."','".$this->postcode."','".$this->totalCost."')");
+		$result = $this->db->query("INSERT INTO ticket_sales (transactionID,firstName,surname,email,address1,address2,city,county,postcode,totalCost) VALUES ('".mysql_escape_string($this->transactionId)."','".mysql_escape_string($this->firstName)."','".mysql_escape_string($this->surname)."','".mysql_escape_string($this->email)."','".mysql_escape_string($this->address1)."','".mysql_escape_string($this->address2)."','".mysql_escape_string($this->city)."','".mysql_escape_string($this->county)."','".$this->postcode."','".$this->totalCost."')");
 		if($result != false)
 		{
 			$this->bookingId = $this->db->lastInsertId();
@@ -40,7 +40,7 @@ Class Booking
 	
 	 public function updateBooking()
     {
-		$result = $this->db->query("UPDATE ticket_sales SET transactionID = '".$this->transactionId."',name = '".$this->name."',email = '".$this->email."',address1 = '".$this->address1."',address2 = '".$this->address2."',city = '".$this->city."',county = '".$this->county."',postcode = '".$this->postcode."',totalCost = '".$this->totalCost."' WHERE bookingId = '".$this->bookingId."')");
+		$result = $this->db->query("UPDATE ticket_sales SET transactionID = '".$this->transactionId."',name = '".mysql_escape_string($this->name)."',email = '".$this->email."',address1 = '".mysql_escape_string($this->address1)."',address2 = '".mysql_escape_string($this->address2)."',city = '".mysql_escape_string($this->city)."',county = '".mysql_escape_string($this->county)."',postcode = '".$this->postcode."',totalCost = '".$this->totalCost."' WHERE bookingId = '".$this->bookingId."')");
 		if($result == true)
 		{
 			return true;

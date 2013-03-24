@@ -13,6 +13,7 @@
             <li class="nav-header">Registration</li>
             <li class="divider"></li>
             <li <?php if($pageName == "wattBall") echo "class='active'"; ?>><a href='index.php?adminPage=wattBall'>View Wattball</a></li>
+
             <li <?php if($pageName == "maleHurdles") echo "class='active'"; ?>><a href='index.php?adminPage=maleHurdles'>View Male Hurdlers</a></li>
             <li<?php if($pageName == "femaleHurdles") echo "class='active'"; ?>><a href='index.php?adminPage=femaleHurdles'>View Female Hurdlers</a></li>
             

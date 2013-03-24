@@ -43,7 +43,17 @@
 	</div>
 	<div class='row-fluid'>
 		<div class='contentbox home-info span12'>
-				<h1>Testing</h1>
+			<div class='row-fluid'>
+				<div class='span6 pull-left well'>
+					  <p style='font-size:small'>Based on the outskirts of Edinburgh close to Currie</p>
+					  <p>
+						We are a Sports Centre which hosts an Annual Tournament comprising of both Wattball and Hurdles. We are a National Wattball Association Recognised Centre.
+					  </p>
+				</div>
+				<div class='span6 well pull-right'>
+					<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=Heriot+Watt+University+Edinburgh+Campus,+Edinburgh,+UK+Sports+Centre&amp;aq=&amp;sll=55.909699,-3.317571&amp;sspn=0.006434,0.01929&amp;t=h&amp;ie=UTF8&amp;hq=Heriot+Watt+University+Edinburgh+Campus,+Edinburgh,+UK+Sports+Centre&amp;hnear=&amp;ll=55.908761,-3.316497&amp;spn=0.006434,0.01929&amp;z=14&amp;iwloc=A&amp;cid=1277698930982743566&amp;output=embed"></iframe><br /><small><a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=Heriot+Watt+University+Edinburgh+Campus,+Edinburgh,+UK+Sports+Centre&amp;aq=&amp;sll=55.909699,-3.317571&amp;sspn=0.006434,0.01929&amp;t=h&amp;ie=UTF8&amp;hq=Heriot+Watt+University+Edinburgh+Campus,+Edinburgh,+UK+Sports+Centre&amp;hnear=&amp;ll=55.908761,-3.316497&amp;spn=0.006434,0.01929&amp;z=14&amp;iwloc=A&amp;cid=1277698930982743566" style="color:#0000FF;text-align:left">View Larger Map</a></small>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

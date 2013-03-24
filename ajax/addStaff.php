@@ -8,9 +8,9 @@ if(isset($_GET['name']) && isset($_GET['username']) && isset($_GET['email']) && 
 	try 
 	{
 		$db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
-		$name = htmlspecialchars($_GET['name']);
-		$username = htmlspecialchars($_GET['username']);
-		$email = htmlspecialchars($_GET['email']);
+		$name = mysql_escape_string(htmlspecialchars($_GET['name']));
+		$username = mysql_escape_string(htmlspecialchars($_GET['username']));
+		$email = mysql_escape_string(htmlspecialchars($_GET['email']));
 		$manager = $_GET['manager'];
 		$staffPassword = randomString(6);
 		$hashPassword = sha1($staffPassword);

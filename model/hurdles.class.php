@@ -40,7 +40,7 @@ class Hurdles
 	
 	public function addTeamInfo()
 	{
-		$result = $this->db->query("INSERT INTO hurdles_competitors (hurdlerName,hurdlerlastName,tournamentId,hurdlerGender,dateOfBirth,houseNumber,streetName,city,postcode,email,contactNumber,hurdlerPerformance) VALUES ('".$this->firstName."','".$this->lastName."','".$this->tournamentId."','".$this->gender."','".$this->dob."','".$this->houseNo."','".$this->streetName."','".$this->city."','".$this->postCode."','".$this->email."','".$this->emContact."','".$this->performanceTime."')");
+		$result = $this->db->query("INSERT INTO hurdles_competitors (hurdlerName,hurdlerlastName,tournamentId,hurdlerGender,dateOfBirth,houseNumber,streetName,city,postcode,email,contactNumber,hurdlerPerformance) VALUES ('".mysql_escape_string($this->firstName)."','".mysql_escape_string($this->lastName)."','".$this->tournamentId."','".$this->gender."','".$this->dob."','".$this->houseNo."','".mysql_escape_string($this->streetName)."','".mysql_escape_string($this->city)."','".$this->postCode."','".mysql_escape_string($this->email)."','".$this->emContact."','".$this->performanceTime."')");
 		if($result != false){
 			return true; 
 		} else {

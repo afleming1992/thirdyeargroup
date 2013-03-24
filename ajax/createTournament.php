@@ -8,7 +8,7 @@ if(isset($_GET['name']) && isset($_GET['startDate']) && isset($_GET['endDate']) 
 	try 
 	{
 		$db = new PDO("mysql:host=$server;dbname=$database",$user,$password);
-		$name = htmlspecialchars($_GET['name']);
+		$name = mysql_escape_string(htmlspecialchars($_GET['name']));
 		$start = htmlspecialchars($_GET['startDate']);
 		$end = htmlspecialchars($_GET['endDate']);
 		$regStart = htmlspecialchars($_GET['registrationStartDate']);
