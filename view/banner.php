@@ -22,7 +22,7 @@
 	}
 ?>
 <div id='banner' class='page-header'>
-	<h1><img src='images/banner.png' /></h1>	
+	<a href='index.php'><img src='images/banner.png' /></a>
 </div>
 <body class='container'>
 	<div class='wrapper'>

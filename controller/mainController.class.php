@@ -217,13 +217,14 @@ class MainController
 			else if($pageName == 'ticketStatus')
 			{
 				$result = $this->db->query("SELECT * FROM tournament WHERE startDate > CURDATE() OR (startDate < CURDATE() AND endDate > CURDATE()) ORDER BY startDate ASC");
-				if($result == false)
+				$rowCount = $result->rowCount();
+				if($result == false || $rowCount == '0')
 				{
 					$this->addBasicView();
-					require_once 'view/tickets_notournament.php';
-					require_once 'view/login.php';
-					$this->addFooterFile();
-					die();
+                    require_once 'adminView/menu.php';
+                    require_once 'adminView/wattBallNoTournament.php';
+                    $this->addFooterFile();
+                    die();
 				}
 				$data = $result->fetch();
 				$tournament = new Tournament($data['tournamentID'],$data['name'],$data['startDate'],$data['endDate'],$data['registrationOpen'],$data['registrationClose'], $this->db);
@@ -1174,12 +1175,13 @@ class MainController
                         {
                                 $pageName = "tickets";
                         }
-                }
-                if(strcmp($pageName,"tickets") == 0)
-                {
-                        unset($_SESSION['booking']);
-                        $result = $this->db->query("SELECT * FROM tournament WHERE startDate > CURDATE() OR (startDate < CURDATE() AND endDate > CURDATE()) ORDER BY startDate ASC");
-                        if($result == false)
+            }
+            if(strcmp($pageName,"tickets") == 0)
+			{
+               unset($_SESSION['booking']);
+               $result = $this->db->query("SELECT * FROM tournament WHERE startDate > CURDATE() OR (startDate < CURDATE() AND endDate > CURDATE()) ORDER BY startDate ASC");
+						$rowCount = $result->rowCount();
+						if($result == false || $rowCount == 0)
                         {
                                 $this->addBasicView();
                                 require_once 'view/tickets_notournament.php';
@@ -1202,7 +1204,7 @@ class MainController
                         require_once 'view/login.php';
                         $this->addFooterFile();
                         die();
-                    }
+           }
 
             $this->addBasicView();
             require_once 'view/'.$pageName.'.php';

@@ -54,7 +54,7 @@ class Team
 	// Update Team
 	public function updateTeamInfo()
 	{
-		$query = "UPDATE wattball_team SET tournamentID = '".$this->tournamentID."', contactName = '".mysql_real_escape_string($this->contactName)."', contactNumber = '".$this->contactNumber."', NWANumber = '".$this->nwaNumber."',ticketsAllocated = '".$this->ticketsAllocated."', email = '".$this->email."' WHERE teamID = '".$this->teamID."'";
+		$query = "UPDATE wattball_team SET tournamentID = '".$this->tournamentID."', contactName = '".mysql_real_escape_string($this->contactName)."', contactNumber = '".$this->contactNumber."', NWANumber = '".$this->nwaNumber."',teamName = '".$this->teamName."', email = '".$this->email."',ticketsAllocated = '".$this->ticketsAllocated."' WHERE teamID = '".$this->teamID."'";
 		$result = $this->db->query($query);
 		if($result != false)
 		{
